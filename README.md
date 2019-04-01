@@ -9,7 +9,13 @@ When in doubt, hit me up on Slack @Gabe.
 ### crc16.c
 * A C-language tool, to be replaced with a Python implementation, from http://srecord.sourceforge.net/crc16-ccitt.html
 * If modifying this to get your checksum, please first COPY THIS FILE so the original form stays intact
-* The EnduroSat transceiver appends 0x1A7D to a 1-byte "!" message. As indicated from the output of the original form of this `crc16.c` file, this is the **BAD CRC** output of the **size byte concatenated with the message**
+* The EnduroSat transceiver appends 0x1A7D to a 1-byte "!" message. As indicated from the output of this file (just below), this is the **BAD CRC** output of the **size byte concatenated with the message**
+```
+good_CRC = F8DF,  Bad_CRC = D5B3,  Length = 1,  Text = !
+good_CRC = F926,  Bad_CRC = 2921,  Length = 8,  Text = UUUUU~!
+good_CRC = D577,  Bad_CRC = 08E7,  Length = 3,  Text = ~!
+good_CRC = 83B2,  Bad_CRC = 1A7D,  Length = 2,  Text = !
+```
 * Usage:
 ```
 cp crc16.c localcrc16.c     # Please use this name, as it is included in the .gitignore
