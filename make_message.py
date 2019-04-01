@@ -1,3 +1,9 @@
+"""
+Function 'prototypes':
+    make_message(message, checksum, preamble=b'\x55')
+    write_to_file(filename, message)
+"""
+
 def make_message(message, checksum, preamble=b'\x55'):
     """Make a message as a binary value. Adds preamble, syncword, message and checksum together.
 
@@ -29,10 +35,12 @@ def write_to_file(filename, message):
     """Writes a message to a binary file.
 
     Args:
-        filename :: name of file, ideally ending in .bin
+        filename :: name of file, e.g. "hello_55.bin" ("hello" with 0x55 as the preamble)
         message  :: output from make_message()
     """
-    with open(filename, "wb") as f:
+    if (filename.find('/') != -1):
+        filename = filename.split('/')[-1]
+    with open("messages/"+filename, "wb") as f:
         f.write(message)
 
 def main():

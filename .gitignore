@@ -1,0 +1,6 @@
+crc
+localcrc16.c
+
+# From python
+__pycache__/
+*.py[cod]
