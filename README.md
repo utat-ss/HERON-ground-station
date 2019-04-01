@@ -6,15 +6,15 @@
 * The EnduroSat transceiver appends 0x1A7D to a 1-byte "!" message. As indicated from the output of the original form of this `crc16.c` file, this is the **BAD CRC** output of the **size byte concatenated with the message**
 * Usage:
 ```
-cp crc16.c localcrc16.c` # Please use this name, as it is included in the .gitignore
-gcc crc16.c -o crc`
+cp crc16.c localcrc16.c     # Please use this name, as it is included in the .gitignore
+gcc crc16.c -o crc
 ./crc
 ```
 
 ## make_message.py
 * A python module to aid in the creation of messages
 * Can be run explicitly, e.g. `python make_message.py`, for a usable interface
-* Can also be included in a Python shell, e.g. by calling `import make_message as m`. You might want to then call `help(m)`. If you don't like that `help(m)` opens in a `more` menu, you can `print(m.__doc__)` and then `print(m.<function_name>.__doc__)`, where <function_name> are those listed in the original print
+* Can also be included in a Python shell, e.g. by calling `import make_message as m`. You might want to then call `help(m)`. If you don't like the format of that help command, you can do `print(m.__doc__)` and then `print(m.<function_name>.__doc__)`, where <function_name> are those listed in the original print
 * Try not to flood the repo with too many messages... just delete/move yours if you can.
 
 ## tx.grc
