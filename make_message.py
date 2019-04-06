@@ -25,9 +25,12 @@ def make_message(message, checksum, preamble=b'\x55'):
     transmission += b'\x7E'     # sync word
     transmission += len(message).to_bytes(1, "big")
                                 # size byte
+    #msg_for_crc = len(message).to_bytes(1, "big")
     for ch in message:          # actual message
+        #msg_for_crc += ord(ch).to_bytes(1, "big")
         transmission += ord(ch).to_bytes(1, "big")
     transmission += checksum    # checksum
+    #transmission += crc(msg_for_crc)
 
     return transmission
 
