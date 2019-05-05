@@ -1,35 +1,42 @@
 """
-Function 'prototypes':
+Functions:
     make_message(message, checksum, preamble=b'\x55')
     write_to_file(filename, message)
 """
 
-def make_message(message, checksum, preamble=b'\x55'):
+def make_message(message, checksum, preamble=b'\x55', carriage=True):
     """Make a message as a binary value. Adds preamble, syncword, message and checksum together.
 
     Args:
-        bits     :: your message to send, as a string (e.g. "hello")
+        message  :: your message to send, as a string (e.g. "hello")
         checksum :: 2 byte bistring like b'\\xFF\\xFF'
         preamble :: either b'\\xaa' or b'\\x55'
 
     Result:
         message  :: bitstring of full message for transmission
     """
+    # Get length
+    length = len(message)
+    if (carriage):
+        length += 1
+
     # Assertions for inputs
     assert(preamble==b'\x55' or preamble==b'\xaa')
-    assert(len(message) < 256)
+    assert(length < 256)
     assert(len(checksum) == 2)
 
     # Create message
     transmission = preamble * 5 # preamble
     transmission += b'\x7E'     # sync word
-    transmission += len(message).to_bytes(1, "big")
+    transmission += length.to_bytes(1, "big")
                                 # size byte
     #msg_for_crc = len(message).to_bytes(1, "big")
     for ch in message:          # actual message
         #msg_for_crc += ord(ch).to_bytes(1, "big")
         transmission += ord(ch).to_bytes(1, "big")
-    transmission += checksum    # checksum
+    transmission += b'\x0D'     # carriage return
+    if (carriage):
+        transmission += checksum    # checksum
     #transmission += crc(msg_for_crc)
 
     return transmission

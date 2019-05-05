@@ -46,7 +46,7 @@
     </param>
     <param>
       <key>id</key>
-      <value>top_block</value>
+      <value>gfsk_tx</value>
     </param>
     <param>
       <key>max_nouts</key>
@@ -248,11 +248,11 @@
     </param>
     <param>
       <key>file</key>
-      <value>C:\Users\Gabriel\Documents\Extracurriculars\UTAT\Comms\ground_station_tests\messages\excl_55_grabbedCS.bin</value>
+      <value>C:\Users\Gabriel\Documents\Extracurriculars\UTAT\Comms\ground_station_tests\messages\start_beacon_55_cr.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(200, 28)</value>
+      <value>(192, 28)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -358,7 +358,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(384, 28)</value>
+      <value>(424, 28)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1313,7 +1313,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 132)</value>
+      <value>(656, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1448,7 +1448,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>1</value>
     </param>
     <param>
       <key>fftsize</key>
@@ -1456,7 +1456,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(632, 292)</value>
+      <value>(656, 292)</value>
     </param>
     <param>
       <key>gui_hint</key>
