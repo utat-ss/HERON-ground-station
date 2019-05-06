@@ -4,3 +4,8 @@ localcrc16.c
 # From python
 __pycache__/
 *.py[cod]
+
+# GRC python programs
+gfsk_tx.py
+top_block.py
+
