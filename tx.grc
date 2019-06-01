@@ -248,7 +248,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>C:\Users\Gabriel\Documents\Extracurriculars\UTAT\Comms\ground_station_tests\messages\excl_long_preamble.bin</value>
+      <value>C:\Users\Gabriel\Documents\Extracurriculars\UTAT\Comms\ground_station_tests\messages\alphabet_0padded.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -386,7 +386,7 @@
     </param>
     <param>
       <key>sensitivity</key>
-      <value>1.0</value>
+      <value>.1571</value>
     </param>
     <param>
       <key>verbose</key>
