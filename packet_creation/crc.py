@@ -35,3 +35,6 @@ def crc16(str):
             ch = ch << 1
     return bad_crc
 
+
+def crc16_bytes(str):
+    return crc16(str).to_bytes(2, "big")

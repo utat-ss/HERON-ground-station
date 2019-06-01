@@ -5,7 +5,7 @@ Functions:
     write_to_file(filename, message)
 """
 
-from crc import crc
+from crc import crc16
 
 def make_message_text(message, preamble=b'\x55', carriage=False):
     """Make a message as a binary value. Adds preamble, syncword, message and checksum together.
@@ -31,18 +31,17 @@ def make_message_text(message, preamble=b'\x55', carriage=False):
     transmission += b'\x7E'                     # sync word
     transmission += length.to_bytes(1, "big")   # size byte
 
-    msg_for_crc = length.to_bytes(1, "big")     # prep for checksum calculation
-
+    msg_for_crc  = str(length)                  # prep for checksum calculation
 
     for ch in message:                          # actual message
-        msg_for_crc += ord(ch).to_bytes(1, "big")
+        msg_for_crc  += ch
         transmission += ord(ch).to_bytes(1, "big")
 
     if (carriage):                              # carriage return
-        msg_for_crc  += b'\x0D'
+        msg_for_crc  += '\x0D'
         transmission += b'\x0D'
 
-    transmission += crc(msg_for_crc)            # checksum
+    transmission += crc16_bytes(msg_for_crc)    # checksum
 
     return transmission
 
