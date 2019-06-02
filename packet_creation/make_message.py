@@ -5,7 +5,7 @@ Functions:
     write_to_file(filename, message)
 """
 
-from crc import crc16
+from crc import crc16, crc16_bytes
 
 def make_message_text(message, preamble=b'\x55', carriage=False):
     """Make a message as a binary value. Adds preamble, syncword, message and checksum together.
@@ -24,24 +24,24 @@ def make_message_text(message, preamble=b'\x55', carriage=False):
 
     # Assertions for inputs
     assert(preamble==b'\x55' or preamble==b'\xaa')
-    assert(length < 256)
+    assert(length < 128)
 
     # Create message
-    transmission = preamble * 5                 # preamble
-    transmission += b'\x7E'                     # sync word
-    transmission += length.to_bytes(1, "big")   # size byte
+    transmission = preamble * 25                        # preamble
+    transmission += b'\x7E'                             # sync word
+    transmission += length.to_bytes(1, "big")           # size byte
 
-    msg_for_crc  = str(length)                  # prep for checksum calculation
+    msg_for_crc  = length.to_bytes(1, "big").decode()   # prep for checksum calculation
 
-    for ch in message:                          # actual message
+    for ch in message:                                  # actual message
         msg_for_crc  += ch
         transmission += ord(ch).to_bytes(1, "big")
 
-    if (carriage):                              # carriage return
+    if (carriage):                                      # carriage return
         msg_for_crc  += '\x0D'
         transmission += b'\x0D'
 
-    transmission += crc16_bytes(msg_for_crc)    # checksum
+    transmission += crc16_bytes(msg_for_crc)            # checksum
 
     return transmission
 
@@ -54,17 +54,18 @@ def write_to_file(filename, message):
     """
     if (filename.find('/') != -1):
         filename = filename.split('/')[-1]
-    with open("messages/"+filename, "wb") as f:
+    with open("../messages/"+filename, "wb") as f:
         f.write(message)
 
 def main():
     preamble_type = b'\x55'
     automatic_cr  = False
-    while (true):
+    while (1==1):
         action = ""
         while (action != "s" and action != "m" and action != "q"):
-            action = input("Would you like to make one or more messages (m), change the settings (s), or quit (q):\n\t")
+            action = input("\nWould you like to make one or more messages (m), change the settings (s), or quit (q):\n\t")
         if (action == "s"):
+            # Settings menu
             print("1. Change preamble")
             if (automatic_cr):
                 print("2. Toggle prompting/automatic carriage return (currently automatic)")
@@ -87,11 +88,13 @@ def main():
                 print("Invalid input")
             print ("Done.\n")
         elif (action == "m"):
+            # Creating a new transmission (message or string of messages)
             writing_more = True
             trx = b''
             while (writing_more):
                 msg = input("Please write your message:\n\t")
                 if (not automatic_cr):
+                    #action = ''            # Comment out if you want it to be easier to make a transmission of many messages WITHOUT a CR
                     while (action != 'y' and action != 'n'):
                         action  = input("Do you want to append a carraige return character? (y/n)\n\t")
                     if (action == 'y'):
@@ -101,11 +104,11 @@ def main():
                 else:
                     trx += make_message_text(msg, carriage=True)
 
-                print("Your message is:\n\t", trx)
+                #print("Your message is:\n\t", trx)
 
                 while (writing_more != 'y' and writing_more != 'n'):
-                    writing_more = input("Would you like to append another message (same transmission)? (y/n)")
-                if (writing_more == 'y');
+                    writing_more = input("Would you like to append another message (same transmission)? (y/n)\n\t")
+                if (writing_more == 'y'):
                     writing_more = True
                 else:
                     writing_more = False
@@ -117,7 +120,7 @@ def main():
             if (action == 'y'):
                 filename = input("Please enter your filename (e.g. file.bin):\n\t")
                 write_to_file(filename, trx)
-                print("Wrote", trx, "to file", filename)
+                print("\nWrote", trx, "to file", filename)
             else:
                 print("OK.")
 
