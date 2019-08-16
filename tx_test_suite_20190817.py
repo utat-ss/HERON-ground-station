@@ -13,9 +13,10 @@ import subprocess
 import time
 
 if __name__ == "__main__":
-    # XXX Make directory with current date
-    logdir = "test"+time.strftime("%F-%H-%M-%S")
-    os.system("mkdir " + logdir)
+    # Make directory with current date
+    # Logging isn't working so well so it's been removed for now
+    #logdir = "test"+time.strftime("%F-%H-%M-%S")
+    #os.system("mkdir " + logdir)
     outpath = "cmdout.bin"
 
     # Set up 0 packet -- will be used a lot
@@ -106,9 +107,9 @@ if __name__ == "__main__":
 
         # Write to files for sending and logging
         #m.write_to_file("./"+logdir+"/packet"+str(packetcount)+".bin", packet) # Commented out because not working, oddly
-        os.system("echo 'Sent packet for command " + cmd + ", looked like:' >> " + logdir + "/log.txt")
-        os.system("echo '" + str(packet) + "' >> " + logdir + "/log.txt")
-        os.system("echo '' >> " + logdir + " /log.txt")
+        #os.system("echo 'Sent packet for command " + cmd + ", looked like:' >> " + logdir + "/log.txt")
+        #os.system("echo '" + str(packet) + "' >> " + logdir + "/log.txt")
+        #os.system("echo '' >> " + logdir + " /log.txt")
         m.write_to_file(outpath, packet)
         packetcount += 1
 

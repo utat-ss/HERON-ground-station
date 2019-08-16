@@ -8,4 +8,7 @@ __pycache__/
 # GRC python programs
 gfsk_tx.py
 top_block.py
+rx_quaddemod.py
 
+# Message sending for tests
+cmdout.bin
