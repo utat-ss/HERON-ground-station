@@ -28,6 +28,7 @@ if __name__ == "__main__":
     while (True):
         print ("Commands")
         print ("==============")
+        print ("ES :: Enter PIPE mode (if you didn't already do it)")
         print ("00 :: Ping")
         print ("01 :: Get Subsystem Status")
         print ("02 :: Get RTC Date/Time")
@@ -52,8 +53,13 @@ if __name__ == "__main__":
         print ("17 :: Erase EEPROM (OBC)")
         print ("19 :: Erase All Memory")
         print ("1A :: Erase Memory Physical Block")
-              
+        
         cmd =  input("\nPlease enter your command:\t").upper()
+    
+        if (cmd == "ES"):
+            os.system("cp messages/2019-06-15-TEST/ES_PIPE.bin " + outpath)
+            os.system("python2 tx/gfsk_tx_for_test_20190817.py")
+            continue
 
         # Create actual message packet
         message = "\x00"        # Start of message
