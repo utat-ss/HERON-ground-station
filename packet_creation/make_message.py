@@ -5,7 +5,7 @@ Functions:
     write_to_file(filename, message)
 """
 
-from crc import crc16, crc16_bytes
+from packet_creation import crc
 
 def make_message_text(message, preamble=b'\x55', carriage=False):
     """Make a message as a binary value. Adds preamble, syncword, message and checksum together.
@@ -41,7 +41,7 @@ def make_message_text(message, preamble=b'\x55', carriage=False):
         msg_for_crc  += '\x0D'
         transmission += b'\x0D'
 
-    transmission += crc16_bytes(msg_for_crc)            # checksum
+    transmission += crc.crc16_bytes(msg_for_crc)        # checksum
 
     return transmission
 
@@ -54,7 +54,7 @@ def write_to_file(filename, message):
     """
     if (filename.find('/') != -1):
         filename = filename.split('/')[-1]
-    with open("../messages/"+filename, "wb") as f:
+    with open(filename, "wb") as f:
         f.write(message)
 
 def main():
@@ -119,7 +119,7 @@ def main():
                 action = input("Would you like to write this transmission to a file? (y/n)\n\t")
             if (action == 'y'):
                 filename = input("Please enter your filename (e.g. file.bin):\n\t")
-                write_to_file(filename, trx)
+                write_to_file("../messages"+filename, trx)
                 print("\nWrote", trx, "to file", filename)
             else:
                 print("OK.")
