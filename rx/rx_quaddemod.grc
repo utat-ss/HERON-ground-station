@@ -273,6 +273,168 @@
     </param>
     <param>
       <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(972, 60)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>packets_path</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>path+subpath+"potentialpackets"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(932, 8)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>packetspacked_path</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>path+subpath+"potentialpacketspacked"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(800, 8)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>path</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"/home/ghs/utat/"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(800, 60)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>quad_path</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>path+subpath+"quaddemodsignal"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(800, 112)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>quadshifted_path</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>path+subpath+"quaddemodsignal_shifted"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(964, 112)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>raw_path</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>path+subpath+"raw_recording"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
       <value>1</value>
     </param>
     <param>
@@ -290,6 +452,33 @@
     <param>
       <key>value</key>
       <value>4003200</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(800, 164)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>subpath</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"test_20190817_outputs/"</value>
     </param>
   </block>
   <block>
@@ -473,7 +662,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/ghs/Desktop/potentialpackets</value>
+      <value>packets_path</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -524,7 +713,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/ghs/Desktop/potentialpacketspacked</value>
+      <value>packetspacked_path</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -575,7 +764,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/ghs/Desktop/quaddemodsignal</value>
+      <value>quad_path</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -626,7 +815,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/ghs/Desktop/quaddemodsignal_shifted</value>
+      <value>quadshifted_path</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -677,7 +866,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/ghs/Desktop/raw_recording</value>
+      <value>raw_path</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -2405,7 +2594,7 @@
     </param>
     <param>
       <key>args</key>
-      <value></value>
+      <value>hackrf=1</value>
     </param>
     <param>
       <key>_enabled</key>
