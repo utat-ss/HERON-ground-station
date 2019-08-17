@@ -140,7 +140,7 @@ class gfsk_tx(gr.top_block, Qt.QWidget):
         	log=False,
         )
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_vcc((0.8, ))
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, '/home/gshe/utat/ground-station/cmdout.bin', False)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_char*1, '/home/ghs/utat/ground-station/cmdout.bin', False)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
 
 

@@ -9,6 +9,9 @@
 ## Test suites
 Here's how running a test with the RX and TX system should work:
 
+* First, fix the RX and TX systems to use your local filepaths
+  * In `rx_quaddemod.grc`, edit the `path` variable block (and only the `path` variable, as the others will update automatically from that) to reflect your local instance of this repository
+  * In `tx/gfsk_tx_for_test_20190817.py`, edit line 143 to reflect your local instance of this repository. The filename should still be `cmdout.bin`. For example, you could be changing it to something like `/home/myusername/Documents/UTAT/Comms/ground-station/cmdout.bin`
 * Connect the transceiver and the HackRFs as follows:
   * Take the two long coax SMA cables from the wall in the lab
   * From the SMA box in the back room of the lab, take out the attenuator bag, and dig around to the clear plastic box at the bottom. Open that and take out the splitter (3-pronged SMA connected)
