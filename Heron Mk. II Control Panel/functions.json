@@ -1,0 +1,33 @@
+[
+  {
+    "id": 0,
+    "name": "Status Check",
+    "description": "If the satellite receives this command, it responds with data 'UTAT'; used to ping the satellite",
+    "arguments": [],
+    "response_size": 4,
+    "response_info": null
+  },
+  {
+    "id": 1,
+    "name": "Get Restart Info",
+    "description": "Gets the restart count (number of times OBC has restarted its program), restart date/time (RTC date/time of most recent restart), and uptime (time since most recent restart)",
+    "arguments": [],
+    "response_size": 14,
+    "response_info": "restart count (4 bytes), restart date (3 bytes), restart time (3 bytes), uptime (4 bytes)"
+  },
+  {
+    "id": 2,
+    "name": "Get/Set RTC Date and Time",
+    "description": "Gets or sets the date and time for the real-time clock. If all arguments are 0 it will send back the current date and time, otherwise it will be set to the arguments provided",
+    "arguments": [
+      {
+        "name": "Date",
+        "description": "8 bits YY, 8 bits MM, 8 bits DD"
+      },
+      {
+        "name": "Time",
+        "description": "8 bits HH, 8 bits MM, 8 bits SS"
+      }
+    ]
+  }
+]
