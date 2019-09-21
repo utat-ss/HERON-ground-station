@@ -5,14 +5,19 @@
 {% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
-    <h1>Heron Mk. II Control Panel</h1>
+    <h1>
+        <span>Heron Mk. II Control Panel</span>
 
-    {% for function in functions %}
+        <a class="btn btn-warning pull-right" href="{{ url_for('scheduler') }}" role="button">Scheduler</a>
+    </h1>
+
+
+    {% for command in commands %}
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#functionModal"
-                data-func-id="{{ function.id }}">{{ function.name }}</button>
+                data-command-id="{{ loop.index0 }}">{{ command.name }}</button>
     {% endfor %}
 
     <div class="modal fade" id="functionModal" tabindex="-1" role="dialog">
@@ -58,10 +63,10 @@
             src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
     <script type="text/javascript">
-        let functions = {{ functions|tojson }};
+        let commands = {{ commands|tojson }};
         let currFuncId;
     </script>
 
-    <script src="{{ url_for('static',filename='controlpanel.js') }}"></script>
+    <script src="{{ url_for('static',filename='index.js') }}"></script>
 {% endblock %}
 
