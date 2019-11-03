@@ -109,7 +109,7 @@ if __name__ == "__main__":
         
         # Turn into packet, pad with 2 "0" packets for safe transmission
         packet = m.make_message_text(message)
-        packet += zero_packet*2
+        packet += zero_packet*3
 
         # Write to files for sending and logging
         #m.write_to_file("./"+logdir+"/packet"+str(packetcount)+".bin", packet) # Commented out because not working, oddly

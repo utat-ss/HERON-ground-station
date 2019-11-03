@@ -248,7 +248,7 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/ghs/utat/ground-station/messages/alphabet_0padded.bin</value>
+      <value>/home/ghs/utat/ground-station/messages/PING_TRANSMISSION_28th.bin</value>
     </param>
     <param>
       <key>_coordinate</key>
