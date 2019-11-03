@@ -1,0 +1,11 @@
+.scheduler-column {
+    padding: 10px 10px 10px 10px;
+}
+
+#newScheduleList {
+    min-height: 30px;
+}
+
+#scheduleMaker {
+    display: none;
+}
