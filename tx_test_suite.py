@@ -1,9 +1,9 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#										#
+#                                       										#
 # Purpose: Provide an interface for running the OBC <--> Comms Tx/Rx Link	#
 # Author: Gabe Sher pls hit me up on slack @Gabe if there's an issue		#
-# Date: Thursday, August 16th							#
-#										#
+# Date: Thursday, October 31st                      							#
+#										                                        #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 from packet_creation import crc
@@ -29,39 +29,37 @@ if __name__ == "__main__":
         print ("Commands")
         print ("==============")
         print ("ES :: Enter PIPE mode (if you didn't already do it)")
-        print ("00 :: Ping")
+        print ("00 :: Ping OBC")
         print ("01 :: Get RTC Date/Time")
         print ("02 :: Set RTC Date/Time")
-        print ("03 :: Read OBC EEPROM") 
+        print ("03 :: Read OBC EEPROM")
         print ("04 :: Erase OBC EEPROM")
         print ("05 :: Read OBC RAM Byte")
-        print ("06 :: Send EPS CAN Message")
-        print ("07 :: Send PAY CAN Message")
-        print ("08 :: Actuate PAY Motors")
-        print ("09 :: Reset Subsystem")
-        print ("0A :: Set Indefinite Low-Power Mode Enable")
-        print ("10 :: Read Most Recent Status Info")
-        print ("11 :: Read Data Block")
-        print ("12 :: Read Recent Local Data Block")
-        print ("13 :: Read Primary Command Blocks")
-        print ("14 :: Read Secondary Command Blocks")
+        print ("06 :: Set Beacon Inhibit Enable")
+        print ("10 :: Read Data Block")
+        print ("11 :: Read Primary Command Blocks")
+        print ("12 :: Read Secondary Command Blocks")
+        print ("13 :: Read Most Recent Status Info")
+        print ("14 :: Read Recent Local Data Block")
         print ("15 :: Read Raw Memory Bytes")
-        print ("16 :: Erase Memory Physical Sector")
-        print ("17 :: Erase Memory Physical Block")
-        print ("18 :: Erase All Memory")
         print ("20 :: Collect Data Block")
-        print ("21 :: Get Current Block Number")
-        print ("22 :: Set Current Block Number")
-        print ("23 :: Get memory Section Start Address")
-        print ("24 :: Set memory Section Start Address")
-        print ("25 :: Get memory Section End Address")
-        print ("26 :: Set memory Section End Address")
-        print ("27 :: Get Automatic Data Collection Enable")
-        print ("28 :: Set Automatic Data Collection Enable")
-        print ("29 :: Get Automatic Data Collection Period")
-        print ("2A :: Set Automatic Data Collection Period")
-        print ("2B :: Get Automatic Data Collection Timers")
-        print ("2C :: Resync Automatic Data Collection Timers"
+        print ("21 :: Get Automatic Data Collection Settings")
+        print ("22 :: Set Automatic Data Collection Enable")
+        print ("23 :: Set Automatic Data Collection Period")
+        print ("24 :: Resync Automatic Data Collection Timers")
+        print ("30 :: Get Current Block Numbers")
+        print ("31 :: Set Current Block Number")
+        print ("32 :: Get Memory Section Addresses")
+        print ("33 :: Set Memory Section Start Address")
+        print ("34 :: Set Memory Section End Address")
+        print ("35 :: Erase Memory Physical Sector")
+        print ("36 :: Erase Memory Physical Block")
+        print ("37 :: Erase All Memory")
+        print ("40 :: Send EPS CAN Message")
+        print ("41 :: Send PAY CAN Message")
+        print ("42 :: Actuate PAY Motors")
+        print ("43 :: Reset Subsystem")
+        print ("44 :: Set Indefinite Low-Power Mode Enable")
         
         cmd =  input("\nPlease enter your command:\t").upper()
     
@@ -71,66 +69,65 @@ if __name__ == "__main__":
             continue
 
         # Create actual message packet
-        message = "\x00"        # Start of message
-        message += "\x12"       # Size excl. this and last byte - fixed because uplink
-        dec_msg = cmd           # Command type -- always just the input for this list
-        if (cmd == "00" or cmd == "02" or cmd == "0B" or cmd == "19"):
+        # FORMAT: 
+        ## Byte 0 ------- Opcode
+        ## Bytes 1-4 ---- Argument 1
+        ## Bytes 5-8 ---- Argument 2
+        ## Bytes 9-12 --- Password
+        
+        # Start message off with op-code
+        message = cmd + " "
+        
+        zero_args = ["00", "01", "13", "21", "24", "30", "32", "37"]
+        one_arg   = ["03", "04", "05", "06", "14", "36", "42", "43", "44"]
+        two_args = ["02", "10", "11", "12", "15", "20", "22", "23", "31", "33", "34", "35", "40", "41"]
+        if (cmd in zero_args):
             # Zero arguments -- simple
 
             # Create message
-            dec_msg += "00"*8   # Arguments 1 and 2 -- irrelevant
+            message += "00 "*8   # Arguments 1 and 2 -- irrelevant
 
-        elif (cmd == "01" or cmd == "05" or cmd == "06" or cmd == "07" or cmd == "0E" or cmd == "0F" or cmd == "12" or cmd == "13" or cmd == "17" or cmd == "1A"):
+        elif (cmd in one_arg): 
             # One argument -- a bit less simple
             
             # Get argument
-            print("Please input the argument in ASCII format:")
-            print(" (e.g. \"00 00 00 01\" for 0x01 or \"00 00 FF FF\" for 65535. Spaces are optional)")
+            print("Please input the argument in HEX format:")
+            print(" (e.g. \"00 00 00 01\" for 0x01 or \"00 00 FF FF\" for 65535. *Please use spaces*.)")
             arg1 = input("\t")
-            arg1_ascii = "".join(arg1.split())
-            
-            n = 8 
-            tot = 0
-            for letter in arg1_ascii:
-                n = n-1
-                if (letter == 'A' or letter == 'B' or letter == 'C' or letter == 'D' or letter == 'E' or letter = 'F'):
-                    tot += pow((letter-ord('A')+10), n)
-                elif (letter == 'a' or letter == 'b' or letter == 'c' or letter == 'd' or letter == 'e' or letter = 'f'):
-                    tot += pow((letter-ord('a')+10), n)
-                elif (letter == '0' or letter == '1' or letter == '2' or letter == '3' or letter == '4' or letter == '5' or letter == '6' or letter == '7' or letter == '8' or letter == '9'):
-                    tot += pow((letter-ord('0')), n)
 
-                        
             # Create message
-            message += arg1_ascii
-            message += "00"*4   # Argument 2 is just empty
+            message += arg1.strip() + " " 
+            message += "00 "*4   # Argument 2 is just empty
         
-        elif (cmd == "03" or cmd == "04" or cmd == "08" or cmd == "09" or cmd == "0A" or cmd == "10" or cmd == "11" or cmd == "14" or cmd == "15" or cmd == "16"):
+        elif (cmd in two_args):
             # Two arguments
 
             # Get argument 1
-            print("Please input the FIRST 4-byte argument in HEX format:")
+            print("Please input the FIRST argument in HEX format:")
             print(" (e.g. \"00 00 00 01\" for 0x01 or \"00 00 FF FF\" for 65535. Spaces are optional)")
             arg1 = input("\t")
-            arg1_ascii = "".join(arg1.split())
 
             # Get argument 2
-            print("Please input the SECOND argument in ASCII format:")
+            print("Please input the SECOND argument in HEX format:")
             print(" (e.g. \"00 00 00 01\" for 0x01 or \"00 00 FF FF\" for 65535. Spaces are optional)")
-            arg2 = raw_input("\t")
-            arg2_ascii = "".join(arg2.split())
+            arg2 = input("\t")
 
             # Create message
-            message += arg1_ascii
-            message += arg2_ascii
+            message += arg1.strip() + " "
+            message += arg2.strip() + " "
         else:
             print("Something went wrong, I wasn't expecting that command number.")
             print("Please try again. Make sure to select something from the list, like \"00\" or \"12\"")
             continue
         
         # Turn into packet, pad with 2 "0" packets for safe transmission
-        packet = m.make_message_text(message)
-        packet += zero_packet*3
+        message += "55 54 41 54"
+        print("Sending:", message)
+        message_string_array = message.split()
+        message_array = [int(byte, 16) for byte in message_string_array]
+        encoded_message = m.encode_message(message_array)
+        packet = m.es_frame_bytes(encoded_message)
+        packet += zero_packet*2
 
         # Write to files for sending and logging
         #m.write_to_file("./"+logdir+"/packet"+str(packetcount)+".bin", packet) # Commented out because not working, oddly
