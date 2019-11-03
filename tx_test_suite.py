@@ -30,29 +30,38 @@ if __name__ == "__main__":
         print ("==============")
         print ("ES :: Enter PIPE mode (if you didn't already do it)")
         print ("00 :: Ping")
-        print ("01 :: Get Subsystem Status")
-        print ("02 :: Get RTC Date/Time")
-        print ("03 :: Set RTC Date/Time")
-        print ("04 :: Read Memory Bytes")
-        print ("05 :: Erase Memory Physical Sector")
-        print ("06 :: Collect Block")
-        print ("07 :: Read Local Block")
-        print ("08 :: Read Memory Block")
-        print ("09 :: Enable/Disable Automatic Data Collection")
-        print ("0A :: Set Period for Automatic Data Collection")
-        print ("0B :: Resync Automatic Data Collection")
-        print ("0E :: PAY Control - Actuate Motors")
-        print ("0F :: Reset Subsystem")
-        print ("10 :: Send CAN message - EPS")
-        print ("11 :: Send CAN message - PAY")
-        print ("12 :: Read EEPROM (OBC)")
-        print ("13 :: Get Current Block Number")
-        print ("14 :: Set Current Block Number")
-        print ("15 :: Set Memory Section Start Address")
-        print ("16 :: Set Memory Section End Address")
-        print ("17 :: Erase EEPROM (OBC)")
-        print ("19 :: Erase All Memory")
-        print ("1A :: Erase Memory Physical Block")
+        print ("01 :: Get RTC Date/Time")
+        print ("02 :: Set RTC Date/Time")
+        print ("03 :: Read OBC EEPROM") 
+        print ("04 :: Erase OBC EEPROM")
+        print ("05 :: Read OBC RAM Byte")
+        print ("06 :: Send EPS CAN Message")
+        print ("07 :: Send PAY CAN Message")
+        print ("08 :: Actuate PAY Motors")
+        print ("09 :: Reset Subsystem")
+        print ("0A :: Set Indefinite Low-Power Mode Enable")
+        print ("10 :: Read Most Recent Status Info")
+        print ("11 :: Read Data Block")
+        print ("12 :: Read Recent Local Data Block")
+        print ("13 :: Read Primary Command Blocks")
+        print ("14 :: Read Secondary Command Blocks")
+        print ("15 :: Read Raw Memory Bytes")
+        print ("16 :: Erase Memory Physical Sector")
+        print ("17 :: Erase Memory Physical Block")
+        print ("18 :: Erase All Memory")
+        print ("20 :: Collect Data Block")
+        print ("21 :: Get Current Block Number")
+        print ("22 :: Set Current Block Number")
+        print ("23 :: Get memory Section Start Address")
+        print ("24 :: Set memory Section Start Address")
+        print ("25 :: Get memory Section End Address")
+        print ("26 :: Set memory Section End Address")
+        print ("27 :: Get Automatic Data Collection Enable")
+        print ("28 :: Set Automatic Data Collection Enable")
+        print ("29 :: Get Automatic Data Collection Period")
+        print ("2A :: Set Automatic Data Collection Period")
+        print ("2B :: Get Automatic Data Collection Timers")
+        print ("2C :: Resync Automatic Data Collection Timers"
         
         cmd =  input("\nPlease enter your command:\t").upper()
     
@@ -64,12 +73,12 @@ if __name__ == "__main__":
         # Create actual message packet
         message = "\x00"        # Start of message
         message += "\x12"       # Size excl. this and last byte - fixed because uplink
-        message += cmd          # Command type -- always just the input for this list
+        dec_msg = cmd           # Command type -- always just the input for this list
         if (cmd == "00" or cmd == "02" or cmd == "0B" or cmd == "19"):
             # Zero arguments -- simple
 
             # Create message
-            message += "00"*8   # Arguments 1 and 2 -- irrelevant
+            dec_msg += "00"*8   # Arguments 1 and 2 -- irrelevant
 
         elif (cmd == "01" or cmd == "05" or cmd == "06" or cmd == "07" or cmd == "0E" or cmd == "0F" or cmd == "12" or cmd == "13" or cmd == "17" or cmd == "1A"):
             # One argument -- a bit less simple
@@ -79,7 +88,19 @@ if __name__ == "__main__":
             print(" (e.g. \"00 00 00 01\" for 0x01 or \"00 00 FF FF\" for 65535. Spaces are optional)")
             arg1 = input("\t")
             arg1_ascii = "".join(arg1.split())
+            
+            n = 8 
+            tot = 0
+            for letter in arg1_ascii:
+                n = n-1
+                if (letter == 'A' or letter == 'B' or letter == 'C' or letter == 'D' or letter == 'E' or letter = 'F'):
+                    tot += pow((letter-ord('A')+10), n)
+                elif (letter == 'a' or letter == 'b' or letter == 'c' or letter == 'd' or letter == 'e' or letter = 'f'):
+                    tot += pow((letter-ord('a')+10), n)
+                elif (letter == '0' or letter == '1' or letter == '2' or letter == '3' or letter == '4' or letter == '5' or letter == '6' or letter == '7' or letter == '8' or letter == '9'):
+                    tot += pow((letter-ord('0')), n)
 
+                        
             # Create message
             message += arg1_ascii
             message += "00"*4   # Argument 2 is just empty
@@ -88,7 +109,7 @@ if __name__ == "__main__":
             # Two arguments
 
             # Get argument 1
-            print("Please input the FIRST argument in ASCII format:")
+            print("Please input the FIRST 4-byte argument in HEX format:")
             print(" (e.g. \"00 00 00 01\" for 0x01 or \"00 00 FF FF\" for 65535. Spaces are optional)")
             arg1 = input("\t")
             arg1_ascii = "".join(arg1.split())
