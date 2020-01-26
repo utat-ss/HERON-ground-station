@@ -35,7 +35,7 @@ if __name__ == "__main__":
         print ("03 :: Read OBC EEPROM")
         print ("04 :: Erase OBC EEPROM")
         print ("05 :: Read OBC RAM Byte")
-        print ("06 :: Set Beacon Inhibit Enable")
+        print ("06 :: Set Indefinite Beacon Enable")
         print ("10 :: Read Data Block")
         print ("11 :: Read Primary Command Blocks")
         print ("12 :: Read Secondary Command Blocks")
@@ -57,16 +57,21 @@ if __name__ == "__main__":
         print ("37 :: Erase All Memory")
         print ("40 :: Send EPS CAN Message")
         print ("41 :: Send PAY CAN Message")
-        print ("42 :: Actuate PAY Motors")
-        print ("43 :: Reset Subsystem")
-        print ("44 :: Set Indefinite Low-Power Mode Enable")
+        print ("42 :: Reset Subsystem")
         
         cmd =  input("\nPlease enter your command:\t").upper()
     
         if (cmd == "ES"):
             os.system("cp messages/2019-06-15-TEST/ES_PIPE.bin " + outpath)
-            os.system("python2 tx/gfsk_tx_for_test_20190817.py")
+            os.system("python2 tx/gfsk_tx.py")#_for_test_20190817.py")
             continue
+        
+        if (cmd == "RUN"):
+            os.system("cp messages/2019-06-15-TEST/PIPE.bin " + outpath)
+            import time
+            while (1==1):
+                os.system("python2 tx/gfsk_tx_for_test_20190817.py")
+                time.sleep(1)
 
         # Create actual message packet
         # FORMAT: 
@@ -79,7 +84,7 @@ if __name__ == "__main__":
         message = cmd + " "
         
         zero_args = ["00", "01", "13", "21", "24", "30", "32", "37"]
-        one_arg   = ["03", "04", "05", "06", "14", "36", "42", "43", "44"]
+        one_arg   = ["03", "04", "05", "06", "14", "36", "42"]
         two_args = ["02", "10", "11", "12", "15", "20", "22", "23", "31", "33", "34", "35", "40", "41"]
         if (cmd in zero_args):
             # Zero arguments -- simple
