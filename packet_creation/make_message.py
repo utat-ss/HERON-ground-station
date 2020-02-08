@@ -1,14 +1,14 @@
 """
 Functions:
-    make_message_text(message, preamble=b'\x55', carriage=False)
-    make_message_hex(message, preamble=b'\x55', carriage=False) **UNIMPLEMENTED**
+    es_frame_text(message, preamble=b'\x55', carriage=False)
+    es_frame_hex(message, preamble=b'\x55', carriage=False) **UNIMPLEMENTED**
     encode_message(dec_msg)
     write_to_file(filename, message)
 """
 
 from packet_creation import crc
 
-def make_message_text(message, preamble=b'\x55', carriage=False):
+def es_frame_text(message, preamble=b'\x55', carriage=False):
     """Make a message as a binary value. Adds preamble, syncword, message and checksum together.
 
     Args:
@@ -34,8 +34,6 @@ def make_message_text(message, preamble=b'\x55', carriage=False):
 
     msg_for_crc  = length.to_bytes(1, "big").decode()   # prep for checksum calculation
 
-  #  msg_for_crc += message
-   # msg_for_transmission += message
     for ch in message:                                  # actual message
         msg_for_crc  += ch
         transmission += ord(ch).to_bytes(1, "big")
@@ -72,13 +70,13 @@ def es_frame_bytes(message, preamble=b'\x55', carriage=False):
     transmission = preamble * 25                # preamble
     transmission += b'\x7E'                     # sync word
     transmission += length.to_bytes(1, "big")   # size byte
-    transmission += message                     # the (should-be) encoded message content
+    transmission += message                     # the "encoded" message content
 
-    msg_for_crc  = length.to_bytes(1, "big")
-    msg_for_crc  += message
+    msg_for_crc  = length.to_bytes(1, "big")    # size byte
+    msg_for_crc  += message                     # the "encoded" message content
     
     if (carriage):                              # carriage return
-        msg_for_crc  += '\x0D'
+        msg_for_crc  += b'\x0D'
         transmission += b'\x0D'
 
     transmission += crc.crc16_b2b(msg_for_crc)  # checksum
@@ -107,7 +105,7 @@ def encode_message(dec_msg):
     dec_len = len(dec_msg)
     enc_len = dec_len + 9
     
-    enc_msg = [0x00 * enc_len]    # Convert to bytes later
+    enc_msg = [0x00] * enc_len    # Convert to bytes later
 
 
     checksum_buf = [0x00]*(15+1) # TRANS_RX_DEC_MSG_MAX_SIZE + 1
@@ -135,59 +133,6 @@ def encode_message(dec_msg):
 
     return bytes(enc_msg)
 
-
-def decode_message(enc_msg):
-    # Easier to work with encoded message as a list of ints rather than bytes
-    enc_msg = list(enc_msg)
-    dec_msg = []
-
-    # length of base-254 encoded message can be extracted from the first field, the mapping is undone
-    enc_len = enc_msg[1] - 0x10
-    # 64 bit integer that will hold the 56 bit values from the byte group
-    base_conversion_buff = 0
-    # concatenate the message into 8 byte groups and leftovers, then calculate length
-    num_byte_groups = enc_len // 8
-    num_remainder_bytes = enc_len % 8
-
-    # TODO - what if 1 remainder byte?
-    if (num_remainder_bytes == 0):
-        dec_len = num_byte_groups * 7
-    else:
-        dec_len = (num_byte_groups * 7) + (num_remainder_bytes - 1)
-
-    # unmap the values in the buffer
-    for i in range(0, enc_len):
-        if(enc_msg[3 + i] >= 1 and enc_msg[3 + i] <= 12):
-            enc_msg[3 + i] -= 1
-        elif(enc_msg[3 + i] >= 14 and enc_msg[3 + i] <= 255):
-            enc_msg[3 + i] -= 2
-
-
-    # Set up array of powers of 254
-    # [0] = 254^0, [7] = 254^7
-    pow_254 = [0x00 for i in range(8)]
-    pow_254[0] = 1
-    for i in range(1, 8):
-        pow_254[i] = pow_254[i - 1] * 254
-
-    for i_group in range(0, num_byte_groups):
-        base_conversion_buff = 0
-
-        for i_byte in range(0, 8):
-            base_conversion_buff += enc_msg[ 3 + (8 * i_group) + i_byte ] * pow_254[7 - i_byte]
-
-        for i_byte in range(0, 7):
-            dec_msg.append((base_conversion_buff // (1 << ((6 - i_byte) * 8))) % 256)
-
-    if (num_remainder_bytes > 1):
-        base_conversion_buff = 0
-        for i_byte in range(0, num_remainder_bytes):
-            base_conversion_buff += enc_msg[ 3 + (num_byte_groups * 8) + i_byte ] * pow_254[num_remainder_bytes - 1 - i_byte]
-
-        for i_byte in range(0, num_remainder_bytes - 1):
-            dec_msg.append((base_conversion_buff // (1 << ((num_remainder_bytes - 2 - i_byte) * 8))) % 256)
-
-    return bytes(dec_msg)
 
 def crc32(message, len):
     crc = 0xFFFFFFFF
@@ -249,11 +194,12 @@ def main():
                     while (action != 'y' and action != 'n'):
                         action  = input("Do you want to append a carraige return character? (y/n)\n\t")
                     if (action == 'y'):
-                        trx += make_message_text(msg, carriage=True)
+                        trx += es_frame_text(msg, carriage=True)
                     else:
-                        trx += make_message_text(msg, carriage=False)
+                        trx += es_frame_text(msg, carriage=False)
+                    action = ''
                 else:
-                    trx += make_message_text(msg, carriage=True)
+                    trx += es_frame_text(msg, carriage=True)
 
                 #print("Your message is:\n\t", trx)
 
@@ -270,7 +216,7 @@ def main():
                 action = input("Would you like to write this transmission to a file? (y/n)\n\t")
             if (action == 'y'):
                 filename = input("Please enter your filename (e.g. file.bin):\n\t")
-                write_to_file("../messages"+filename, trx)
+                write_to_file("../messages/"+filename, trx)
                 print("\nWrote", trx, "to file", filename)
             else:
                 print("OK.")
