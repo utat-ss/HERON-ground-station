@@ -239,18 +239,26 @@
     </param>
   </block>
   <block>
-    <key>variable</key>
+    <key>variable_qtgui_range</key>
     <param>
       <key>comment</key>
       <value></value>
     </param>
     <param>
+      <key>value</key>
+      <value>435e6</value>
+    </param>
+    <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>True</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 212)</value>
+      <value>(0, 184)</value>
+    </param>
+    <param>
+      <key>gui_hint</key>
+      <value></value>
     </param>
     <param>
       <key>_rotation</key>
@@ -261,8 +269,36 @@
       <value>freq</value>
     </param>
     <param>
-      <key>value</key>
+      <key>label</key>
+      <value></value>
+    </param>
+    <param>
+      <key>min_len</key>
+      <value>200</value>
+    </param>
+    <param>
+      <key>orient</key>
+      <value>Qt.Horizontal</value>
+    </param>
+    <param>
+      <key>start</key>
       <value>435e6</value>
+    </param>
+    <param>
+      <key>step</key>
+      <value>200e3</value>
+    </param>
+    <param>
+      <key>stop</key>
+      <value>438e6</value>
+    </param>
+    <param>
+      <key>rangeType</key>
+      <value>float</value>
+    </param>
+    <param>
+      <key>widget</key>
+      <value>counter</value>
     </param>
   </block>
   <block>
@@ -277,7 +313,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 264)</value>
+      <value>(0, 276)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -520,7 +556,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 160)</value>
+      <value>(0, 132)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -633,7 +669,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(140, 264)</value>
+      <value>(208, 60)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -798,7 +834,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(688, 490)</value>
+      <value>(804, 490)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -951,7 +987,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(376, 70)</value>
+      <value>(376, 34)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -994,7 +1030,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>1</value>
+      <value>0</value>
     </param>
     <param>
       <key>file</key>
@@ -1053,7 +1089,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 66)</value>
+      <value>(20, 66)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1104,7 +1140,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(352, 180)</value>
+      <value>(380, 100)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1155,7 +1191,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(528, 504)</value>
+      <value>(688, 504)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1198,7 +1234,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(200, 80)</value>
+      <value>(212, 24)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2789,7 +2825,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(112, 102)</value>
+      <value>(144, 156)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3211,7 +3247,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>fbw</key>
@@ -3270,7 +3306,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(484, 582)</value>
+      <value>(488, 510)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3454,12 +3490,6 @@
   </connection>
   <connection>
     <source_block_id>digital_binary_slicer_fb_0</source_block_id>
-    <sink_block_id>blocks_pack_k_bits_bb_0</sink_block_id>
-    <source_key>0</source_key>
-    <sink_key>0</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>digital_binary_slicer_fb_0</source_block_id>
     <sink_block_id>utat_endurosat_frame_sync_bb_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
@@ -3533,6 +3563,12 @@
   <connection>
     <source_block_id>utat_endurosat_frame_sync_bb_0</source_block_id>
     <sink_block_id>blocks_file_sink_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>utat_endurosat_frame_sync_bb_0</source_block_id>
+    <sink_block_id>blocks_pack_k_bits_bb_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
