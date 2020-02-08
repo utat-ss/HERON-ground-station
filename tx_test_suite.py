@@ -1,10 +1,10 @@
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#                                       										#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#                                      										#
 # Purpose: Provide an interface for running the OBC <--> Comms Tx/Rx Link	#
 # Author: Gabe Sher pls hit me up on slack @Gabe if there's an issue		#
-# Date: Thursday, October 31st                      							#
-#										                                        #
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Date: 2020-02-07                                							#
+#									                                        #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 from packet_creation import crc
 from packet_creation import make_message as m
@@ -13,6 +13,11 @@ import subprocess
 import time
 
 if __name__ == "__main__":
+    FAIL='\033[91m'
+    WARNING='\033[93m'
+    GREEN='\033[92m'
+    ENDC='\033[0m'
+    BOLD='\033[1m'
     # Make directory with current date
     # Logging isn't working so well so it's been removed for now
     #logdir = "test"+time.strftime("%F-%H-%M-%S")
@@ -20,67 +25,69 @@ if __name__ == "__main__":
     outpath = "cmdout.bin"
 
     # Set up 0 packet -- will be used a lot
-    zero_packet = m.make_message_text("0")
+    zero_packet = m.es_frame_text("0")
 
     # Create prompt and operate
     packetcount = 0
 
     while (True):
-        print ("Commands")
+        print ("\nType one of the following commands OR type an opcode in two characters (e.g. 02 or 11)")
         print ("==============")
-        print ("ES :: Enter PIPE mode (if you didn't already do it)")
-        print ("00 :: Ping OBC")
-        print ("01 :: Get RTC Date/Time")
-        print ("02 :: Set RTC Date/Time")
-        print ("03 :: Read OBC EEPROM")
-        print ("04 :: Erase OBC EEPROM")
-        print ("05 :: Read OBC RAM Byte")
-        print ("06 :: Set Indefinite Beacon Enable")
-        print ("10 :: Read Data Block")
-        print ("11 :: Read Primary Command Blocks")
-        print ("12 :: Read Secondary Command Blocks")
-        print ("13 :: Read Most Recent Status Info")
-        print ("14 :: Read Recent Local Data Block")
-        print ("15 :: Read Raw Memory Bytes")
-        print ("20 :: Collect Data Block")
-        print ("21 :: Get Automatic Data Collection Settings")
-        print ("22 :: Set Automatic Data Collection Enable")
-        print ("23 :: Set Automatic Data Collection Period")
-        print ("24 :: Resync Automatic Data Collection Timers")
-        print ("30 :: Get Current Block Numbers")
-        print ("31 :: Set Current Block Number")
-        print ("32 :: Get Memory Section Addresses")
-        print ("33 :: Set Memory Section Start Address")
-        print ("34 :: Set Memory Section End Address")
-        print ("35 :: Erase Memory Physical Sector")
-        print ("36 :: Erase Memory Physical Block")
-        print ("37 :: Erase All Memory")
-        print ("40 :: Send EPS CAN Message")
-        print ("41 :: Send PAY CAN Message")
-        print ("42 :: Reset Subsystem")
+        print ("PIPE :: Enter PIPE mode (if you haven't already done it)")
+        print ("BCN OFF :: Turn the beacon off")
+        print ("BCN ON :: Turn the beacon on")
+        print ("GET FREQ :: Get current centre frequency")
+        print ("SET FREQ :: Set current centre frequency")
         
-        cmd =  input("\nPlease enter your command:\t").upper()
+        cmd =  input("\nPlease enter your command:\t").upper().strip()
     
-        if (cmd == "ES"):
-            os.system("cp messages/2019-06-15-TEST/ES_PIPE.bin " + outpath)
-            os.system("python2 tx/gfsk_tx.py")#_for_test_20190817.py")
+        if (cmd == "PIPE" or cmd=="BCN OFF" or cmd=="BCN ON" or cmd=="GET FREQ"):
+            os.system("cp messages/ESTTC/ES_" + cmd.replace(' ', '_') + ".bin " + outpath)
+            os.system("python2 tx/gfsk_tx.py")
+            continue
+
+        if (cmd == "SET FREQ"):
+            print("Please run the program EnduroSat provides for calculation of the 8-nybble notation of the frequency.")
+            print("Please enter the output for your desired frequency, as text:")
+            print("e.g. for 435 MHz, you'd enter \"76620F41\"")
+            freq = input("\t")
+            packet = m.es_frame_text("ES+W2201"+freq.strip()+"\x0d")
+            packet += zero_packet*2
+
+            # Write to files for sending and logging
+            m.write_to_file(outpath, packet)
+            os.system("python2 tx/gfsk_tx.py")
             continue
         
-        if (cmd == "RUN"):
-            os.system("cp messages/2019-06-15-TEST/PIPE.bin " + outpath)
-            import time
-            while (1==1):
-                os.system("python2 tx/gfsk_tx_for_test_20190817.py")
-                time.sleep(1)
-
         # Create actual message packet
-        # FORMAT: 
-        ## Byte 0 ------- Opcode
-        ## Bytes 1-4 ---- Argument 1
-        ## Bytes 5-8 ---- Argument 2
-        ## Bytes 9-12 --- Password
+        # FORMAT:
+        ## Bytes 0-1 ---- Command ID
+        ## Byte 2 ------- Opcode
+        ## Bytes 3-6 ---- Argument 1
+        ## Bytes 7-10 --- Argument 2
+        ## Bytes 11-14 -- Password
+        try:
+            assert(len(cmd) == 2)
+        except AssertionError:
+            print(FAIL+BOLD+"ERROR: "+WARNING+"You have to write the opcode in two characters, like 02 or 11. Not 2 or 0x02."+ENDC)
+            continue
+
+        message = cmd + " "
+        print("Please input the " +GREEN+"command ID"+ENDC+ " you'd like to use (1 to 65535):")
+        cmdid = input("\t")
+
+        print("Please input the " +GREEN+"first argument"+ENDC+ " in HEX format:")
+        print(" (e.g. \"00 00 00 01\" for 0x01 or \"00 00 FF FF\" for 65535. *Please use spaces*.)")
+        arg1 = input("\t")
         
-        # Start message off with op-code
+        print("Please input the " +GREEN+"second argument"+ENDC+ " in HEX format:")
+        arg2 = input("\t")
+        
+        print("Please input the " +GREEN+"password"+ENDC+ " in HEX format:")
+        pwd = input("\t")
+        
+        message += arg1.strip() + " " + arg2.strip() + " " + pwd.strip()
+        """# Start message off with op-code
         message = cmd + " "
         
         zero_args = ["00", "01", "13", "21", "24", "30", "32", "37"]
@@ -124,12 +131,12 @@ if __name__ == "__main__":
             print("Something went wrong, I wasn't expecting that command number.")
             print("Please try again. Make sure to select something from the list, like \"00\" or \"12\"")
             continue
-        
+        """
         # Turn into packet, pad with 2 "0" packets for safe transmission
-        message += "55 54 41 54"
+        #message += "55 54 41 54"
         print("Sending:", message)
         message_string_array = message.split()
-        message_array = [int(byte, 16) for byte in message_string_array]
+        message_array = [int(cmdid, 16)] + [int(byte, 16) for byte in message_string_array]
         encoded_message = m.encode_message(message_array)
         packet = m.es_frame_bytes(encoded_message)
         packet += zero_packet*2
@@ -142,4 +149,4 @@ if __name__ == "__main__":
         m.write_to_file(outpath, packet)
         packetcount += 1
 
-        os.system("python2 tx/gfsk_tx_for_test_20190817.py")
+        os.system("python2 tx/gfsk_tx.py")
