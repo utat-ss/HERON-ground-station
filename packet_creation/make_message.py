@@ -133,23 +133,26 @@ def encode_message(dec_msg):
 
     return bytes(enc_msg)
 
+def get_uint32(num):
+    while num < 0:
+        num += (1 << 32)
+    while num >= (1 << 32):
+        num -= (1 << 32)
+    return num
 
 def crc32(message, len):
     crc = 0xFFFFFFFF
 
     i = 0
-    while i < len and message[i] != 0:
+    while i < len:
         byte = message[i]
         crc = crc ^ byte
         for j in range (0, 8):
-            mask = -(crc & 1)
+            mask = get_uint32(-(crc & 1))
             crc = (crc >> 1) ^ (0xEDB88320 & mask)
         i = i + 1
 
-    crc = ~crc
-
-    if crc < 0:
-        crc += (1 << 32)
+    crc = get_uint32(~crc)
 
     return crc 
 
