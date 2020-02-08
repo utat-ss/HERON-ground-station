@@ -101,7 +101,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 284)</value>
+      <value>(16, 248)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -128,7 +128,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 348)</value>
+      <value>(16, 300)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -155,7 +155,61 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 156)</value>
+      <value>(16, 408)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>msg_file</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>path+"cmdout.bin"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(16, 356)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>path</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"/home/ghs/utat/ground-station/"</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(16, 144)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -209,7 +263,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 220)</value>
+      <value>(16, 196)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -248,11 +302,11 @@
     </param>
     <param>
       <key>file</key>
-      <value>/home/ghs/utat/ground-station/messages/PING_TRANSMISSION_28th.bin</value>
+      <value>msg_file</value>
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(192, 28)</value>
+      <value>(168, 122)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -295,7 +349,7 @@
     </param>
     <param>
       <key>const</key>
-      <value>0.8</value>
+      <value>1</value>
     </param>
     <param>
       <key>affinity</key>
@@ -307,7 +361,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(448, 172)</value>
+      <value>(704, 136)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -358,7 +412,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(424, 28)</value>
+      <value>(372, 122)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1313,7 +1367,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 132)</value>
+      <value>(836, 102)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1456,7 +1510,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(656, 292)</value>
+      <value>(844, 218)</value>
     </param>
     <param>
       <key>gui_hint</key>
@@ -1735,7 +1789,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(232, 148)</value>
+      <value>(532, 114)</value>
     </param>
     <param>
       <key>_rotation</key>
