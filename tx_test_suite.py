@@ -72,7 +72,6 @@ if __name__ == "__main__":
             print(FAIL+BOLD+"ERROR: "+WARNING+"You have to write the opcode in two characters, like 02 or 11. Not 2 or 0x02."+ENDC)
             continue
 
-        message = cmd + " "
         print("Please input the " +GREEN+"command ID"+ENDC+ " you'd like to use (1 to 65535):")
         cmdid = input("\t")
 
@@ -86,7 +85,7 @@ if __name__ == "__main__":
         print("Please input the " +GREEN+"password"+ENDC+ " in HEX format:")
         pwd = input("\t")
         
-        message += arg1.strip() + " " + arg2.strip() + " " + pwd.strip()
+        message = cmdid.strip() + " " + cmd + " " +  arg1.strip() + " " + arg2.strip() + " " + pwd.strip()
         """# Start message off with op-code
         message = cmd + " "
         
@@ -136,7 +135,7 @@ if __name__ == "__main__":
         #message += "55 54 41 54"
         print("Sending:", message)
         message_string_array = message.split()
-        message_array = [int(cmdid, 16)] + [int(byte, 16) for byte in message_string_array]
+        message_array = [int(byte, 16) for byte in message_string_array]
         encoded_message = m.encode_message(message_array)
         packet = m.es_frame_bytes(encoded_message)
         packet += zero_packet*2
