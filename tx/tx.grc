@@ -248,7 +248,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>4003200</value>
+      <value>1000800</value>
     </param>
   </block>
   <block>
@@ -459,11 +459,11 @@
     </param>
     <param>
       <key>bb_gain0</key>
-      <value>20</value>
+      <value>0</value>
     </param>
     <param>
       <key>bw0</key>
-      <value>0</value>
+      <value>20e3</value>
     </param>
     <param>
       <key>corr0</key>
@@ -475,11 +475,11 @@
     </param>
     <param>
       <key>if_gain0</key>
-      <value>20</value>
+      <value>0</value>
     </param>
     <param>
       <key>gain0</key>
-      <value>30</value>
+      <value>0</value>
     </param>
     <param>
       <key>ant10</key>
@@ -1359,7 +1359,7 @@
     </param>
     <param>
       <key>args</key>
-      <value></value>
+      <value>hackrf=0000000000000000a06063c8242f915f</value>
     </param>
     <param>
       <key>_enabled</key>
