@@ -43,6 +43,7 @@ if __name__ == "__main__":
     
         if (cmd == "PIPE" or cmd=="BCN OFF" or cmd=="BCN ON" or cmd=="GET FREQ"):
             os.system("cp messages/ESTTC/ES_" + cmd.replace(' ', '_') + ".bin " + outpath)
+            os.system("xxd messages/ESTTC/ES_" + cmd.replace(' ', '_') + ".bin")
             os.system("python2 tx/gfsk_tx.py")
             continue
 
