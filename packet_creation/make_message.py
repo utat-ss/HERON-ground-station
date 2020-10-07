@@ -99,7 +99,7 @@ def encode_message(dec_msg):
     """Applies UTAT encoding scheme to a message.
     
     Args:
-        dec_msg :: decoded message as ASCII text
+        dec_msg :: decoded message as an array of int ASCII values
     """
     TRANS_PKT_DELIMITER = 0x55
     dec_len = len(dec_msg)
