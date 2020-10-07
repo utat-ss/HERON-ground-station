@@ -12,3 +12,5 @@ rx_quaddemod.py
 
 # Message sending for tests
 cmdout.bin
+# Stored recordings
+recordings/*
