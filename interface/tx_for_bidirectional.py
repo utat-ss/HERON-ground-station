@@ -62,7 +62,7 @@ if __name__ == "__main__":
         if (cmd in valid_esttc_cmds):
             os.system("cp messages/ESTTC/ES_" + cmd + ".bin " + outpath)
             os.system("xxd " + outpath)
-            os.system("python2 tx/gfsk_tx.py")
+            os.system("python3 tx/gfsk_tx.py")
             print("ESTTC command sent. Looping...")
             # TODO might have to have different functionality for PIPE_TIMEOUT and SET_FREQ (arguments)
             continue
@@ -134,7 +134,7 @@ if __name__ == "__main__":
         while (True):
             print(BOLD+"Sending the following message. Observe on RX to see what's received."+ENDC)
             print([hex(byte) for byte in msg_array])
-            os.system("python2 tx/gfsk_tx.py")
+            os.system("python3 tx/gfsk_tx.py")
             
             print("")
             print("Would you like to resend ('r') or move to the next command ('n')?")
