@@ -1,5 +1,6 @@
 crc
 localcrc16.c
+*.swp
 
 # From python
 __pycache__/
