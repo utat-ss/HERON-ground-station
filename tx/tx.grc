@@ -96,7 +96,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '1000800'
+    value: '1056000'
   states:
     bus_sink: false
     bus_source: false
@@ -167,7 +167,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     samples_per_symbol: sps
-    sensitivity: '.1571'
+    sensitivity: '.15708'
     verbose: 'False'
   states:
     bus_sink: false
@@ -213,7 +213,7 @@ blocks:
     ant7: ''
     ant8: ''
     ant9: ''
-    args: hackrf=0000000000000000a06063c8242f915f
+    args: hackrf=0000000000000000a06063c825429e5f
     bb_gain0: '0'
     bb_gain1: '20'
     bb_gain10: '20'
@@ -351,7 +351,7 @@ blocks:
     freq7: 100e6
     freq8: 100e6
     freq9: 100e6
-    gain0: '0'
+    gain0: '14'
     gain1: '10'
     gain10: '10'
     gain11: '10'
@@ -383,7 +383,7 @@ blocks:
     gain7: '10'
     gain8: '10'
     gain9: '10'
-    if_gain0: '0'
+    if_gain0: '16'
     if_gain1: '20'
     if_gain10: '20'
     if_gain11: '20'

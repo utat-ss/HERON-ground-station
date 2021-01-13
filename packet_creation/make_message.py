@@ -28,7 +28,7 @@ def es_frame_text(message, preamble=b'\x55', carriage=False):
     assert(length < 128)
 
     # Create message
-    transmission = preamble * 25                        # preamble
+    transmission = preamble * 5                         # preamble
     transmission += b'\x7E'                             # sync word
     transmission += length.to_bytes(1, "big")           # size byte
 
@@ -67,7 +67,7 @@ def es_frame_bytes(message, preamble=b'\x55', carriage=False):
     assert(length < 128)
 
     # Create message
-    transmission = preamble * 25                # preamble
+    transmission = preamble * 5                 # preamble
     transmission += b'\x7E'                     # sync word
     transmission += length.to_bytes(1, "big")   # size byte
     transmission += message                     # the "encoded" message content
