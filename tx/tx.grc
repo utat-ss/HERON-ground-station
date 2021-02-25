@@ -8,7 +8,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: no_gui
+    generate_options: qt_gui
     hier_block_src_path: '.:'
     id: gfsk_tx
     max_nouts: '0'
@@ -27,7 +27,7 @@ options:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 8]
+    coordinate: [8, 11]
     rotation: 0
     state: enabled
 
@@ -41,7 +41,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 248]
+    coordinate: [13, 264]
     rotation: 0
     state: enabled
 - name: freq
@@ -53,9 +53,30 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 300]
+    coordinate: [13, 329]
     rotation: 0
     state: enabled
+- name: if_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '47'
+    value: '30'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [29, 541]
+    rotation: 0
+    state: true
 - name: msg_file
   id: variable
   parameters:
@@ -65,19 +86,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 408]
+    coordinate: [15, 463]
     rotation: 0
     state: enabled
 - name: path
   id: variable
   parameters:
     comment: ''
-    value: '"/home/ghs/utat/ground-station/"'
+    value: '"/home/vogel/Files/GitHub/ground-station/"'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 356]
+    coordinate: [14, 395]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -113,7 +134,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 196]
+    coordinate: [15, 204]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -128,7 +149,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
-    repeat: 'False'
+    repeat: 'True'
     type: byte
     vlen: '1'
   states:
@@ -246,7 +267,7 @@ blocks:
     bb_gain7: '20'
     bb_gain8: '20'
     bb_gain9: '20'
-    bw0: 20e3
+    bw0: 6*baud_rate
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -383,7 +404,7 @@ blocks:
     gain7: '10'
     gain8: '10'
     gain9: '10'
-    if_gain0: '16'
+    if_gain0: if_gain
     if_gain1: '20'
     if_gain10: '20'
     if_gain11: '20'
@@ -437,6 +458,35 @@ blocks:
     coordinate: [1097, 48]
     rotation: 0
     state: enabled
+- name: qtgui_sink_x_0
+  id: qtgui_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    bw: samp_rate_tx
+    comment: ''
+    fc: '0'
+    fftsize: '1024'
+    gui_hint: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    plotconst: 'True'
+    plotfreq: 'True'
+    plottime: 'True'
+    plotwaterfall: 'True'
+    rate: '10'
+    showports: 'False'
+    showrf: 'False'
+    type: complex
+    wintype: firdes.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1058, 271]
+    rotation: 0
+    state: disabled
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -461,6 +511,7 @@ blocks:
 connections:
 - [blocks_file_source_0, '0', digital_gfsk_mod_0, '0']
 - [blocks_multiply_const_vxx_0, '0', osmosdr_sink_0, '0']
+- [blocks_multiply_const_vxx_0, '0', qtgui_sink_x_0, '0']
 - [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
 - [rational_resampler_xxx_0, '0', blocks_multiply_const_vxx_0, '0']
 

@@ -32,7 +32,7 @@ options:
     state: enabled
 
 blocks:
-- name: baud
+- name: baud_rate
   id: variable
   parameters:
     comment: ''
@@ -126,7 +126,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '"/home/ghs/utat/ground-station/"'
+    value: '"/home/vogel/Files/GitHub/ground-station/"'
   states:
     bus_sink: false
     bus_source: false
@@ -158,6 +158,77 @@ blocks:
     coordinate: [1305, 82]
     rotation: 0
     state: enabled
+- name: rx_bb_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '2'
+    stop: '62'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [10, 810]
+    rotation: 0
+    state: true
+- name: rx_if_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '8'
+    stop: '40'
+    value: '20'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [13, 565]
+    rotation: 0
+    state: true
+- name: rx_rf_gain
+  id: variable_qtgui_chooser
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    label0: RF Gain Off
+    label1: RF Gain On
+    label2: ''
+    label3: ''
+    label4: ''
+    labels: '[]'
+    num_opts: '2'
+    option1: '14'
+    option2: '2'
+    option3: '3'
+    option4: '4'
+    options: '[0, 1, 2]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '0'
+    widget: combo_box
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [11, 677]
+    rotation: 0
+    state: true
 - name: samp_rate
   id: variable
   parameters:
@@ -170,6 +241,18 @@ blocks:
     coordinate: [11, 83]
     rotation: 0
     state: enabled
+- name: sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [11, 492]
+    rotation: 0
+    state: true
 - name: subpath
   id: variable
   parameters:
@@ -197,9 +280,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1162, 479]
+    coordinate: [1300, 495]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_sink_0_0
   id: blocks_file_sink
   parameters:
@@ -215,9 +298,26 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1302, 357]
+    coordinate: [1440, 373]
     rotation: 0
     state: enabled
+- name: blocks_null_sink_0
+  id: blocks_null_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_sink: '[[0,],]'
+    comment: ''
+    num_inputs: '1'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1443, 294]
+    rotation: 0
+    state: true
 - name: blocks_pack_k_bits_bb_0
   id: blocks_pack_k_bits_bb
   parameters:
@@ -231,15 +331,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1133, 373]
+    coordinate: [1271, 389]
     rotation: 0
     state: true
-- name: digital_gfsk_demod_0
-  id: digital_gfsk_demod
+- name: digital_gmsk_demod_0
+  id: digital_gmsk_demod
   parameters:
     affinity: ''
     alias: ''
-    comment: ''
+    comment: Have more samples than I think
     freq_error: '0.0'
     gain_mu: '0.175'
     log: 'False'
@@ -247,14 +347,13 @@ blocks:
     minoutbuf: '0'
     mu: '0.5'
     omega_relative_limit: '0.005'
-    samples_per_symbol: '2'
-    sensitivity: '1.0'
+    samples_per_symbol: int( (samp_rate/ baud_rate ) )
     verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [677, 333]
+    coordinate: [836, 357]
     rotation: 0
     state: true
 - name: low_pass_filter_0
@@ -264,7 +363,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 10e3
+    cutoff_freq: 3*baud_rate
     decim: '1'
     gain: '1'
     interp: '1'
@@ -278,7 +377,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [553, 87]
+    coordinate: [534, 336]
     rotation: 0
     state: enabled
 - name: osmosdr_source_0
@@ -319,7 +418,7 @@ blocks:
     ant8: ''
     ant9: ''
     args: hackrf=0000000000000000a06063c8242f915f
-    bb_gain0: '24'
+    bb_gain0: rx_bb_gain
     bb_gain1: '20'
     bb_gain10: '20'
     bb_gain11: '20'
@@ -351,7 +450,7 @@ blocks:
     bb_gain7: '20'
     bb_gain8: '20'
     bb_gain9: '20'
-    bw0: 20e3
+    bw0: 6*baud_rate
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -488,7 +587,7 @@ blocks:
     freq7: 100e6
     freq8: 100e6
     freq9: 100e6
-    gain0: '0'
+    gain0: rx_rf_gain
     gain1: '10'
     gain10: '10'
     gain11: '10'
@@ -552,7 +651,7 @@ blocks:
     gain_mode7: 'False'
     gain_mode8: 'False'
     gain_mode9: 'False'
-    if_gain0: '24'
+    if_gain0: rx_if_gain
     if_gain1: '20'
     if_gain10: '20'
     if_gain11: '20'
@@ -715,9 +814,38 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 138]
+    coordinate: [848, 235]
     rotation: 0
     state: enabled
+- name: qtgui_sink_x_0
+  id: qtgui_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    bw: 20e3
+    comment: ''
+    fc: freq
+    fftsize: '1024'
+    gui_hint: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    plotconst: 'True'
+    plotfreq: 'True'
+    plottime: 'True'
+    plotwaterfall: 'True'
+    rate: '10'
+    showports: 'False'
+    showrf: 'False'
+    type: complex
+    wintype: firdes.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [849, 99]
+    rotation: 0
+    state: true
 - name: utat_heron_rx_bb_1
   id: utat_heron_rx_bb
   parameters:
@@ -730,16 +858,18 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [948, 377]
+    coordinate: [1086, 393]
     rotation: 0
     state: true
 
 connections:
 - [blocks_pack_k_bits_bb_0, '0', blocks_file_sink_0_0, '0']
-- [digital_gfsk_demod_0, '0', utat_heron_rx_bb_1, '0']
-- [low_pass_filter_0, '0', digital_gfsk_demod_0, '0']
+- [blocks_pack_k_bits_bb_0, '0', blocks_null_sink_0, '0']
+- [digital_gmsk_demod_0, '0', utat_heron_rx_bb_1, '0']
+- [low_pass_filter_0, '0', digital_gmsk_demod_0, '0']
 - [low_pass_filter_0, '0', qtgui_freq_sink_x_0, '0']
 - [osmosdr_source_0, '0', low_pass_filter_0, '0']
+- [osmosdr_source_0, '0', qtgui_sink_x_0, '0']
 - [utat_heron_rx_bb_1, '0', blocks_file_sink_0, '0']
 - [utat_heron_rx_bb_1, '0', blocks_pack_k_bits_bb_0, '0']
 
