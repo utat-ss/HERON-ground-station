@@ -8,7 +8,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: qt_gui
+    generate_options: no_gui
     hier_block_src_path: '.:'
     id: gfsk_tx
     max_nouts: '0'
@@ -74,7 +74,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [29, 541]
+    coordinate: [15, 596]
+    rotation: 0
+    state: disabled
+- name: if_gain
+  id: variable
+  parameters:
+    comment: ''
+    value: '16'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [18, 529]
     rotation: 0
     state: true
 - name: msg_file
@@ -93,7 +105,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '"/home/vogel/Files/GitHub/ground-station/"'
+    value: '"/home/vogel/Files/ground-station/"'
   states:
     bus_sink: false
     bus_source: false
@@ -149,7 +161,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
-    repeat: 'True'
+    repeat: 'False'
     type: byte
     vlen: '1'
   states:
@@ -308,7 +320,7 @@ blocks:
     clock_source6: ''
     clock_source7: ''
     comment: ''
-    corr0: '0'
+    corr0: '13'
     corr1: '0'
     corr10: '0'
     corr11: '0'
