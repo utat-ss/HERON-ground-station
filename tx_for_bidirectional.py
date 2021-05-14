@@ -13,11 +13,11 @@ import subprocess
 import time
 from interface.commands import commands as op
 
-def check_arg(args, opcode):
-    if (args == [0,0]):
-        return (True, None)
-    else:
-        return (False, "Not [0,0]")
+# def check_arg(args, opcode):
+#     if (args == [0,0]):
+#         return (True, None)
+#     else:
+#         return (False, "Not [0,0]")
 
 if __name__ == "__main__":
     FAIL='\033[91m'
@@ -68,7 +68,7 @@ if __name__ == "__main__":
             continue
 
         # If don't have a valid command, report as such
-        if (len(cmd) > 2 and cmd[0:2] == "0x"):
+        if (len(cmd) > 2 and cmd[0:2] == "0X"):
             cmd = cmd[2:]
         if (not (len(cmd) == 2 and cmd[0] in "01234" and cmd[1] in "01234567")):
             print(FAIL+"That doesn't seem to be a valid command. Please try again..."+ENDC)
@@ -77,6 +77,7 @@ if __name__ == "__main__":
         # If we make it here, we have a valid command to send
         # Collect & validate arguments
         args = []
+        print ("You have selected: " + (op[cmd])["name"]+ENDC)
         for i in range(op[cmd]["args"]):
             print("Please input argument", i, ":")
             arg_in = input(GRN+BOLD+" >>> "+ENDC)
@@ -84,13 +85,12 @@ if __name__ == "__main__":
         while (len(args) < 2):
             args.append(0)
         
-        (arg_check, arg_err) = check_arg(args, cmd)
-        if (not arg_check):
-            print ("Arguments input incorrectly. Got error message:")
-            print("::"+FAIL, arg_err)
-            print(WARN+"Please try again..."+ENDC)
-            continue
-
+        # (arg_check, arg_err) = check_arg(args, cmd)
+        # if (not arg_check):
+        #     print ("Arguments input incorrectly. Got error message:")
+        #     print("::"+FAIL, arg_err)
+        #     print(WARN+"Please try again..."+ENDC)
+        #     continue
         # Convert arguments to useful format
         # TODO - currently, assuming we'll only use ARG-LESS commands
 
@@ -107,10 +107,17 @@ if __name__ == "__main__":
 
         # Next: add in the arguments:
         for arg in args:
-            msg_array.append((arg & 0xFF000000) >> 24)
-            msg_array.append((arg & 0x00FF0000) >> 16)
-            msg_array.append((arg & 0x0000FF00) >> 8)
-            msg_array.append( arg & 0x000000FF)
+            if type(arg) == str:
+               arg = int(arg, 16)
+               msg_array.append((arg & 0xFF000000) >> 24)
+               msg_array.append((arg & 0x00FF0000) >> 16)
+               msg_array.append((arg & 0x0000FF00) >> 8)
+               msg_array.append( arg & 0x000000FF)
+            else:
+                msg_array.append((arg & 0xFF000000) >> 24)
+                msg_array.append((arg & 0x00FF0000) >> 16)
+                msg_array.append((arg & 0x0000FF00) >> 8)
+                msg_array.append( arg & 0x000000FF)
 
         # Next: Add in the password
         msg_array.append(0x55)
