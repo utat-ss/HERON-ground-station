@@ -1,6 +1,6 @@
 # Ground Station Software Suite
 
-Copy of recently-written document describing the use of this repository as well as gr-utat/
+Ground station documentation describing the use of this repository as well as the [gr-utat](https://github.com/HeronMkII/gr-utat) repository.
 
 ## GNURadio Set-up
 * Download and install GNURadio v3.8 through whatever means you want. Technically PyBOMBS is preferred, but any method should function
