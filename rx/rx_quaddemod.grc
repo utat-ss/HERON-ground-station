@@ -1,6 +1,7 @@
 options:
   parameters:
     author: ''
+    catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
@@ -22,7 +23,6 @@ options:
     sizing_mode: fixed
     thread_safe_setters: ''
     title: ''
-    window_size: ''
   states:
     bus_sink: false
     bus_source: false
@@ -51,7 +51,7 @@ blocks:
     gui_hint: ''
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '-25'
     step: '.5'
@@ -72,7 +72,7 @@ blocks:
     gui_hint: ''
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: 435e6
     step: 500e0
@@ -126,7 +126,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '"/home/vogel/Files/ground-station/"'
+    value: '"/home/adyn/ground-station/"'
   states:
     bus_sink: false
     bus_source: false
@@ -141,7 +141,7 @@ blocks:
     gui_hint: ''
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '-20'
     step: '0.1'
@@ -186,7 +186,7 @@ blocks:
     gui_hint: ''
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '2'
@@ -207,7 +207,7 @@ blocks:
     gui_hint: ''
     label: ''
     min_len: '200'
-    orient: Qt.Horizontal
+    orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '8'
@@ -228,12 +228,13 @@ blocks:
     gui_hint: ''
     label: ''
     label0: RF Gain ON
-    label1: RF Gain OFF
+    label1: RF Gain Off
     label2: ''
     label3: ''
     label4: ''
     labels: '[]'
     num_opts: '2'
+    option0: '14'
     option1: '0'
     option2: '2'
     option3: '3'
@@ -247,7 +248,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 804]
+    coordinate: [24, 804.0]
     rotation: 0
     state: true
 - name: samp_rate
@@ -483,7 +484,7 @@ blocks:
     samp_rate: samp_rate
     type: fir_filter_ccf
     width: 3.3333e3
-    win: firdes.WIN_HANN
+    win: window.WIN_HANN
   states:
     bus_sink: false
     bus_source: false
@@ -528,7 +529,7 @@ blocks:
     ant7: ''
     ant8: ''
     ant9: ''
-    args: hackrf=0000000000000000a06063c8242f915f
+    args: hackrf=0000000000000000a06063c825429e5f
     bb_gain0: rx_bb_gain
     bb_gain1: '20'
     bb_gain10: '20'
@@ -900,6 +901,7 @@ blocks:
     minoutbuf: '0'
     name: '""'
     nconnections: '1'
+    norm_window: 'False'
     showports: 'True'
     tr_chan: '0'
     tr_level: '0.0'
@@ -918,7 +920,7 @@ blocks:
     width7: '1'
     width8: '1'
     width9: '1'
-    wintype: firdes.WIN_BLACKMAN_hARRIS
+    wintype: window.WIN_BLACKMAN_hARRIS
     ymax: '10'
     ymin: '-140'
   states:
@@ -949,7 +951,7 @@ blocks:
     showports: 'False'
     showrf: 'False'
     type: complex
-    wintype: firdes.WIN_BLACKMAN_hARRIS
+    wintype: window.WIN_BLACKMAN_hARRIS
   states:
     bus_sink: false
     bus_source: false
@@ -957,28 +959,27 @@ blocks:
     coordinate: [646, 60]
     rotation: 0
     state: true
-- name: utat_heron_rx_bb_1
-  id: utat_heron_rx_bb
+- name: utat3_9_heron_rx_bb_0
+  id: utat3_9_heron_rx_bb
   parameters:
     affinity: ''
     alias: ''
-    comment: Detects HERON packets
+    comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1116, 316]
+    coordinate: [1112, 336.0]
     rotation: 0
-    state: enabled
+    state: true
 
 connections:
 - [analog_agc_xx_0, '0', digital_gfsk_demod_0, '0']
 - [blocks_pack_k_bits_bb_0, '0', blocks_file_sink_0_0, '0']
 - [blocks_pack_k_bits_bb_0, '0', blocks_null_sink_0, '0']
-- [digital_gfsk_demod_0, '0', utat_heron_rx_bb_1, '0']
-- [digital_gmsk_demod_0, '0', utat_heron_rx_bb_1, '0']
+- [digital_gfsk_demod_0, '0', utat3_9_heron_rx_bb_0, '0']
 - [freq_xlating_fir_filter_xxx_0, '0', digital_gmsk_demod_0, '0']
 - [low_pass_filter_0, '0', analog_agc_xx_0, '0']
 - [low_pass_filter_0, '0', digital_gmsk_demod_0, '0']
@@ -986,8 +987,7 @@ connections:
 - [osmosdr_source_0, '0', freq_xlating_fir_filter_xxx_0, '0']
 - [osmosdr_source_0, '0', low_pass_filter_0, '0']
 - [osmosdr_source_0, '0', qtgui_sink_x_0, '0']
-- [utat_heron_rx_bb_1, '0', blocks_file_sink_0, '0']
-- [utat_heron_rx_bb_1, '0', blocks_pack_k_bits_bb_0, '0']
+- [utat3_9_heron_rx_bb_0, '0', blocks_pack_k_bits_bb_0, '0']
 
 metadata:
   file_format: 1
