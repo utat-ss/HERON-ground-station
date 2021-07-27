@@ -9,9 +9,9 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: no_gui
+    generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: gfsk_tx
+    id: rx_debug
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -19,15 +19,15 @@ options:
     realtime_scheduling: ''
     run: 'True'
     run_command: '{python} -u {filename}'
-    run_options: run
+    run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: ''
+    title: Not titled yet
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 11]
+    coordinate: [8, 8]
     rotation: 0
     state: enabled
 
@@ -41,22 +41,52 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [13, 264]
+    coordinate: [8, 164.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: freq
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: 435e6
+    step: 500e0
+    stop: 438e6
     value: 435e6
+    widget: counter
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [13, 329]
+    coordinate: [8, 596.0]
     rotation: 0
-    state: enabled
-- name: if_gain
+    state: true
+- name: ppm
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-20'
+    step: '0.1'
+    stop: '20'
+    value: '14'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 236.0]
+    rotation: 0
+    state: true
+- name: rx_bb_gain
   id: variable_qtgui_range
   parameters:
     comment: ''
@@ -66,53 +96,68 @@ blocks:
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
-    step: '1'
-    stop: '47'
-    value: '30'
+    step: '2'
+    stop: '62'
+    value: '4'
     widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [15, 596]
-    rotation: 0
-    state: disabled
-- name: if_gain
-  id: variable
-  parameters:
-    comment: ''
-    value: '16'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [18, 529]
+    coordinate: [8, 476.0]
     rotation: 0
     state: true
-- name: msg_file
-  id: variable
+- name: rx_if_gain
+  id: variable_qtgui_range
   parameters:
     comment: ''
-    value: path+"cmdout.bin"
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '8'
+    stop: '40'
+    value: '8'
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [15, 463]
+    coordinate: [8, 356.0]
     rotation: 0
-    state: enabled
-- name: path
-  id: variable
+    state: true
+- name: rx_rf_gain
+  id: variable_qtgui_chooser
   parameters:
     comment: ''
-    value: '"/home/adyn/ground-station/"'
+    gui_hint: ''
+    label: ''
+    label0: RF Gain ON
+    label1: RF Gain OFF
+    label2: ''
+    label3: ''
+    label4: ''
+    labels: '[]'
+    num_opts: '2'
+    option0: '14'
+    option1: '0'
+    option2: '2'
+    option3: '3'
+    option4: '4'
+    options: '[0, 1, 2]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '14'
+    widget: combo_box
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [14, 395]
+    coordinate: [128, 404.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: samp_rate
   id: variable
   parameters:
@@ -122,99 +167,57 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 144]
+    coordinate: [8, 92.0]
     rotation: 0
     state: enabled
-- name: samp_rate_tx
-  id: variable
-  parameters:
-    comment: ''
-    value: '1056000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [16, 92]
-    rotation: 0
-    state: enabled
-- name: sps
-  id: variable
-  parameters:
-    comment: ''
-    value: '10'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [15, 204]
-    rotation: 0
-    state: enabled
-- name: blocks_file_source_0
-  id: blocks_file_source
+- name: blocks_file_sink_0
+  id: blocks_file_sink
   parameters:
     affinity: ''
     alias: ''
-    begin_tag: pmt.PMT_NIL
+    append: 'False'
     comment: ''
-    file: msg_file
-    length: '0'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    repeat: 'False'
-    type: byte
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [180, 104]
-    rotation: 0
-    state: enabled
-- name: blocks_multiply_const_vxx_0
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
+    file: home/adyn/ground-station/recordings/packets_path_packed
     type: complex
+    unbuffered: 'False'
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [849, 136]
+    coordinate: [1008, 620.0]
     rotation: 0
-    state: enabled
-- name: digital_gfsk_mod_0
-  id: digital_gfsk_mod
+    state: true
+- name: filter_fft_low_pass_filter_0
+  id: filter_fft_low_pass_filter
   parameters:
     affinity: ''
     alias: ''
-    bt: '0.5'
+    beta: '6.76'
     comment: ''
-    log: 'False'
+    cutoff_freq: 3*baud_rate
+    decim: '1'
+    gain: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_symbol: sps
-    sensitivity: '.15708'
-    verbose: 'False'
+    nthreads: '1'
+    samp_rate: samp_rate
+    type: ccc
+    width: 3.3333e3
+    win: window.WIN_HANN
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [379, 120]
+    coordinate: [688, 580.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: qtgui_sink_x_0
   id: qtgui_sink_x
   parameters:
     affinity: ''
     alias: ''
-    bw: samp_rate_tx
+    bw: samp_rate
     comment: ''
     fc: '0'
     fftsize: '1024'
@@ -235,31 +238,11 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1058, 271]
+    coordinate: [720, 428.0]
     rotation: 0
-    state: disabled
-- name: rational_resampler_xxx_0
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: samp_rate
-    fbw: '0'
-    interp: samp_rate_tx
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: ''
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [614, 112]
-    rotation: 0
-    state: enabled
-- name: soapy_hackrf_sink_0
-  id: soapy_hackrf_sink
+    state: true
+- name: soapy_hackrf_source_0
+  id: soapy_hackrf_source
   parameters:
     affinity: ''
     alias: ''
@@ -267,7 +250,10 @@ blocks:
     bandwidth: '0'
     center_freq: freq
     comment: ''
-    dev_args: hackrf=0000000000000000a06063c825429e5f
+    dev_args: hackrf=0000000000000000a06063c8242f915f
+    gain: '16'
+    maxoutbuf: '0'
+    minoutbuf: '0'
     samp_rate: samp_rate
     type: fc32
     vga: '16'
@@ -275,16 +261,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1080, 132.0]
+    coordinate: [392, 444.0]
     rotation: 0
     state: true
 
 connections:
-- [blocks_file_source_0, '0', digital_gfsk_mod_0, '0']
-- [blocks_multiply_const_vxx_0, '0', qtgui_sink_x_0, '0']
-- [blocks_multiply_const_vxx_0, '0', soapy_hackrf_sink_0, '0']
-- [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
-- [rational_resampler_xxx_0, '0', blocks_multiply_const_vxx_0, '0']
+- [filter_fft_low_pass_filter_0, '0', blocks_file_sink_0, '0']
+- [soapy_hackrf_source_0, '0', filter_fft_low_pass_filter_0, '0']
+- [soapy_hackrf_source_0, '0', qtgui_sink_x_0, '0']
 
 metadata:
   file_format: 1
