@@ -126,7 +126,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '"/home/adyn/ground-station/"'
+    value: '"/home/omar/Desktop/HERON/ground-station"'
   states:
     bus_sink: false
     bus_source: false

@@ -11,7 +11,9 @@ from packet_creation import make_message as m
 import os
 import subprocess
 import time
+from datetime import datetime
 from interface.commands import commands as op
+import SHA256 as hash
 
 # def check_arg(args, opcode):
 #     if (args == [0,0]):
@@ -45,7 +47,8 @@ if __name__ == "__main__":
     #   * logs TX'd commands to a DB TODO
 
     outpath = "cmdout.bin"
-    
+    outlog = "commands.log"
+
     # Create '0' packet - for padding
     zero_packet = m.es_frame_text("0")
 
@@ -77,14 +80,24 @@ if __name__ == "__main__":
         # If we make it here, we have a valid command to send
         # Collect & validate arguments
         args = []
+        file = open(outlog, 'a')
+        ranCommand = "\t"
         print ("You have selected: " + (op[cmd])["name"]+ENDC)
+        
         for i in range(op[cmd]["args"]):
-            print("Please input argument", i, ":")
+            print("Please input " + BOLD+list(op[cmd])[i+2] + ":")
+            #file.write(" "+list(op[cmd])[i])
             arg_in = input(GRN+BOLD+" >>> "+ENDC)
+            ranCommand += list(op[cmd])[i+2] + ": " + arg_in + " "
             args.append(arg_in)
         while (len(args) < 2):
             args.append(0)
-        
+        file.write("@ " + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        file.write(" " + (op[cmd])["name"] +"\n")
+        file.write(ranCommand)
+        if (len(ranCommand) > 2):
+            file.write("\n")
+        file.close()
         # (arg_check, arg_err) = check_arg(args, cmd)
         # if (not arg_check):
         #     print ("Arguments input incorrectly. Got error message:")
