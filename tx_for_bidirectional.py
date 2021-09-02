@@ -83,6 +83,7 @@ if __name__ == "__main__":
         file = open(outlog, 'a')
         ranCommand = "\t"
         print ("You have selected: " + (op[cmd])["name"]+ENDC)
+        print(hash.SHA256HASH("hello world"))
         
         for i in range(op[cmd]["args"]):
             print("Please input " + BOLD+list(op[cmd])[i+2] + ":")
@@ -92,8 +93,10 @@ if __name__ == "__main__":
             args.append(arg_in)
         while (len(args) < 2):
             args.append(0)
+        
         file.write("@ " + datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
-        file.write(" " + (op[cmd])["name"] +"\n")
+        
+        file.write(" " + (op[cmd])["name"] +" - Opcode: "  + "0x" + cmd + "\n")
         file.write(ranCommand)
         if (len(ranCommand) > 2):
             file.write("\n")
