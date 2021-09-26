@@ -1,3 +1,13 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                           #
+# Purpose: SHA256 hash method to securely store string passwords            #
+# Author: Omar Farag                                                        #
+# From: https://qvault.io/cryptography/how-sha-2-works-step-by-step-sha-256/ #
+# Last updated: 2021-09-02                                                  #
+#                                                                           #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+
 global h0
 global h1
 global h2
@@ -32,21 +42,14 @@ k = [
 #issue with this funcl
 def add(a, b):
     result = (int(a, 2) + int(b,2)) % 4294967296
-    #print(a)
-    # print(int(a,2))
-
-    # print(b)
-    # print(int(b,2))
-    #print(result)
-    #print(result)
-    #print('{:032b}'.format(result))
+    
     return '{:032b}'.format(result)
 
 def str_to_bin(data):
     return ''.join(format(ord(i),'b').zfill(8) for i in data)
 
 def hex_to_bin(data):
-    #print(str(0x6a09e667))
+   
     return '{:032b}'.format(int(str(data), 10))
 
 #cuz im too lazy to convert string representation of binary into actual binary
@@ -115,12 +118,7 @@ def SHA256HASH(data):
         s0 = bitwiseXOR(bitwiseXOR(rotate(w[i-15], -7), rotate(w[i-15], -18)), rightSHIFT(w[i-15], 3)) 
         s1 = bitwiseXOR(bitwiseXOR(rotate(w[i-2], -17), rotate(w[i-2], -19)), rightSHIFT(w[i-2], 10)) 
         w[i] = add(add(w[i-16], s0), add(w[i-7], s1))
-        if (i == 16):
-            print(w[0])
-            print(s0)
-            print(w[9])
-            print(s1)
-            print(w[16])
+        
     global h0
     global h1
     global h2
@@ -146,26 +144,15 @@ def SHA256HASH(data):
     f = h5
     g = h6
     h = h7
-    # print(a)
-    # print(b)
-    # print(c)
-    # print(d)
-    # print(e)
-    # print(f)
-    # print(g)
-    # print(h)
-    # print(rotate(e, -6))
-    # print(rotate(e, -11))
-    # print(rotate(e, -25))
+    
     for i in range(0, 64):
             
             S1 = bitwiseXOR(bitwiseXOR(rotate(e,-6), rotate(e,-11)), rotate(e,-25))
             
             ch = bitwiseXOR(bitwiseAND(e,f),(bitwiseAND(bitNOT(e), g)))
-            #temp1 = h + s1 + ch + k[i] + w[i]
-            #temp1 = add(add(add(h,S1), ch), add(hex_to_bin(k[i]),w[i]))
+            
             temp1 = add(add(add(h, S1), ch), add(hex_to_bin(k[i]), w[i]))
-            #temp1 = hex_to_bin(k[i])
+            
             
             S0 = bitwiseXOR(bitwiseXOR(rotate(a,-2), rotate(a,-13)),rotate(a,-22))
             maj = bitwiseXOR(bitwiseXOR(bitwiseAND(a,b), bitwiseAND(a,c)), bitwiseAND(b,c))
@@ -179,15 +166,7 @@ def SHA256HASH(data):
             c = b
             b = a
             a = add(temp1, temp2)
-            # if i == 0:
-            #     print(h)
-            #     print(g)
-            #     print(f)
-            #     print(e)
-            #     print(d)
-            #     print(c)
-            #     print(b)
-            #     print(a)
+           
     h0 = add(h0, a)
     h1 = add(h1, b)
     h2 = add(h2, c)

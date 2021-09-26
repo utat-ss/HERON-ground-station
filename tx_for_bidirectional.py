@@ -2,7 +2,7 @@
 #                                                                           #
 # Purpose: CLI interface for full two-way comms between the GS and the sat  #
 # Author: Gabe Sher                                                         #
-# Last updated: 2020-10-06                                                  #
+# Last updated: 2021-09-04                                                 #
 #                                                                           #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -13,7 +13,7 @@ import subprocess
 import time
 from datetime import datetime
 from interface.commands import commands as op
-import SHA256 as hash
+from SHA256 import SHA256HASH as hash
 
 # def check_arg(args, opcode):
 #     if (args == [0,0]):
@@ -83,9 +83,15 @@ if __name__ == "__main__":
         file = open(outlog, 'a')
         ranCommand = "\t"
         print ("You have selected: " + (op[cmd])["name"]+ENDC)
-        print(hash.SHA256HASH("hello world"))
+        
         
         for i in range(op[cmd]["args"]):
+            # if (op[cmd]["pass"]):
+            #     print("Please input password\n")
+            #     entered = input(GRN+BOLD+" >>> "+ENDC)
+            #     if ((hash(entered) !=     )):
+
+
             print("Please input " + BOLD+list(op[cmd])[i+2] + ":")
             #file.write(" "+list(op[cmd])[i])
             arg_in = input(GRN+BOLD+" >>> "+ENDC)

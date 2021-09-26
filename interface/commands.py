@@ -1,6 +1,8 @@
+# 15, 22, 23, 24, , 31 - 42
 commands = {
 
     "00" : {
+        "pass"       : False,
         "name"       : "Ping OBC",
         "args"       : 0,
         "arg1_type"  : None,
@@ -11,6 +13,7 @@ commands = {
     },
 
     "01" : {
+        "pass"       : False,
         "name"       : "Get RTC Date/Time",
         "args"       : 0,
         "arg1_type"  : None,
@@ -21,6 +24,7 @@ commands = {
     },
     
     "02" : {
+        "pass"       : True,
         "name"       : "Set RTC Date/Time",
         "args"       : 2,
         "RTC Date"  : None,
@@ -32,6 +36,7 @@ commands = {
     
     
     "03" : {
+        "pass"       : True,
         "name"       : "Read OBC EEPROM",
         "args"       : 1,
         "EEPROM Address"  : None,
@@ -43,6 +48,7 @@ commands = {
     
     
     "04" : {
+        "pass"       : True,
         "name"       : "Erase OBC EEPROM",
         "args"       : 1,
         "EEPROM Address"  : None,
@@ -54,6 +60,7 @@ commands = {
     
     
     "05" : {
+        "pass"       : True,
         "name"       : "Read OBC RAM Byte",
         "args"       : 1,
         "RAM Address"  : None,
@@ -65,6 +72,7 @@ commands = {
     
     #unneeded I believe
     "06" : {
+        "pass"       : False,
         "name"       : "Set Indefinite Beacon Enable",
         "args"       : 2,
         "arg1_type"  : None,
@@ -76,6 +84,7 @@ commands = {
     
     
     "10" : {
+        "pass"       : False,
         "name"       : "Read Data Block",
         "args"       : 2,
         "Block Type"  : None,
@@ -87,6 +96,7 @@ commands = {
     
     
     "11" : {
+        "pass"       : False,
         "name"       : "Read Primary Command Blocks",
         "args"       : 2,
         "Block number (start)"  : None,
@@ -98,6 +108,7 @@ commands = {
     
     
     "12" : {
+        "pass"       : False,
         "name"       : "Read Secondary Command Blocks",
         "args"       : 2,
         "Block number (start)"  : None,
@@ -109,6 +120,7 @@ commands = {
     
     
     "13" : {
+        "pass"       : False,
         "name"       : "Read Most Recent Status Info",
         "args"       : 0,
         "arg1_type"  : None,
@@ -120,6 +132,7 @@ commands = {
     
     
     "14" : {
+        "pass"       : False,
         "name"       : "Read Recent Local Data Block",
         "args"       : 1,
         "Block Type"  : None,
@@ -131,6 +144,7 @@ commands = {
     
     
     "15" : {
+        "pass"       : True,
         "name"       : "Read Raw Memory Bytes",
         "args"       : 2,
         "Flash Memory Address (start)"  : None,
@@ -142,6 +156,7 @@ commands = {
     
     
     "20" : {
+        "pass"       : False,
         "name"       : "Collect Data Block",
         "args"       : 2,
         "Block Type"  : None,
@@ -153,6 +168,7 @@ commands = {
     
     
     "21" : {
+        "pass"       : False,
         "name"       : "Get Automatic Data Collection Settings",
         "args"       : 2,
         "arg1_type"  : None,
@@ -164,6 +180,7 @@ commands = {
     
     
     "22" : {
+        "pass"       : True,
         "name"       : "Set Automatic Data Collection Enable",
         "args"       : 2,
         "Block Type"  : None,
@@ -175,6 +192,7 @@ commands = {
     
     
     "23" : {
+        "pass"       : True,
         "name"       : "Set Automatic Data Collection Period",
         "args"       : 2,
         "Block Type"  : None,
@@ -186,6 +204,7 @@ commands = {
     
     
     "24" : {
+        "pass"       : True,
         "name"       : "Resync Automatic Data Collection Timers",
         "args"       : 0,
         "arg1_type"  : None,
@@ -197,6 +216,7 @@ commands = {
     
     
     "30" : {
+        "pass"       : False,
         "name"       : "Get Current Block Numbers",
         "args"       : 0,
         "arg1_type"  : None,
@@ -208,6 +228,7 @@ commands = {
     
     
     "31" : {
+        "pass"       : True,
         "name"       : "Set Current Block Number",
         "args"       : 2,
         "Block Type"  : None,
@@ -219,6 +240,7 @@ commands = {
     
     
     "32" : {
+        "pass"       : True,
         "name"       : "Get Memory Selection Adresses",
         "args"       : 0,
         "arg1_type"  : None,
@@ -230,6 +252,7 @@ commands = {
     
     
     "33" : {
+        "pass"       : True,
         "name"       : "Set Memory Section Start Address",
         "args"       : 2,
         "Block Type"  : None,
@@ -241,6 +264,7 @@ commands = {
     
     
     "34" : {
+        "pass"       : True,
         "name"       : "Set Memory Section End Address",
         "args"       : 2,
         "Block Type"  : None,
@@ -252,6 +276,7 @@ commands = {
     
     
     "35" : {
+        "pass"       : True,
         "name"       : "Erase Memory Physical Sector",
         "args"       : 1,
         "Flash Memory Address"  : None,
@@ -263,6 +288,7 @@ commands = {
     
     
     "36" : {
+        "pass"       : True,
         "name"       : "Erase Memory Physical Block",
         "args"       : 1,
         "Flash Memory Address"  : None,
@@ -274,6 +300,7 @@ commands = {
     
     
     "37" : {
+        "pass"       : True,
         "name"       : "Erase All Memory",
         "args"       : 0,
         "arg1_type"  : None,
@@ -285,6 +312,7 @@ commands = {
     
     
     "40" : {
+        "pass"       : True,
         "name"       : "Send EPS CAN Message",
         "args"       : 2,
         "First 4 bytes of request"  : None,
@@ -296,6 +324,7 @@ commands = {
     
     
     "41" : {
+        "pass"       : True,
         "name"       : "Send PAY CAN Message",
         "args"       : 2,
         "First 4 bytes of request"  : None,
@@ -307,6 +336,7 @@ commands = {
     
     
     "42" : {
+        "pass"       : True,
         "name"       : "Reset Subsystem",
         "args"       : 1,
         "Subsystem"  : None,
