@@ -13,7 +13,7 @@ import subprocess
 import time
 from datetime import datetime
 from interface.commands import commands as op
-from SHA256 import SHA256HASH as hash
+from automation.packet_creation.SHA256 import SHA256HASH as hash
 
 # def check_arg(args, opcode):
 #     if (args == [0,0]):
