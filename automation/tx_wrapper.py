@@ -24,14 +24,14 @@ import time
 from datetime import datetime
 from interface.commands import commands as op
 from packet_creation.SHA256 import SHA256HASH as hash
+import constants as const
+
+test_bin_file = "commands/test_ack.bin"
 
 class TX_Command():
     def __init__(self, outpath, outlog_path):
         tx_log = os.scandir(outlog_path)
-        if len(tx_log) == 0:
-            tx_log_path = outlog_path + "tx_log_" + datetime.now().strftime("%d/%m/%Y") + ".txt"
-        elif datetime.now().day == 1:
-            tx_log_path = outlog_path + "tx_log_" + datetime.now().strftime("%d/%m/%Y") + ".txt"
+        tx_log_path = outlog_path + "tx_log_" + datetime.now().strftime("%d-%m-%Y") + ".txt"
         self.outpath = outpath
         self.outlog = tx_log_path
 
@@ -40,20 +40,20 @@ class TX_Command():
         self.valid_esttc_cmds = ["PIPE", "GET_FREQ"]
 
     def command(self, cmd, args=False, pwd=False):
-        seqno = 0
-        while (True):
+        try:
+            seqno = 0
             cmd = cmd.upper().strip()
 
             os.system("cp ../messages/ESTTC/ES_" + "PIPE" + ".bin " + self.outpath)
             os.system("xxd " + self.outpath)
             os.system("python3 ../tx/gfsk_tx.py")
             print("PIPE command sent. Looping...")
-            
-            
+                
+                
             if cmd in self.valid_esttc_cmds and cmd != "PIPE":
                 os.system("cp ../messages/ESTTC/ES_" + cmd + ".bin " + self.outpath)
                 os.system("xxd " + self.outpath)
-                os.system("python3 ../tx/gfsk_tx.py")
+                os.system("python ../tx/gfsk_tx.py")
                 print("ESTTC command sent. Looping...")
 
 
@@ -63,7 +63,7 @@ class TX_Command():
                 raise ValueError('%s is not a valid command. Sending email to ss-operations email chain') 
 
             args = []
-            file = open(self.outlog, 'a')
+            file = open(self.outlog, 'a+')
             ranCommand = "\t"
             print ("Sending: " + (op[cmd])["name"])
 
@@ -99,7 +99,7 @@ class TX_Command():
                 msg_array.append(0x54)
                 msg_array.append(0x41)
                 msg_array.append(0x54)
-            
+                
             enc_msg = m.encode_message(msg_array)
             packet = m.es_frame_bytes(enc_msg)
 
@@ -107,12 +107,23 @@ class TX_Command():
 
             m.write_to_file(self.outpath, packet)
 
-            print("Sending: " + [hex(byte) for byte in msg_array])
+            print("Sending: ", [hex(byte) for byte in msg_array])
             os.system("python3 ../tx/gfsk_tx.py")
+
+            # Write ACK to binary file
+            ack_file = open(test_bin_file, "wb")
+            ack_file.write(const.ACK)
+            ack_file.close()
 
             # Sequence number handling 
             seqno = seqno + 1
             if (seqno > 0xFFFF):
                 seqno = 0
+        except:
+            # command failed, NACK to binary file
+            nack_file = open(test_bin_file, "wb")
+            nack_file.write(const.NACK)
+            nack_file.close()
+
 
         

@@ -20,6 +20,13 @@ class Propagator():
     def __init__(self, satellite_id):
         self.satellite_info = requests.get('https://network.satnogs.org/api/observations/%s' % satellite_id)
         self.satellite_info = self.satellite_info.json()
+
+    def get_satellite_info(self):
+        satellite_name = self.satellite_info["tle0"]
+        station_lat = self.satellite_info["station_lat"]
+        station_lng = self.satellite_info["station_lng"]
+        return "Sat Name: {} Station Location: {} {}".format(satellite_name, station_lat, station_lng)
+    
     def get_pass_times(self):
         start_time = self.satellite_info["start"]
         start_time = start_time.strip("Z")
