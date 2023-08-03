@@ -1,6 +1,8 @@
+# 15, 22, 23, 24, , 31 - 42
 commands = {
 
     "00" : {
+        "pass"       : False,
         "name"       : "Ping OBC",
         "args"       : 0,
         "arg1_type"  : None,
@@ -11,6 +13,7 @@ commands = {
     },
 
     "01" : {
+        "pass"       : False,
         "name"       : "Get RTC Date/Time",
         "args"       : 0,
         "arg1_type"  : None,
@@ -21,10 +24,11 @@ commands = {
     },
     
     "02" : {
+        "pass"       : True,
         "name"       : "Set RTC Date/Time",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "RTC Date"  : None,
+        "RTC Time"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : None
@@ -32,9 +36,10 @@ commands = {
     
     
     "03" : {
+        "pass"       : True,
         "name"       : "Read OBC EEPROM",
         "args"       : 1,
-        "arg1_type"  : None,
+        "EEPROM Address"  : None,
         "arg2_type"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
@@ -43,9 +48,10 @@ commands = {
     
     
     "04" : {
+        "pass"       : True,
         "name"       : "Erase OBC EEPROM",
         "args"       : 1,
-        "arg1_type"  : None,
+        "EEPROM Address"  : None,
         "arg2_type"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
@@ -54,17 +60,19 @@ commands = {
     
     
     "05" : {
+        "pass"       : True,
         "name"       : "Read OBC RAM Byte",
         "args"       : 1,
-        "arg1_type"  : None,
+        "RAM Address"  : None,
         "arg2_type"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 1
     },
     
-    
+    #unneeded I believe
     "06" : {
+        "pass"       : False,
         "name"       : "Set Indefinite Beacon Enable",
         "args"       : 2,
         "arg1_type"  : None,
@@ -76,10 +84,11 @@ commands = {
     
     
     "10" : {
+        "pass"       : False,
         "name"       : "Read Data Block",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block Type"  : None,
+        "Block number"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 4
@@ -87,10 +96,11 @@ commands = {
     
     
     "11" : {
+        "pass"       : False,
         "name"       : "Read Primary Command Blocks",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block number (start)"  : None,
+        "Number of blocks"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 4
@@ -98,10 +108,11 @@ commands = {
     
     
     "12" : {
+        "pass"       : False,
         "name"       : "Read Secondary Command Blocks",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block number (start)"  : None,
+        "Number of blocks"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 4
@@ -109,6 +120,7 @@ commands = {
     
     
     "13" : {
+        "pass"       : False,
         "name"       : "Read Most Recent Status Info",
         "args"       : 0,
         "arg1_type"  : None,
@@ -120,9 +132,10 @@ commands = {
     
     
     "14" : {
+        "pass"       : False,
         "name"       : "Read Recent Local Data Block",
         "args"       : 1,
-        "arg1_type"  : None,
+        "Block Type"  : None,
         "arg2_type"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
@@ -131,10 +144,11 @@ commands = {
     
     
     "15" : {
+        "pass"       : True,
         "name"       : "Read Raw Memory Bytes",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Flash Memory Address (start)"  : None,
+        "Number of bytes"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 4
@@ -142,10 +156,11 @@ commands = {
     
     
     "20" : {
+        "pass"       : False,
         "name"       : "Collect Data Block",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block Type"  : None,
+        "Field number to start at"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 4
@@ -153,6 +168,7 @@ commands = {
     
     
     "21" : {
+        "pass"       : False,
         "name"       : "Get Automatic Data Collection Settings",
         "args"       : 2,
         "arg1_type"  : None,
@@ -164,10 +180,11 @@ commands = {
     
     
     "22" : {
+        "pass"       : True,
         "name"       : "Set Automatic Data Collection Enable",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block Type"  : None,
+        "0 (disable) or 1 (enable)"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : None
@@ -175,10 +192,11 @@ commands = {
     
     
     "23" : {
+        "pass"       : True,
         "name"       : "Set Automatic Data Collection Period",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block Type"  : None,
+        "Period (in seconds)"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : None
@@ -186,6 +204,7 @@ commands = {
     
     
     "24" : {
+        "pass"       : True,
         "name"       : "Resync Automatic Data Collection Timers",
         "args"       : 0,
         "arg1_type"  : None,
@@ -197,6 +216,7 @@ commands = {
     
     
     "30" : {
+        "pass"       : False,
         "name"       : "Get Current Block Numbers",
         "args"       : 0,
         "arg1_type"  : None,
@@ -208,10 +228,11 @@ commands = {
     
     
     "31" : {
+        "pass"       : True,
         "name"       : "Set Current Block Number",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block Type"  : None,
+        "Block number"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : None
@@ -219,6 +240,7 @@ commands = {
     
     
     "32" : {
+        "pass"       : True,
         "name"       : "Get Memory Selection Adresses",
         "args"       : 0,
         "arg1_type"  : None,
@@ -230,10 +252,11 @@ commands = {
     
     
     "33" : {
+        "pass"       : True,
         "name"       : "Set Memory Section Start Address",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block Type"  : None,
+        "Flash Memory Address (start)"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : None
@@ -241,10 +264,11 @@ commands = {
     
     
     "34" : {
+        "pass"       : True,
         "name"       : "Set Memory Section End Address",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "Block Type"  : None,
+        "Flash Memory Address (end)"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : None
@@ -252,9 +276,10 @@ commands = {
     
     
     "35" : {
+        "pass"       : True,
         "name"       : "Erase Memory Physical Sector",
         "args"       : 1,
-        "arg1_type"  : None,
+        "Flash Memory Address"  : None,
         "arg2_type"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
@@ -263,9 +288,10 @@ commands = {
     
     
     "36" : {
+        "pass"       : True,
         "name"       : "Erase Memory Physical Block",
         "args"       : 1,
-        "arg1_type"  : None,
+        "Flash Memory Address"  : None,
         "arg2_type"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
@@ -274,6 +300,7 @@ commands = {
     
     
     "37" : {
+        "pass"       : True,
         "name"       : "Erase All Memory",
         "args"       : 0,
         "arg1_type"  : None,
@@ -285,10 +312,11 @@ commands = {
     
     
     "40" : {
+        "pass"       : True,
         "name"       : "Send EPS CAN Message",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "First 4 bytes of request"  : None,
+        "Last 4 bytes of request"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 8
@@ -296,10 +324,11 @@ commands = {
     
     
     "41" : {
+        "pass"       : True,
         "name"       : "Send PAY CAN Message",
         "args"       : 2,
-        "arg1_type"  : None,
-        "arg2_type"  : None,
+        "First 4 bytes of request"  : None,
+        "Last 4 bytes of request"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,
         "resp_size"  : 8
@@ -307,9 +336,10 @@ commands = {
     
     
     "42" : {
+        "pass"       : True,
         "name"       : "Reset Subsystem",
         "args"       : 1,
-        "arg1_type"  : None,
+        "Subsystem"  : None,
         "arg2_type"  : None,
         "arg1_valid" : None,        
         "arg2_valid" : None,

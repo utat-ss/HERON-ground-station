@@ -1,0 +1,14 @@
+- We tried to figure out what was happening with the heron_rx_bb_impl.cc code.
+- The flowgraph outputs some input bytes (preamble) even when I am not sending anything.
+    - This makes me think it may be related to the DC offset noise issue we experienced before we got it working with GNURadio 3.9.
+    - The output bytes also seem to be randomized, which makes it difficult to track patterns. Is the noise factoring into the measurement?
+        - Is the signal strength of the HackRF just too small relative to the noise floor to receive clear information?
+
+- I sent through a sequence of all 0x55 to the RX flowgraph (no carriage return, preamble, or sync word).
+    - We saw no pattern of 0x55 in the output, either before or after HERON RX BB.
+    - The real issue is getting the HackRF to receive what I've told the TX HackRF to send.
+    - Verified that the TX is correct, because I printed out the binary output file from tx_for_bidirectional.py
+
+- Next Steps:
+    - Think further about how we can most simplify the HERON flowgraph while still keeping some integrity to the original working code.
+    - Try to get a working unit test implementation (figure out how to code a bitstream input and send it through the flowgraph for /python/qa_heron_rx_bb.py)
