@@ -42,7 +42,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 12.0]
+    coordinate: [192, 4.0]
     rotation: 0
     state: true
 - name: hdr_format
@@ -58,7 +58,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [376, 16.0]
+    coordinate: [376, 4.0]
     rotation: 0
     state: true
 - name: blocks_tagged_stream_mux_0
@@ -128,7 +128,7 @@ blocks:
     comment: ''
     label: pdu_out
     num_streams: '1'
-    optional: 'False'
+    optional: 'True'
     type: message
     vlen: '1'
   states:
@@ -222,4 +222,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.7.0
+  grc_version: 3.10.5.1
