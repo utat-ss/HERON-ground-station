@@ -18,3 +18,5 @@ recordings/*
 
 # Compiled GNURadio files
 hackrf_test/*.py
+gnuradio/*.py
+
