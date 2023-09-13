@@ -42,7 +42,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 12.0]
+    coordinate: [560, 12.0]
     rotation: 0
     state: true
 - name: freq_offset
@@ -54,19 +54,103 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [376, 12.0]
+    coordinate: [648, 12.0]
+    rotation: 0
+    state: true
+- name: gfsk_bps
+  id: variable
+  parameters:
+    comment: ''
+    value: '9600'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 12.0]
+    rotation: 0
+    state: true
+- name: gfsk_bt
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 12.0]
+    rotation: 0
+    state: true
+- name: gfsk_freq_dev
+  id: variable
+  parameters:
+    comment: ''
+    value: '2400'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 12.0]
+    rotation: 0
+    state: enabled
+- name: gfsk_mod_ind
+  id: variable
+  parameters:
+    comment: ''
+    value: 2 * gfsk_freq_dev / gfsk_bps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [440, 76.0]
+    rotation: 0
+    state: true
+- name: gfsk_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: gfsk_sps * gfsk_bps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 76.0]
+    rotation: 0
+    state: true
+- name: gfsk_sensitivity
+  id: variable
+  parameters:
+    comment: ''
+    value: 2*pi*gfsk_freq_dev/gfsk_samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [312, 76.0]
+    rotation: 0
+    state: true
+- name: gfsk_sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '50'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 12.0]
     rotation: 0
     state: true
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: 2e6
+    value: 1e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 12]
+    coordinate: [8, 148.0]
     rotation: 0
     state: enabled
 - name: analog_sig_source_x_1
@@ -88,7 +172,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 372.0]
+    coordinate: [64, 532.0]
     rotation: 0
     state: true
 - name: blocks_multiply_xx_0
@@ -106,7 +190,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [328, 280.0]
+    coordinate: [336, 440.0]
     rotation: 0
     state: true
 - name: blocks_uchar_to_float_0
@@ -121,7 +205,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [904, 296.0]
+    coordinate: [1144, 456.0]
     rotation: 0
     state: enabled
 - name: blocks_vector_source_x_0
@@ -141,7 +225,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 132.0]
+    coordinate: [56, 268.0]
     rotation: 0
     state: true
 - name: digital_gfsk_demod_0
@@ -157,14 +241,14 @@ blocks:
     minoutbuf: '0'
     mu: '0.5'
     omega_relative_limit: '0.005'
-    samples_per_symbol: '208'
-    sensitivity: '0.03141592654'
+    samples_per_symbol: gfsk_sps
+    sensitivity: gfsk_sensitivity
     verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 252.0]
+    coordinate: [896, 412.0]
     rotation: 0
     state: true
 - name: digital_gfsk_mod_0
@@ -172,20 +256,33 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    bt: '0.35'
+    bt: gfsk_bt
     comment: ''
     do_unpack: 'True'
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_symbol: '208'
-    sensitivity: '0.03141592654'
+    samples_per_symbol: gfsk_sps
+    sensitivity: gfsk_sensitivity
     verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [216, 132.0]
+    coordinate: [232, 268.0]
+    rotation: 0
+    state: true
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from math import pi
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 100.0]
     rotation: 0
     state: true
 - name: low_pass_filter_0
@@ -195,21 +292,21 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 15e3
-    decim: '1'
+    cutoff_freq: 10e3
+    decim: '5'
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
     type: fir_filter_ccf
-    width: 10e3
+    width: 5e3
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [480, 244.0]
+    coordinate: [488, 404.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -306,9 +403,49 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [904, 340.0]
+    coordinate: [1160, 548.0]
     rotation: 0
     state: enabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '12'
+    fbw: '0'
+    interp: '25'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [440, 260.0]
+    rotation: 0
+    state: true
+- name: rational_resampler_xxx_1
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '5'
+    fbw: '0'
+    interp: '12'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 428.0]
+    rotation: 0
+    state: true
 - name: soapy_hackrf_sink_0
   id: soapy_hackrf_sink
   parameters:
@@ -326,7 +463,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 148.0]
+    coordinate: [664, 284.0]
     rotation: 0
     state: enabled
 - name: soapy_hackrf_source_0
@@ -349,7 +486,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [48, 260.0]
+    coordinate: [56, 420.0]
     rotation: 0
     state: enabled
 
@@ -359,8 +496,10 @@ connections:
 - [blocks_uchar_to_float_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_vector_source_x_0, '0', digital_gfsk_mod_0, '0']
 - [digital_gfsk_demod_0, '0', blocks_uchar_to_float_0, '0']
-- [digital_gfsk_mod_0, '0', soapy_hackrf_sink_0, '0']
-- [low_pass_filter_0, '0', digital_gfsk_demod_0, '0']
+- [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
+- [low_pass_filter_0, '0', rational_resampler_xxx_1, '0']
+- [rational_resampler_xxx_0, '0', soapy_hackrf_sink_0, '0']
+- [rational_resampler_xxx_1, '0', digital_gfsk_demod_0, '0']
 - [soapy_hackrf_source_0, '0', blocks_multiply_xx_0, '0']
 
 metadata:
