@@ -103,6 +103,28 @@ blocks:
     coordinate: [128, 140.0]
     rotation: 0
     state: true
+- name: analog_sig_source_x_1
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '1'
+    comment: ''
+    freq: freq_offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [136, 460.0]
+    rotation: 0
+    state: true
 - name: analog_wfm_rcv_0
   id: analog_wfm_rcv
   parameters:
@@ -128,7 +150,7 @@ blocks:
     audio_rate: int(aud_rate)
     comment: ''
     fh: '-1.0'
-    max_dev: 10e3
+    max_dev: 5e3
     maxoutbuf: '0'
     minoutbuf: '0'
     quad_rate: 10*int(aud_rate)
@@ -140,21 +162,22 @@ blocks:
     coordinate: [352, 148.0]
     rotation: 0
     state: true
-- name: blocks_freqshift_cc_0
-  id: blocks_freqshift_cc
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    freq: freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
+    num_inputs: '2'
+    type: complex
+    vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 388.0]
+    coordinate: [408, 384.0]
     rotation: 0
     state: true
 - name: low_pass_filter_0
@@ -343,7 +366,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    amp: 'True'
+    amp: 'False'
     bandwidth: '0'
     center_freq: freq + freq_offset
     comment: ''
@@ -358,19 +381,21 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [120, 380.0]
+    coordinate: [120, 364.0]
     rotation: 0
     state: true
 
 connections:
 - [analog_sig_source_x_0, '0', analog_wfm_tx_0, '0']
+- [analog_sig_source_x_1, '0', blocks_multiply_xx_0, '1']
 - [analog_wfm_rcv_0, '0', qtgui_time_sink_x_1, '0']
 - [analog_wfm_tx_0, '0', rational_resampler_xxx_0, '0']
-- [blocks_freqshift_cc_0, '0', low_pass_filter_0, '0']
+- [blocks_multiply_xx_0, '0', low_pass_filter_0, '0']
 - [low_pass_filter_0, '0', rational_resampler_xxx_1, '0']
 - [rational_resampler_xxx_0, '0', soapy_hackrf_sink_0, '0']
 - [rational_resampler_xxx_1, '0', analog_wfm_rcv_0, '0']
-- [soapy_hackrf_source_0, '0', blocks_freqshift_cc_0, '0']
+- [soapy_hackrf_source_0, '0', blocks_multiply_xx_0, '0']
 
 metadata:
   file_format: 1
+  grc_version: 3.10.5.1

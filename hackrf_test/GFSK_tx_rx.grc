@@ -69,21 +69,44 @@ blocks:
     coordinate: [184, 12]
     rotation: 0
     state: enabled
-- name: blocks_freqshift_cc_0
-  id: blocks_freqshift_cc
+- name: analog_sig_source_x_1
+  id: analog_sig_source_x
   parameters:
     affinity: ''
     alias: ''
+    amp: '1'
     comment: ''
     freq: freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_COS_WAVE
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 284.0]
+    coordinate: [56, 372.0]
+    rotation: 0
+    state: true
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [328, 280.0]
     rotation: 0
     state: true
 - name: blocks_uchar_to_float_0
@@ -326,18 +349,20 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 276.0]
+    coordinate: [48, 260.0]
     rotation: 0
     state: enabled
 
 connections:
-- [blocks_freqshift_cc_0, '0', low_pass_filter_0, '0']
+- [analog_sig_source_x_1, '0', blocks_multiply_xx_0, '1']
+- [blocks_multiply_xx_0, '0', low_pass_filter_0, '0']
 - [blocks_uchar_to_float_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_vector_source_x_0, '0', digital_gfsk_mod_0, '0']
 - [digital_gfsk_demod_0, '0', blocks_uchar_to_float_0, '0']
 - [digital_gfsk_mod_0, '0', soapy_hackrf_sink_0, '0']
 - [low_pass_filter_0, '0', digital_gfsk_demod_0, '0']
-- [soapy_hackrf_source_0, '0', blocks_freqshift_cc_0, '0']
+- [soapy_hackrf_source_0, '0', blocks_multiply_xx_0, '0']
 
 metadata:
   file_format: 1
+  grc_version: 3.10.5.1
