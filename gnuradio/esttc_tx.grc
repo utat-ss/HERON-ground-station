@@ -187,7 +187,7 @@ blocks:
     alias: ''
     comment: ''
     filler: '0x01'
-    final_buffer_len: 2**17
+    final_buffer_len: hackrf_buf
     final_samples_per_symbol: 8*samp_rate/gfsk_bps
     len_tag_key: packet_len
     maxoutbuf: '0'
