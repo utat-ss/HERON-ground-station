@@ -142,6 +142,7 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: samp_rate
+    showports: 'False'
     type: complex
     waveform: analog.GR_COS_WAVE
   states:
@@ -229,7 +230,7 @@ blocks:
     beta: '6.76'
     comment: ''
     cutoff_freq: 75e3
-    decim: int(samp_rate/channel_width)
+    decim: '2'
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
@@ -332,7 +333,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    decim: '5'
+    decim: '25'
     fbw: '0'
     interp: '12'
     maxoutbuf: '0'
@@ -382,4 +383,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.5.1
+  grc_version: 3.10.7.0
