@@ -1,17 +1,17 @@
 options:
   parameters:
-    author: ''
+    author: Swarnava Ghosh
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
-    copyright: ''
+    copyright: University of Toronto Aerospace Team
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: FX_tx_rx
+    id: gfsk_loopback
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: FM TX/RX
+    title: GFSK TX/RX
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -33,40 +33,112 @@ options:
     state: enabled
 
 blocks:
-- name: aud_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: 48e3
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [280, 12.0]
-    rotation: 0
-    state: true
 - name: freq
   id: variable
   parameters:
     comment: ''
-    value: '435000000'
+    value: 435e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 12.0]
+    coordinate: [560, 12.0]
     rotation: 0
     state: true
 - name: freq_offset
   id: variable
   parameters:
     comment: ''
-    value: 200e3
+    value: 300e3
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 12.0]
+    coordinate: [648, 12.0]
+    rotation: 0
+    state: true
+- name: gfsk_bps
+  id: variable
+  parameters:
+    comment: ''
+    value: '9600'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 12.0]
+    rotation: 0
+    state: true
+- name: gfsk_bt
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 12.0]
+    rotation: 0
+    state: true
+- name: gfsk_freq_dev
+  id: variable
+  parameters:
+    comment: ''
+    value: '2400'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 12.0]
+    rotation: 0
+    state: enabled
+- name: gfsk_mod_ind
+  id: variable
+  parameters:
+    comment: ''
+    value: 2 * gfsk_freq_dev / gfsk_bps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [440, 76.0]
+    rotation: 0
+    state: true
+- name: gfsk_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: gfsk_sps * gfsk_bps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 76.0]
+    rotation: 0
+    state: true
+- name: gfsk_sensitivity
+  id: variable
+  parameters:
+    comment: ''
+    value: 2*pi*gfsk_freq_dev/gfsk_samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [312, 76.0]
+    rotation: 0
+    state: true
+- name: gfsk_sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '50'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 12.0]
     rotation: 0
     state: true
 - name: samp_rate
@@ -78,31 +150,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 12]
+    coordinate: [8, 164.0]
     rotation: 0
     state: enabled
-- name: analog_sig_source_x_0
-  id: analog_sig_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: '1'
-    comment: ''
-    freq: '500'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    phase: '0'
-    samp_rate: aud_rate
-    type: float
-    waveform: analog.GR_COS_WAVE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [128, 140.0]
-    rotation: 0
-    state: true
 - name: analog_sig_source_x_1
   id: analog_sig_source_x
   parameters:
@@ -116,50 +166,14 @@ blocks:
     offset: '0'
     phase: '0'
     samp_rate: samp_rate
+    showports: 'False'
     type: complex
     waveform: analog.GR_COS_WAVE
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [136, 460.0]
-    rotation: 0
-    state: true
-- name: analog_wfm_rcv_0
-  id: analog_wfm_rcv
-  parameters:
-    affinity: ''
-    alias: ''
-    audio_decimation: '10'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    quad_rate: 10*int(aud_rate)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [968, 388.0]
-    rotation: 0
-    state: true
-- name: analog_wfm_tx_0
-  id: analog_wfm_tx
-  parameters:
-    affinity: ''
-    alias: ''
-    audio_rate: int(aud_rate)
-    comment: ''
-    fh: '-1.0'
-    max_dev: 5e3
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    quad_rate: 10*int(aud_rate)
-    tau: 75e-6
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [352, 148.0]
+    coordinate: [64, 532.0]
     rotation: 0
     state: true
 - name: blocks_multiply_xx_0
@@ -177,7 +191,99 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [408, 384.0]
+    coordinate: [336, 440.0]
+    rotation: 0
+    state: true
+- name: blocks_uchar_to_float_0
+  id: blocks_uchar_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1144, 456.0]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_source_x_0
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    tags: '[]'
+    type: byte
+    vector: (0xAA, 0xFF)
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [56, 268.0]
+    rotation: 0
+    state: true
+- name: digital_gfsk_demod_0
+  id: digital_gfsk_demod
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq_error: '0.0'
+    gain_mu: '0.175'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: '0.5'
+    omega_relative_limit: '0.005'
+    samples_per_symbol: gfsk_sps
+    sensitivity: gfsk_sensitivity
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 412.0]
+    rotation: 0
+    state: true
+- name: digital_gfsk_mod_0
+  id: digital_gfsk_mod
+  parameters:
+    affinity: ''
+    alias: ''
+    bt: gfsk_bt
+    comment: ''
+    do_unpack: 'True'
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_symbol: gfsk_sps
+    sensitivity: gfsk_sensitivity
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 268.0]
+    rotation: 0
+    state: true
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from math import pi
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 112.0]
     rotation: 0
     state: true
 - name: low_pass_filter_0
@@ -187,24 +293,24 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 75e3
-    decim: '1'
+    cutoff_freq: 10e3
+    decim: '5'
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
     type: fir_filter_ccf
-    width: 25e3
+    width: 5e3
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [568, 348.0]
+    coordinate: [488, 404.0]
     rotation: 0
     state: enabled
-- name: qtgui_time_sink_x_1
+- name: qtgui_time_sink_x_0
   id: qtgui_time_sink_x
   parameters:
     affinity: ''
@@ -233,7 +339,7 @@ blocks:
     color9: dark green
     comment: ''
     ctrlpanel: 'True'
-    entags: 'True'
+    entags: 'False'
     grid: 'False'
     gui_hint: ''
     label1: Signal 1
@@ -260,7 +366,7 @@ blocks:
     name: '""'
     nconnections: '1'
     size: '1024'
-    srate: aud_rate
+    srate: samp_rate
     stemplot: 'False'
     style1: '1'
     style10: '1'
@@ -291,16 +397,16 @@ blocks:
     width8: '1'
     width9: '1'
     ylabel: Amplitude
-    ymax: '1'
+    ymax: '2'
     ymin: '-1'
     yunit: '""'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1184, 380.0]
+    coordinate: [1160, 548.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: rational_resampler_xxx_0
   id: rational_resampler_xxx
   parameters:
@@ -318,7 +424,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [632, 156.0]
+    coordinate: [440, 260.0]
     rotation: 0
     state: true
 - name: rational_resampler_xxx_1
@@ -327,7 +433,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    decim: '25'
+    decim: '5'
     fbw: '0'
     interp: '12'
     maxoutbuf: '0'
@@ -338,7 +444,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 372.0]
+    coordinate: [688, 428.0]
     rotation: 0
     state: true
 - name: soapy_hackrf_sink_0
@@ -358,9 +464,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 180.0]
+    coordinate: [664, 284.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: soapy_hackrf_source_0
   id: soapy_hackrf_source
   parameters:
@@ -381,21 +487,22 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [120, 364.0]
+    coordinate: [56, 420.0]
     rotation: 0
-    state: true
+    state: enabled
 
 connections:
-- [analog_sig_source_x_0, '0', analog_wfm_tx_0, '0']
 - [analog_sig_source_x_1, '0', blocks_multiply_xx_0, '1']
-- [analog_wfm_rcv_0, '0', qtgui_time_sink_x_1, '0']
-- [analog_wfm_tx_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_multiply_xx_0, '0', low_pass_filter_0, '0']
+- [blocks_uchar_to_float_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_vector_source_x_0, '0', digital_gfsk_mod_0, '0']
+- [digital_gfsk_demod_0, '0', blocks_uchar_to_float_0, '0']
+- [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
 - [low_pass_filter_0, '0', rational_resampler_xxx_1, '0']
 - [rational_resampler_xxx_0, '0', soapy_hackrf_sink_0, '0']
-- [rational_resampler_xxx_1, '0', analog_wfm_rcv_0, '0']
+- [rational_resampler_xxx_1, '0', digital_gfsk_demod_0, '0']
 - [soapy_hackrf_source_0, '0', blocks_multiply_xx_0, '0']
 
 metadata:
   file_format: 1
-  grc_version: 3.10.5.1
+  grc_version: 3.10.7.0

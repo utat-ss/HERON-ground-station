@@ -1,17 +1,17 @@
 options:
   parameters:
-    author: ''
+    author: Swarnava Ghosh
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
-    copyright: ''
-    description: ''
+    copyright: Universitu of Toronto Aerospace Team
+    description: Transmit a pure carrier wave and receive it on the other end.
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: FM_Radio_rx
+    id: cw_loopback
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: FM Radio RX
+    title: CW Loopback
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -33,110 +33,173 @@ options:
     state: enabled
 
 blocks:
-- name: center_freq
-  id: variable
-  parameters:
-    comment: 'The frequency that
-
-      the HackRF is tuned to'
-    value: 445E6
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [184, 12.0]
-    rotation: 0
-    state: true
-- name: channel1_input
-  id: variable_qtgui_range
-  parameters:
-    comment: 'Select the frequency we
-
-      want to demolate (in MHz)'
-    gui_hint: ''
-    label: Select Frequency
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
-    rangeType: float
-    start: (center_freq - samp_rate/2) / 1E6
-    step: '0.05'
-    stop: (center_freq + samp_rate/2) / 1E6
-    value: center_freq / 1E6
-    widget: dial
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [328, 12.0]
-    rotation: 0
-    state: true
-- name: channel_freq
-  id: variable
-  parameters:
-    comment: 'Convert `channel1_input`
-
-      to Hz'
-    value: channel1_input*(1e6)
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [496, 12.0]
-    rotation: 0
-    state: true
-- name: channel_width
+- name: freq
   id: variable
   parameters:
     comment: ''
-    value: 200e3
+    value: 435e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 140.0]
+    coordinate: [272, 12.0]
+    rotation: 0
+    state: true
+- name: rx_amp
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: ''
+    label: RX RF Amplifier
+    'true': 'True'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [976, 16.0]
+    rotation: 0
+    state: true
+- name: rx_freq_offset
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: RX Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: 10e3
+    step: 10e3
+    stop: 200e3
+    value: 10e3
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [408, 16.0]
+    rotation: 0
+    state: true
+- name: rx_if_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: RX IF Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '40'
+    value: '16'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 16.0]
+    rotation: 0
+    state: true
+- name: rx_vga_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: RX VGA Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '62'
+    value: '16'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [624, 16.0]
     rotation: 0
     state: true
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: 2e6
+    value: 1e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 92.0]
+    coordinate: [184, 12]
     rotation: 0
     state: enabled
-- name: volume
+- name: tx_amp
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: ''
+    label: TX RF Amplifier
+    'true': 'True'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 16.0]
+    rotation: 0
+    state: true
+- name: tx_vga_gain
   id: variable_qtgui_range
   parameters:
     comment: ''
     gui_hint: ''
-    label: ''
+    label: TX VGA Gain
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
-    step: '0.25'
-    stop: '10'
-    value: '1'
+    step: '1'
+    stop: '47'
+    value: '16'
     widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 388.0]
+    coordinate: [736, 16.0]
     rotation: 0
     state: true
-- name: analog_sig_source_x_1
+- name: analog_const_source_x_0
+  id: analog_const_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 208.0]
+    rotation: 0
+    state: true
+- name: analog_sig_source_x_0
   id: analog_sig_source_x
   parameters:
     affinity: ''
     alias: ''
     amp: '1'
     comment: ''
-    freq: center_freq-channel_freq
+    freq: rx_freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
@@ -149,59 +212,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 348.0]
-    rotation: 0
-    state: true
-- name: analog_wfm_rcv_0
-  id: analog_wfm_rcv
-  parameters:
-    affinity: ''
-    alias: ''
-    audio_decimation: '10'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    quad_rate: 480e3
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [728, 260.0]
-    rotation: 0
-    state: true
-- name: audio_sink_0
-  id: audio_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    device_name: ''
-    num_inputs: '1'
-    ok_to_block: 'True'
-    samp_rate: '48000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [920, 396.0]
-    rotation: 0
-    state: true
-- name: blocks_multiply_const_vxx_0
-  id: blocks_multiply_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: volume
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [728, 348.0]
+    coordinate: [256, 408.0]
     rotation: 0
     state: true
 - name: blocks_multiply_xx_0
@@ -219,7 +230,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [328, 248.0]
+    coordinate: [496, 344.0]
     rotation: 0
     state: true
 - name: low_pass_filter_0
@@ -229,24 +240,24 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 75e3
-    decim: '2'
+    cutoff_freq: 10e3
+    decim: '5'
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
     type: fir_filter_ccf
-    width: 25e3
+    width: 1e3
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [528, 196.0]
+    coordinate: [640, 344.0]
     rotation: 0
-    state: true
-- name: qtgui_freq_sink_x_0_0
+    state: enabled
+- name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
     affinity: ''
@@ -262,9 +273,9 @@ blocks:
     alpha8: '1.0'
     alpha9: '1.0'
     autoscale: 'False'
-    average: '0.1'
+    average: '1.0'
     axislabels: 'True'
-    bw: samp_rate
+    bw: samp_rate/5 * 6/25
     color1: '"blue"'
     color10: '"dark blue"'
     color2: '"red"'
@@ -277,8 +288,8 @@ blocks:
     color9: '"dark green"'
     comment: ''
     ctrlpanel: 'True'
-    fc: channel_freq
-    fftsize: '2048'
+    fc: '0'
+    fftsize: '4096'
     freqhalf: 'True'
     grid: 'True'
     gui_hint: ''
@@ -296,7 +307,7 @@ blocks:
     legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    name: '"Radio"'
+    name: '""'
     nconnections: '1'
     norm_window: 'False'
     showports: 'False'
@@ -324,7 +335,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 372.0]
+    coordinate: [1088, 380.0]
     rotation: 0
     state: true
 - name: rational_resampler_xxx_0
@@ -335,7 +346,7 @@ blocks:
     comment: ''
     decim: '25'
     fbw: '0'
-    interp: '12'
+    interp: '6'
     maxoutbuf: '0'
     minoutbuf: '0'
     taps: '[]'
@@ -344,7 +355,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 148.0]
+    coordinate: [848, 372.0]
+    rotation: 0
+    state: enabled
+- name: soapy_hackrf_sink_1
+  id: soapy_hackrf_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: tx_amp
+    bandwidth: '0'
+    center_freq: freq
+    comment: ''
+    dev_args: '"driver=hackrf,serial=9e5f"'
+    samp_rate: samp_rate
+    type: fc32
+    vga: tx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 204.0]
     rotation: 0
     state: true
 - name: soapy_hackrf_source_0
@@ -352,33 +383,31 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    amp: 'False'
+    amp: rx_amp
     bandwidth: '0'
-    center_freq: center_freq
+    center_freq: freq + rx_freq_offset
     comment: ''
-    dev_args: ''
-    gain: '16'
+    dev_args: '"driver=hackrf,serial=915f"'
+    gain: rx_if_gain
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
     type: fc32
-    vga: '16'
+    vga: rx_vga_gain
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 236.0]
+    coordinate: [232, 316.0]
     rotation: 0
     state: true
 
 connections:
-- [analog_sig_source_x_1, '0', blocks_multiply_xx_0, '1']
-- [analog_wfm_rcv_0, '0', blocks_multiply_const_vxx_0, '0']
-- [blocks_multiply_const_vxx_0, '0', audio_sink_0, '0']
+- [analog_const_source_x_0, '0', soapy_hackrf_sink_1, '0']
+- [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
 - [blocks_multiply_xx_0, '0', low_pass_filter_0, '0']
-- [blocks_multiply_xx_0, '0', qtgui_freq_sink_x_0_0, '0']
 - [low_pass_filter_0, '0', rational_resampler_xxx_0, '0']
-- [rational_resampler_xxx_0, '0', analog_wfm_rcv_0, '0']
+- [rational_resampler_xxx_0, '0', qtgui_freq_sink_x_0, '0']
 - [soapy_hackrf_source_0, '0', blocks_multiply_xx_0, '0']
 
 metadata:
