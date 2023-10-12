@@ -206,6 +206,7 @@ blocks:
     alias: ''
     comment: ''
     en_uvec: 'True'
+    log_level: info
   states:
     bus_sink: false
     bus_source: false
@@ -327,10 +328,10 @@ blocks:
     coordinate: [608, 436.0]
     rotation: 180
     state: enabled
-- name: zeromq_sub_msg_source_0
-  id: zeromq_sub_msg_source
+- name: zeromq_pull_msg_source_0
+  id: zeromq_pull_msg_source
   parameters:
-    address: tcp://0.0.0.0:50241
+    address: tcp://127.0.0.1:50241
     affinity: ''
     alias: ''
     bind: 'False'
@@ -342,7 +343,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 308.0]
+    coordinate: [32, 300.0]
     rotation: 0
     state: true
 
@@ -354,9 +355,9 @@ connections:
   '0']
 - [rational_resampler_xxx_0, '0', blocks_tag_debug_0, '0']
 - [rational_resampler_xxx_0, '0', soapy_hackrf_sink_0, '0']
-- [zeromq_sub_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
-- [zeromq_sub_msg_source_0, out, blocks_message_debug_0, print]
+- [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
+- [zeromq_pull_msg_source_0, out, blocks_message_debug_0, print]
 
 metadata:
   file_format: 1
-  grc_version: 3.10.5.1
+  grc_version: 3.10.7.0

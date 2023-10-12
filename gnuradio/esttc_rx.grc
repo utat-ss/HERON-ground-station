@@ -526,10 +526,10 @@ blocks:
     coordinate: [72, 244.0]
     rotation: 0
     state: enabled
-- name: zeromq_pub_msg_sink_0
-  id: zeromq_pub_msg_sink
+- name: zeromq_push_msg_sink_0
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://0.0.0.0:50242
+    address: tcp://*:50242
     affinity: ''
     alias: ''
     bind: 'True'
@@ -539,13 +539,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 532.0]
+    coordinate: [424, 548.0]
     rotation: 180
     state: true
 
 connections:
 - [UTAT_HERON_esttc_deframer_0, crc_fail, blocks_message_debug_0_0, print]
-- [UTAT_HERON_esttc_deframer_0, crc_ok, zeromq_pub_msg_sink_0, in]
+- [UTAT_HERON_esttc_deframer_0, crc_ok, zeromq_push_msg_sink_0, in]
 - [analog_agc_xx_1, '0', rational_resampler_xxx_1, '0']
 - [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
 - [blocks_multiply_xx_0, '0', low_pass_filter_0, '0']

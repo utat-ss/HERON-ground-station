@@ -52,6 +52,7 @@ blocks:
     alias: ''
     comment: ''
     en_uvec: 'True'
+    log_level: info
   states:
     bus_sink: false
     bus_source: false
@@ -109,7 +110,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 64.0]
+    coordinate: [352, 56.0]
     rotation: 0
     state: true
 - name: blocks_throttle_0
@@ -168,26 +169,10 @@ blocks:
     coordinate: [360, 236.0]
     rotation: 0
     state: enabled
-- name: zeromq_pub_msg_sink_0
-  id: zeromq_pub_msg_sink
+- name: zeromq_pull_msg_source_0
+  id: zeromq_pull_msg_source
   parameters:
-    address: tcp://0.0.0.0:50241
-    affinity: ''
-    alias: ''
-    bind: 'True'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1064, 132.0]
-    rotation: 0
-    state: true
-- name: zeromq_sub_msg_source_0
-  id: zeromq_sub_msg_source
-  parameters:
-    address: tcp://0.0.0.0:50242
+    address: tcp://127.0.0.1:50242
     affinity: ''
     alias: ''
     bind: 'False'
@@ -199,18 +184,34 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 404.0]
+    coordinate: [304, 428.0]
+    rotation: 0
+    state: true
+- name: zeromq_push_msg_sink_0
+  id: zeromq_push_msg_sink
+  parameters:
+    address: tcp://*:50241
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1048, 132.0]
     rotation: 0
     state: true
 
 connections:
-- [blocks_message_strobe_2, strobe, zeromq_pub_msg_sink_0, in]
+- [blocks_message_strobe_2, strobe, zeromq_push_msg_sink_0, in]
 - [blocks_null_source_0, '0', blocks_throttle_0, '0']
 - [blocks_throttle_0, '0', blocks_null_sink_0, '0']
-- [pdu_random_pdu_0, pdus, zeromq_pub_msg_sink_0, in]
+- [pdu_random_pdu_0, pdus, zeromq_push_msg_sink_0, in]
 - [variable_qtgui_msg_push_button_0, pressed, pdu_random_pdu_0, generate]
-- [zeromq_sub_msg_source_0, out, blocks_message_debug_0, print]
+- [zeromq_pull_msg_source_0, out, blocks_message_debug_0, print]
 
 metadata:
   file_format: 1
-  grc_version: 3.10.5.1
+  grc_version: 3.10.7.0
