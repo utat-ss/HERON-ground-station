@@ -18,5 +18,6 @@ recordings/*
 
 # Compiled GNURadio files
 hackrf_test/*.py
-gnuradio/*.py
-
+gnuradio/esttc_loopback.py
+gnuradio/esttc_rx.py
+gnuradio/esttc_tx.py
