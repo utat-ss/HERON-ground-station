@@ -313,14 +313,14 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    amp: 'False'
+    amp: 'True'
     bandwidth: '0'
     center_freq: freq
     comment: ''
     dev_args: '"driver=hackrf,serial=29e5f"'
     samp_rate: samp_rate
     type: fc32
-    vga: '16'
+    vga: '40'
   states:
     bus_sink: false
     bus_source: false

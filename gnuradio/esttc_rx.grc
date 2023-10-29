@@ -513,12 +513,12 @@ blocks:
     center_freq: freq + freq_offset
     comment: ''
     dev_args: '"driver=hackrf,serial=f915f"'
-    gain: '16'
+    gain: '40'
     maxoutbuf: '0'
     minoutbuf: '0'
     samp_rate: samp_rate
     type: fc32
-    vga: '16'
+    vga: '50'
   states:
     bus_sink: false
     bus_source: false
