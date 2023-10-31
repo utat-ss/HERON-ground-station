@@ -9,7 +9,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: qt_gui
+    generate_options: no_gui
     hier_block_src_path: '.:'
     id: esttc_rx
     max_nouts: '0'
@@ -209,9 +209,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [80, 364.0]
+    coordinate: [80, 376.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_message_debug_0_0
   id: blocks_message_debug
   parameters:
@@ -244,7 +244,7 @@ blocks:
     bus_structure: null
     coordinate: [360, 376.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: digital_gfsk_demod_0
   id: digital_gfsk_demod
   parameters:
@@ -529,7 +529,7 @@ blocks:
 - name: zeromq_push_msg_sink_0
   id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:50242
+    address: ipc:///tmp/esttc_rx_stream
     affinity: ''
     alias: ''
     bind: 'True'
@@ -539,7 +539,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [424, 548.0]
+    coordinate: [352, 532.0]
     rotation: 180
     state: true
 

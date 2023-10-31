@@ -7,12 +7,10 @@ class _ESTTC_TX_Wrapper:
     def __init__(self):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PUSH)
-        # start flowgraph AFTER socket is bound
-        self.socket.bind('tcp://*:50241')
-        self.tx_flowgraph = Popen(['python3', './esttc_tx.py'])
+        self.socket.connect('ipc:///tmp/esttc_tx_stream')
     
     def __del__(self):
-        self.tx_flowgraph.terminate()
+        # self.tx_flowgraph.terminate()
         self.socket.close()
         self.context.term()
     
@@ -26,13 +24,11 @@ class _ESTTC_RX_Wrapper:
     def __init__(self):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PULL)
-        # start flowgraph BEFORE socket is bound
-        self.rx_flowgraph = Popen(['python3', './esttc_rx.py'])
-        self.socket.connect('tcp://127.0.0.1:50242')
+        self.socket.RCVTIMEO = 3000
+        self.socket.connect('ipc:///tmp/esttc_rx_stream')
     
     def __del__(self):
         self.socket.close()
-        self.rx_flowgraph.terminate()
         self.context.term()
     
     def __call__(self):

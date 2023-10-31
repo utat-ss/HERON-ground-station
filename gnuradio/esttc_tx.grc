@@ -9,7 +9,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: qt_gui
+    generate_options: no_gui
     hier_block_src_path: '.:'
     id: esttc_tx
     max_nouts: '0'
@@ -211,7 +211,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [328, 192.0]
+    coordinate: [336, 176.0]
     rotation: 0
     state: true
 - name: blocks_tag_debug_0
@@ -230,8 +230,8 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [944, 524.0]
-    rotation: 0
+    coordinate: [904, 492.0]
+    rotation: 180
     state: disabled
 - name: digital_gfsk_mod_0
   id: digital_gfsk_mod
@@ -320,7 +320,7 @@ blocks:
     dev_args: '"driver=hackrf,serial=29e5f"'
     samp_rate: samp_rate
     type: fc32
-    vga: '40'
+    vga: '47'
   states:
     bus_sink: false
     bus_source: false
@@ -331,10 +331,10 @@ blocks:
 - name: zeromq_pull_msg_source_0
   id: zeromq_pull_msg_source
   parameters:
-    address: tcp://127.0.0.1:50241
+    address: ipc:///tmp/esttc_tx_stream
     affinity: ''
     alias: ''
-    bind: 'False'
+    bind: 'True'
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
