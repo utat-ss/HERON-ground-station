@@ -21,3 +21,4 @@ hackrf_test/*.py
 gnuradio/esttc_loopback.py
 gnuradio/esttc_rx.py
 gnuradio/esttc_tx.py
+gnuradio/ESTTC_Rx_Tx.py
