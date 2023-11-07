@@ -5,13 +5,13 @@ options:
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
     comment: ''
-    copyright: Universitu of Toronto Aerospace Team
-    description: Transmit a pure carrier wave and receive it on the other end.
+    copyright: University of Toronto Aerospace Team
+    description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: cw_loopback
+    id: hackrf_remote_control
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: CW Loopback
+    title: HackRF Remote Control
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -34,63 +34,104 @@ options:
 
 blocks:
 - name: freq
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: 0, 0, 1, 2
+    label: Frequency
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: 420e6
+    step: 250e3
+    stop: 450e6
     value: 446.040e6
+    widget: counter
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 12.0]
+    coordinate: [280, 16.0]
     rotation: 0
     state: enabled
 - name: rx_amp
-  id: variable
+  id: variable_qtgui_check_box
   parameters:
     comment: ''
+    'false': 'False'
+    gui_hint: 5, 1, 1, 1
+    label: RX RF Amplifier
+    'true': 'True'
+    type: bool
     value: 'True'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1024, 12.0]
+    coordinate: [1240, 16.0]
     rotation: 0
     state: true
 - name: rx_freq_offset
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: 1, 0, 1, 2
+    label: RX Offset
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: -samp_rate/2
+    step: samp_rate/200
+    stop: samp_rate/2
     value: 100e3
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [376, 12.0]
+    coordinate: [408, 16.0]
     rotation: 0
     state: true
 - name: rx_if_gain
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: 3, 0, 1, 1
+    label: RX IF Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '40'
     value: '40'
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [608, 12.0]
+    coordinate: [688, 16.0]
     rotation: 0
     state: true
 - name: rx_vga_gain
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: 4, 0, 1, 1
+    label: RX VGA Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '62'
     value: '50'
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [688, 12.0]
+    coordinate: [792, 16.0]
     rotation: 0
     state: true
 - name: samp_rate
@@ -102,283 +143,302 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [184, 12]
+    coordinate: [192, 20.0]
     rotation: 0
     state: enabled
 - name: squelch_threshold
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: 2, 0, 1, 2
+    label: Squelch Threshold (dB)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-100'
+    step: '1'
+    stop: '0'
     value: '-50'
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [480, 12.0]
+    coordinate: [520, 16.0]
     rotation: 0
     state: true
 - name: tx_amp
-  id: variable
+  id: variable_qtgui_check_box
   parameters:
     comment: ''
+    'false': 'False'
+    gui_hint: 4, 1, 1, 1
+    label: TX RF Amplifier
+    'true': 'True'
+    type: bool
     value: 'True'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [952, 12.0]
+    coordinate: [1112, 16.0]
     rotation: 0
     state: true
 - name: tx_vga_gain
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: 3, 1, 1, 1
+    label: TX VGA Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '47'
     value: '47'
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [784, 12.0]
+    coordinate: [904, 16.0]
     rotation: 0
     state: true
 - name: volume
-  id: variable
+  id: variable_qtgui_range
   parameters:
     comment: ''
+    gui_hint: 5, 0, 1, 1
+    label: Volume
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.1'
+    stop: '10'
     value: '1'
+    widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [880, 12.0]
+    coordinate: [1016, 16.0]
     rotation: 0
     state: true
-- name: analog_const_source_x_0
-  id: analog_const_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: complex
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [128, 208.0]
-    rotation: 0
-    state: true
-- name: analog_sig_source_x_0
-  id: analog_sig_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: '1'
-    comment: ''
-    freq: rx_freq_offset
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    phase: '0'
-    samp_rate: samp_rate
-    showports: 'False'
-    type: complex
-    waveform: analog.GR_COS_WAVE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [96, 408.0]
-    rotation: 0
-    state: true
-- name: blocks_multiply_xx_0
-  id: blocks_multiply_xx
+- name: blocks_var_to_msg_0
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_inputs: '2'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [336, 344.0]
-    rotation: 0
-    state: true
-- name: gpredict_MsgPairToVar_0
-  id: gpredict_MsgPairToVar
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
+    msgname: freq
     target: freq
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 40.0]
+    coordinate: [568, 196.0]
     rotation: 0
     state: true
-- name: gpredict_MsgPairToVar_0_0
-  id: gpredict_MsgPairToVar
+- name: blocks_var_to_msg_0_0
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
     comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: rx_freq_offset
     target: rx_freq_offset
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 112.0]
+    coordinate: [568, 268.0]
     rotation: 0
     state: true
-- name: gpredict_MsgPairToVar_0_0_0
-  id: gpredict_MsgPairToVar
+- name: blocks_var_to_msg_0_0_0
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
     comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: rx_vga_gain
     target: rx_vga_gain
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 328.0]
+    coordinate: [568, 484.0]
     rotation: 0
     state: true
-- name: gpredict_MsgPairToVar_0_0_0_0
-  id: gpredict_MsgPairToVar
+- name: blocks_var_to_msg_0_1
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    target: tx_amp
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1464, 544.0]
-    rotation: 0
-    state: true
-- name: gpredict_MsgPairToVar_0_1
-  id: gpredict_MsgPairToVar
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: squelch_threshold
     target: squelch_threshold
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 184.0]
+    coordinate: [568, 340.0]
     rotation: 0
     state: true
-- name: gpredict_MsgPairToVar_0_1_0
-  id: gpredict_MsgPairToVar
+- name: blocks_var_to_msg_0_1_0
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
     comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: tx_vga_gain
     target: tx_vga_gain
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 400.0]
+    coordinate: [568, 556.0]
     rotation: 0
     state: true
-- name: gpredict_MsgPairToVar_0_1_0_0
-  id: gpredict_MsgPairToVar
+- name: blocks_var_to_msg_0_2
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    target: rx_amp
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1464, 616.0]
-    rotation: 0
-    state: true
-- name: gpredict_MsgPairToVar_0_2
-  id: gpredict_MsgPairToVar
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: rx_if_gain
     target: rx_if_gain
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 256.0]
+    coordinate: [568, 412.0]
     rotation: 0
     state: true
-- name: gpredict_MsgPairToVar_0_2_0
-  id: gpredict_MsgPairToVar
+- name: blocks_var_to_msg_0_3
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
     comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: volume
     target: volume
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1464, 472.0]
+    coordinate: [568, 628.0]
     rotation: 0
     state: true
-- name: low_pass_filter_0
-  id: low_pass_filter
+- name: blocks_var_to_msg_0_3_0
+  id: blocks_var_to_msg
   parameters:
     affinity: ''
     alias: ''
-    beta: '6.76'
     comment: ''
-    cutoff_freq: 10e3
-    decim: '5'
-    gain: '1'
-    interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fir_filter_ccf
-    width: 1e3
-    win: window.WIN_HAMMING
+    msgname: tx_amp
+    target: tx_amp
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [480, 344.0]
+    coordinate: [568, 700.0]
     rotation: 0
-    state: enabled
-- name: network_tcp_sink_0
-  id: network_tcp_sink
+    state: true
+- name: blocks_var_to_msg_0_3_1
+  id: blocks_var_to_msg
   parameters:
-    addr: 127.0.0.1
     affinity: ''
     alias: ''
     comment: ''
-    mode: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: rx_amp
+    target: rx_amp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [568, 772.0]
+    rotation: 0
+    state: true
+- name: ip
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: IP Address
+    short_id: ''
+    type: str
+    value: 127.0.0.1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 164.0]
+    rotation: 0
+    state: true
+- name: network_tcp_source_0
+  id: network_tcp_source
+  parameters:
+    addr: ip
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
     port: '52100'
+    server: 'False'
     type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [920, 388.0]
+    coordinate: [112, 588.0]
     rotation: 0
     state: true
+- name: network_udp_source_0
+  id: network_udp_source
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    header: '0'
+    ipv6: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    notify_missed: 'False'
+    payloadsize: '1472'
+    port: '52100'
+    src_zeros: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 432.0]
+    rotation: 0
+    state: disabled
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -397,7 +457,7 @@ blocks:
     autoscale: 'False'
     average: '1.0'
     axislabels: 'True'
-    bw: samp_rate/5 * 6/25
+    bw: 48e3
     color1: '"blue"'
     color10: '"dark blue"'
     color2: '"red"'
@@ -411,10 +471,10 @@ blocks:
     comment: ''
     ctrlpanel: 'True'
     fc: '0'
-    fftsize: '4096'
+    fftsize: '2048'
     freqhalf: 'True'
-    grid: 'True'
-    gui_hint: ''
+    grid: 'False'
+    gui_hint: 6, 0, 10, 2
     label: Relative Gain
     label1: ''
     label10: ''''''
@@ -457,252 +517,229 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [920, 284.0]
-    rotation: 0
-    state: disabled
-- name: rational_resampler_xxx_0
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '25'
-    fbw: '0'
-    interp: '6'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: '[]'
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [688, 372.0]
-    rotation: 0
-    state: enabled
-- name: soapy_hackrf_sink_1
-  id: soapy_hackrf_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: tx_amp
-    bandwidth: '0'
-    center_freq: freq
-    comment: ''
-    dev_args: '"driver=hackrf,serial=9e5f"'
-    samp_rate: samp_rate
-    type: fc32
-    vga: tx_vga_gain
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [400, 204.0]
+    coordinate: [304, 364.0]
     rotation: 0
     state: true
-- name: soapy_hackrf_source_0
-  id: soapy_hackrf_source
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
   parameters:
     affinity: ''
     alias: ''
-    amp: rx_amp
-    bandwidth: '0'
-    center_freq: freq + rx_freq_offset
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: 48e3
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
     comment: ''
-    dev_args: '"driver=hackrf,serial=915f"'
-    gain: rx_if_gain
+    fc: '0'
+    fftsize: '8192'
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: 0, 3, 16, 2
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fc32
-    vga: rx_vga_gain
+    name: '""'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.10'
+    wintype: window.WIN_BLACKMAN_hARRIS
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [72, 316.0]
+    coordinate: [304, 452.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52101
+    address: '"tcp://"+ip+":52101"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 28.0]
+    coordinate: [928, 196.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_0
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_0
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52102
+    address: '"tcp://"+ip+":52102"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 100.0]
+    coordinate: [928, 268.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_0_0
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_0_0
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52105
+    address: '"tcp://"+ip+":52105"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 316.0]
+    coordinate: [928, 484.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_0_0_0
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_1
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52108
+    address: '"tcp://"+ip+":52103"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 532.0]
+    coordinate: [928, 340.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_1
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_1_0
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52103
+    address: '"tcp://"+ip+":52106"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 172.0]
+    coordinate: [928, 556.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_1_0
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_2
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52106
+    address: '"tcp://"+ip+":52104"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 388.0]
+    coordinate: [928, 412.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_1_0_0
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_3
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52109
+    address: '"tcp://"+ip+":52107"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 604.0]
+    coordinate: [928, 628.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_2
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_3_0
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52104
+    address: '"tcp://"+ip+":52108"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 244.0]
+    coordinate: [928, 700.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_2_0
-  id: zeromq_pull_msg_source
+- name: zeromq_push_msg_sink_0_3_1
+  id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:52107
+    address: '"tcp://"+ip+":52109"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 460.0]
+    coordinate: [928, 772.0]
     rotation: 0
     state: true
 
 connections:
-- [analog_const_source_x_0, '0', soapy_hackrf_sink_1, '0']
-- [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
-- [blocks_multiply_xx_0, '0', low_pass_filter_0, '0']
-- [low_pass_filter_0, '0', rational_resampler_xxx_0, '0']
-- [rational_resampler_xxx_0, '0', network_tcp_sink_0, '0']
-- [rational_resampler_xxx_0, '0', qtgui_freq_sink_x_0, '0']
-- [soapy_hackrf_source_0, '0', blocks_multiply_xx_0, '0']
-- [zeromq_pull_msg_source_0, out, gpredict_MsgPairToVar_0, inpair]
-- [zeromq_pull_msg_source_0_0, out, gpredict_MsgPairToVar_0_0, inpair]
-- [zeromq_pull_msg_source_0_0_0, out, gpredict_MsgPairToVar_0_0_0, inpair]
-- [zeromq_pull_msg_source_0_0_0_0, out, gpredict_MsgPairToVar_0_0_0_0, inpair]
-- [zeromq_pull_msg_source_0_1, out, gpredict_MsgPairToVar_0_1, inpair]
-- [zeromq_pull_msg_source_0_1_0, out, gpredict_MsgPairToVar_0_1_0, inpair]
-- [zeromq_pull_msg_source_0_1_0_0, out, gpredict_MsgPairToVar_0_1_0_0, inpair]
-- [zeromq_pull_msg_source_0_2, out, gpredict_MsgPairToVar_0_2, inpair]
-- [zeromq_pull_msg_source_0_2_0, out, gpredict_MsgPairToVar_0_2_0, inpair]
+- [blocks_var_to_msg_0, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_0, msgout, zeromq_push_msg_sink_0_0, in]
+- [blocks_var_to_msg_0_0_0, msgout, zeromq_push_msg_sink_0_0_0, in]
+- [blocks_var_to_msg_0_1, msgout, zeromq_push_msg_sink_0_1, in]
+- [blocks_var_to_msg_0_1_0, msgout, zeromq_push_msg_sink_0_1_0, in]
+- [blocks_var_to_msg_0_2, msgout, zeromq_push_msg_sink_0_2, in]
+- [blocks_var_to_msg_0_3, msgout, zeromq_push_msg_sink_0_3, in]
+- [blocks_var_to_msg_0_3_0, msgout, zeromq_push_msg_sink_0_3_0, in]
+- [blocks_var_to_msg_0_3_1, msgout, zeromq_push_msg_sink_0_3_1, in]
+- [network_tcp_source_0, '0', qtgui_freq_sink_x_0, '0']
+- [network_tcp_source_0, '0', qtgui_waterfall_sink_x_0, '0']
+- [network_udp_source_0, '0', qtgui_freq_sink_x_0, '0']
+- [network_udp_source_0, '0', qtgui_waterfall_sink_x_0, '0']
 
 metadata:
   file_format: 1
