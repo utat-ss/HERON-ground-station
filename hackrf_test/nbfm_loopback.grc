@@ -265,7 +265,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [104, 320.0]
+    coordinate: [112, 320.0]
     rotation: 0
     state: disabled
 - name: blocks_freqshift_cc_0
@@ -572,7 +572,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [664, 476.0]
+    coordinate: [672, 476.0]
     rotation: 0
     state: true
 - name: soapy_hackrf_sink_1

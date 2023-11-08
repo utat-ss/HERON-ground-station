@@ -388,7 +388,7 @@ blocks:
     label: IP Address
     short_id: ''
     type: str
-    value: 127.0.0.1
+    value: 10.0.7.38
   states:
     bus_sink: false
     bus_source: false
@@ -413,32 +413,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [112, 588.0]
+    coordinate: [88, 452.0]
     rotation: 0
     state: true
-- name: network_udp_source_0
-  id: network_udp_source
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    header: '0'
-    ipv6: 'False'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    notify_missed: 'False'
-    payloadsize: '1472'
-    port: '52100'
-    src_zeros: 'False'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [32, 432.0]
-    rotation: 0
-    state: disabled
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -738,8 +715,6 @@ connections:
 - [blocks_var_to_msg_0_3_1, msgout, zeromq_push_msg_sink_0_3_1, in]
 - [network_tcp_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [network_tcp_source_0, '0', qtgui_waterfall_sink_x_0, '0']
-- [network_udp_source_0, '0', qtgui_freq_sink_x_0, '0']
-- [network_udp_source_0, '0', qtgui_waterfall_sink_x_0, '0']
 
 metadata:
   file_format: 1
