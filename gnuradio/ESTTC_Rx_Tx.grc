@@ -234,7 +234,7 @@ blocks:
     alias: ''
     comment: ''
     gain: '1'
-    max_gain: '100'
+    max_gain: '10'
     maxoutbuf: '0'
     minoutbuf: '0'
     rate: 625e-6

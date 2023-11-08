@@ -186,7 +186,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 364.0]
+    coordinate: [736, 372.0]
     rotation: 0
     state: true
 - name: analog_sig_source_x_0
@@ -558,4 +558,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.7.0
+  grc_version: 3.10.8.0
