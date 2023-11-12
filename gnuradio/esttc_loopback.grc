@@ -9,7 +9,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: qt_gui
+    generate_options: no_gui
     hier_block_src_path: '.:'
     id: esttc_loopback
     max_nouts: '0'
@@ -33,6 +33,18 @@ options:
     state: enabled
 
 blocks:
+- name: message
+  id: variable
+  parameters:
+    comment: ''
+    value: '"VE3SGH Test"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [408, 148.0]
+    rotation: 0
+    state: true
 - name: samp_rate
   id: variable
   parameters:
@@ -57,9 +69,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 416.0]
+    coordinate: [688, 320.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_message_strobe_2
   id: blocks_message_strobe
   parameters:
@@ -68,32 +80,15 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    msg: pmt.cons(pmt.PMT_NIL, pmt.make_u8vector(20, 0xCC))
-    period: '500'
+    msg: pmt.cons(pmt.PMT_NIL, pmt.init_u8vector(len(message), [ord(c) for c in message]))
+    period: '1000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 132.0]
+    coordinate: [408, 220.0]
     rotation: 0
-    state: disabled
-- name: blocks_null_sink_0
-  id: blocks_null_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bus_structure_sink: '[[0,],]'
-    comment: ''
-    num_inputs: '1'
-    type: complex
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [696, 64.0]
-    rotation: 0
-    state: true
+    state: enabled
 - name: blocks_null_source_0
   id: blocks_null_source
   parameters:
@@ -132,47 +127,27 @@ blocks:
     coordinate: [512, 28.0]
     rotation: 0
     state: true
-- name: pdu_random_pdu_0
-  id: pdu_random_pdu
+- name: ip
+  id: parameter
   parameters:
-    affinity: ''
     alias: ''
     comment: ''
-    length_modulo: '1'
-    mask: '0xFF'
-    maxoutbuf: '0'
-    maxsize: '10'
-    minoutbuf: '0'
-    minsize: '10'
+    hide: none
+    label: Host IP Address
+    short_id: ''
+    type: str
+    value: 10.0.7.38
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 228.0]
+    coordinate: [192, 92.0]
     rotation: 0
-    state: enabled
-- name: variable_qtgui_msg_push_button_0
-  id: variable_qtgui_msg_push_button
-  parameters:
-    comment: ''
-    gui_hint: ''
-    label: ''
-    msgName: pressed
-    relBackgroundColor: default
-    relFontColor: default
-    type: int
-    value: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [360, 236.0]
-    rotation: 0
-    state: enabled
+    state: true
 - name: zeromq_pull_msg_source_0
   id: zeromq_pull_msg_source
   parameters:
-    address: tcp://127.0.0.1:50242
+    address: '"tcp://"+ip+":50492"'
     affinity: ''
     alias: ''
     bind: 'False'
@@ -184,34 +159,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 428.0]
+    coordinate: [368, 332.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: zeromq_push_msg_sink_0
   id: zeromq_push_msg_sink
   parameters:
-    address: tcp://*:50241
+    address: '"tcp://"+ip+":50491"'
     affinity: ''
     alias: ''
-    bind: 'True'
+    bind: 'False'
     comment: ''
     timeout: '100'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 132.0]
+    coordinate: [680, 220.0]
     rotation: 0
     state: true
 
 connections:
 - [blocks_message_strobe_2, strobe, zeromq_push_msg_sink_0, in]
 - [blocks_null_source_0, '0', blocks_throttle_0, '0']
-- [blocks_throttle_0, '0', blocks_null_sink_0, '0']
-- [pdu_random_pdu_0, pdus, zeromq_push_msg_sink_0, in]
-- [variable_qtgui_msg_push_button_0, pressed, pdu_random_pdu_0, generate]
 - [zeromq_pull_msg_source_0, out, blocks_message_debug_0, print]
 
 metadata:
   file_format: 1
-  grc_version: 3.10.7.0
+  grc_version: 3.10.8.0
