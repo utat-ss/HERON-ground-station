@@ -274,7 +274,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    freq: '0.0'
+    freq: rx_freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: samp_rate
