@@ -428,6 +428,51 @@ blocks:
     coordinate: [1008, 316.0]
     rotation: 0
     state: enabled
+- name: epy_block_0
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport pmt\nimport time\n\nclass blk(gr.sync_block):\
+      \  # other base classes are basic_block, decim_block, interp_block\n    \"\"\
+      \"Embedded Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self,\
+      \ baud_rate=9600):  # only default arguments here\n        \"\"\"arguments to\
+      \ this function show up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n\
+      \            self,\n            name='PTT',   # will show up in GRC\n      \
+      \      in_sig=None,\n            out_sig=None\n        )\n        # if an attribute\
+      \ with the same name as a parameter is found,\n        # a callback is registered\
+      \ (properties work, too).\n        self.baud_rate = baud_rate\n        self.message_port_register_in(pmt.intern('tx_mag'))\n\
+      \        self.message_port_register_out(pmt.intern('tx_amp'))\n        self.message_port_register_out(pmt.intern('tx_vga_gain'))\n\
+      \n        self.set_msg_handler(pmt.intern('tx_mag'), self.handle_msg)\n\n\n\
+      \    def handle_msg(self, msg):\n        msg = pmt.cdr(msg)\n        msg = pmt.u8vector_elements(msg)\n\
+      \        length = len(msg)*8 + 72\n        tx_time = length/baud_rate\n    \
+      \    self.message_port_pub(\n            pmt.intern(\"tx_amp\"),\n         \
+      \   pmt.cons(pmt.intern(\"tx_amp\"), True))\n        self.message_port_pub(\n\
+      \            pmt.intern(\"tx_vga_gain\"),\n            pmt.cons(pmt.intern(\"\
+      tx_vga_gain\"), 47))\n        time.sleep(tx_time)\n        self.message_port_pub(\n\
+      \            pmt.intern(\"tx_amp\"),\n            pmt.cons(pmt.intern(\"tx_amp\"\
+      ), False))\n        self.message_port_pub(\n            pmt.intern(\"tx_vga_gain\"\
+      ),\n            pmt.cons(pmt.intern(\"tx_vga_gain\"), 0))\n\n    def work(self,\
+      \ input_items, output_items):\n        \"\"\"example: multiply with constant\"\
+      \"\"\n        return 0\n"
+    affinity: ''
+    alias: ''
+    baud_rate: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('PTT', 'blk', [('baud_rate', '9600')], [('tx_mag', 'message', 1)],
+      [('tx_vga_gain', 'message', 1), ('tx_amp', 'message', 1)], 'Embedded Python
+      Block example - a simple multiply const', ['baud_rate'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [248, 432.0]
+    rotation: 0
+    state: true
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -983,6 +1028,8 @@ connections:
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
 - [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
+- [epy_block_0, tx_amp, gpredict_MsgPairToVar_0_0_0_0, inpair]
+- [epy_block_0, tx_vga_gain, gpredict_MsgPairToVar_0_1_0, inpair]
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [low_pass_filter_0, '0', analog_agc_xx_1, '0']
@@ -996,6 +1043,7 @@ connections:
 - [rational_resampler_xxx_1, '0', network_tcp_sink_0, '0']
 - [soapy_hackrf_source_0, '0', blocks_freqshift_cc_1, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
+- [zeromq_pull_msg_source_0, out, epy_block_0, tx_mag]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
 - [zeromq_pull_msg_source_0_0, out, gpredict_MsgPairToVar_0_0, inpair]
 - [zeromq_pull_msg_source_0_0_0, out, gpredict_MsgPairToVar_0_0_0, inpair]
