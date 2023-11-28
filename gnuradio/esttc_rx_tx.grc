@@ -459,7 +459,7 @@ blocks:
       \"\"\n        return 0\n"
     affinity: ''
     alias: ''
-    baud_rate: ''
+    baud_rate: '9600'
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
