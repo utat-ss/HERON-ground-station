@@ -1121,6 +1121,8 @@ connections:
 - [zeromq_pull_msg_source_0_1_0_0, out, gpredict_MsgPairToVar_0_1_0_0, inpair]
 - [zeromq_pull_msg_source_0_2, out, gpredict_MsgPairToVar_0_2, inpair]
 - [zeromq_pull_msg_source_0_2_0, out, gpredict_MsgPairToVar_0_2_0, inpair]
+- [zeromq_pull_msg_source_0_3, out, blocks_msgpair_to_var_0, inpair]
+- [zeromq_pull_msg_source_0_3, out, blocks_msgpair_to_var_1, inpair]
 - [zeromq_pull_msg_source_0_3, out, gpredict_MsgPairToVar_0, inpair]
 
 metadata:
