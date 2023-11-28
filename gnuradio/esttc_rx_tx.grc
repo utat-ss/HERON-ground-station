@@ -360,6 +360,7 @@ blocks:
     alias: ''
     comment: ''
     en_uvec: 'True'
+    log_level: info
   states:
     bus_sink: false
     bus_source: false
@@ -734,7 +735,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 700.0]
+    coordinate: [1200, 744.0]
     rotation: 0
     state: true
 - name: pdu_add_system_time_0
@@ -840,6 +841,26 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [832, 548.0]
+    rotation: 0
+    state: true
+- name: rational_resampler_xxx_1_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '10'
+    fbw: '0'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1008, 728.0]
     rotation: 0
     state: true
 - name: soapy_hackrf_sink_0
@@ -1108,7 +1129,8 @@ connections:
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
 - [rational_resampler_xxx_1, '0', digital_gfsk_demod_0, '0']
-- [rational_resampler_xxx_1, '0', network_tcp_sink_0, '0']
+- [rational_resampler_xxx_1, '0', rational_resampler_xxx_1_0, '0']
+- [rational_resampler_xxx_1_0, '0', network_tcp_sink_0, '0']
 - [soapy_hackrf_source_0, '0', blocks_freqshift_cc_1, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, epy_block_0, tx_mag]
@@ -1127,4 +1149,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.5.1
+  grc_version: 3.10.8.0

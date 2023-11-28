@@ -413,7 +413,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [88, 452.0]
+    coordinate: [80, 456.0]
     rotation: 0
     state: true
 - name: qtgui_freq_sink_x_0
@@ -494,7 +494,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 364.0]
+    coordinate: [368, 360.0]
     rotation: 0
     state: true
 - name: qtgui_waterfall_sink_x_0
@@ -555,7 +555,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 452.0]
+    coordinate: [368, 456.0]
     rotation: 0
     state: true
 - name: zeromq_push_msg_sink_0
