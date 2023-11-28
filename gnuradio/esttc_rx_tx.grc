@@ -360,7 +360,6 @@ blocks:
     alias: ''
     comment: ''
     en_uvec: 'True'
-    log_level: debug
   states:
     bus_sink: false
     bus_source: false
@@ -512,15 +511,15 @@ blocks:
       \        self.message_port_register_out(pmt.intern('tx_amp'))\n        self.message_port_register_out(pmt.intern('tx_vga_gain'))\n\
       \        self.set_msg_handler(pmt.intern('tx_mag'), self.handle_msg)\n\n   \
       \ def handle_msg(self, msg):\n        msg = pmt.cdr(msg)\n        msg = pmt.u8vector_elements(msg)\n\
-      \        length = (len(msg)+self.padding_nbytes)*8 + 72\n        tx_time = length/baud_rate\n\
+      \        length = (len(msg)+self.padding_nbytes)*8 + 72\n        tx_time = length/self.baud_rate\n\
       \        self.message_port_pub(\n            pmt.intern(\"tx_amp\"),\n     \
-      \       pmt.cons(pmt.intern(\"tx_amp\"), True))\n        self.message_port_pub(\n\
+      \       pmt.cons(pmt.intern(\"tx_amp\"), pmt.PMT_T))\n        self.message_port_pub(\n\
       \            pmt.intern(\"tx_vga_gain\"),\n            pmt.cons(pmt.intern(\"\
-      tx_vga_gain\"), 47))\n        time.sleep(tx_time)\n        self.message_port_pub(\n\
+      tx_vga_gain\"), pmt.to_pmt(47)))\n        time.sleep(tx_time)\n        self.message_port_pub(\n\
       \            pmt.intern(\"tx_amp\"),\n            pmt.cons(pmt.intern(\"tx_amp\"\
-      ), False))\n        self.message_port_pub(\n            pmt.intern(\"tx_vga_gain\"\
-      ),\n            pmt.cons(pmt.intern(\"tx_vga_gain\"), 0))\n\n    def work(self,\
-      \ input_items, output_items):\n        return 0\n"
+      ), pmt.PMT_F))\n        self.message_port_pub(\n            pmt.intern(\"tx_vga_gain\"\
+      ),\n            pmt.cons(pmt.intern(\"tx_vga_gain\"), pmt.to_pmt(0)))\n\n  \
+      \  def work(self, input_items, output_items):\n        return 0\n"
     affinity: ''
     alias: ''
     baud_rate: '9600'
@@ -1126,4 +1125,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.8.0
+  grc_version: 3.10.5.1

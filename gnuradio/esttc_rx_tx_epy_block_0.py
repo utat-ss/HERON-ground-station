@@ -25,20 +25,20 @@ class blk(gr.sync_block):
         msg = pmt.cdr(msg)
         msg = pmt.u8vector_elements(msg)
         length = (len(msg)+self.padding_nbytes)*8 + 72
-        tx_time = length/baud_rate
+        tx_time = length/self.baud_rate
         self.message_port_pub(
             pmt.intern("tx_amp"),
-            pmt.cons(pmt.intern("tx_amp"), True))
+            pmt.cons(pmt.intern("tx_amp"), pmt.PMT_T))
         self.message_port_pub(
             pmt.intern("tx_vga_gain"),
-            pmt.cons(pmt.intern("tx_vga_gain"), 47))
+            pmt.cons(pmt.intern("tx_vga_gain"), pmt.to_pmt(47)))
         time.sleep(tx_time)
         self.message_port_pub(
             pmt.intern("tx_amp"),
-            pmt.cons(pmt.intern("tx_amp"), False))
+            pmt.cons(pmt.intern("tx_amp"), pmt.PMT_F))
         self.message_port_pub(
             pmt.intern("tx_vga_gain"),
-            pmt.cons(pmt.intern("tx_vga_gain"), 0))
+            pmt.cons(pmt.intern("tx_vga_gain"), pmt.to_pmt(0)))
 
     def work(self, input_items, output_items):
         return 0
