@@ -15,7 +15,7 @@ class _ESTTC_TX_Wrapper:
         self.context.term()
     
     def __call__(self, message):
-        if isinstance(message, str)
+        if isinstance(message, str):
             message = [ord(c) for c in message]
         message = pmt.init_u8vector(len(message), message)
         message = pmt.cons(pmt.PMT_NIL, message)
@@ -38,7 +38,7 @@ class _ESTTC_RX_Wrapper:
         message = pmt.deserialize_str(message)
         message = pmt.cdr(message)
         message = pmt.u8vector_elements(message)
-        if(self.interpret_as_string)
+        if(self.interpret_as_string):
             message = ''.join(chr(c) for c in message)
         return message
 
