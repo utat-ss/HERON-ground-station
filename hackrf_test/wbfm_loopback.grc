@@ -233,7 +233,7 @@ blocks:
     alias: ''
     amp: '1'
     comment: ''
-    freq: rx_freq_offset - 6e3
+    freq: rx_freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
     offset: '0'
@@ -608,7 +608,7 @@ blocks:
     alias: ''
     amp: rx_amp
     bandwidth: '0'
-    center_freq: freq + rx_freq_offset - 3e3
+    center_freq: freq + rx_freq_offset
     comment: ''
     dev_args: '"driver=hackrf,serial=915f"'
     gain: rx_if_gain
