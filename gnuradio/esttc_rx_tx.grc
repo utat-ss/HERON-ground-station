@@ -133,7 +133,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '50'
+    value: '5'
   states:
     bus_sink: false
     bus_source: false
@@ -262,7 +262,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1288, 568.0]
+    coordinate: [1288, 560.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_esttc_framer_0
@@ -316,7 +316,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [664, 548.0]
+    coordinate: [864, 544.0]
     rotation: 0
     state: true
 - name: blocks_freqshift_cc_0
@@ -325,7 +325,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    freq: tx_freq-freq
+    freq: tx_freq-freq+rx_freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: samp_rate
@@ -333,7 +333,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1704, 312.0]
+    coordinate: [1712, 312.0]
     rotation: 0
     state: true
 - name: blocks_freqshift_cc_1
@@ -350,7 +350,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [264, 564.0]
+    coordinate: [264, 560.0]
     rotation: 0
     state: true
 - name: blocks_message_debug_0
@@ -475,7 +475,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1048, 528.0]
+    coordinate: [1040, 528.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_mod_0
@@ -538,7 +538,7 @@ blocks:
     bus_structure: null
     coordinate: [328, 408.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -683,6 +683,63 @@ blocks:
     coordinate: [344, 760.0]
     rotation: 0
     state: true
+- name: iio_pluto_sink_0
+  id: iio_pluto_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attenuation1: '0'
+    bandwidth: '20000000'
+    buffer_size: 2**17
+    comment: ''
+    cyclic: 'False'
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: int(freq)
+    fstop: '0'
+    len_tag_key: ''
+    samplerate: int(samp_rate)
+    type: fc32
+    uri: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1928, 428.0]
+    rotation: 0
+    state: disabled
+- name: iio_pluto_source_0
+  id: iio_pluto_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '20000000'
+    bbdc: 'True'
+    buffer_size: 2**17
+    comment: ''
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: int(freq + rx_freq_offset)
+    fstop: '0'
+    gain1: '''manual'''
+    len_tag_key: packet_len
+    manual_gain1: '64'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quadrature: 'True'
+    rfdc: 'True'
+    samplerate: int(samp_rate)
+    type: fc32
+    uri: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [40, 668.0]
+    rotation: 0
+    state: disabled
 - name: import_0
   id: import
   parameters:
@@ -703,9 +760,33 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 10e3
-    decim: '1'
+    cutoff_freq: 75e3
+    decim: '5'
     gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_ccf
+    width: 25e3
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 516.0]
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 10e3
+    decim: '25'
+    gain: '6'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -717,7 +798,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 520.0]
+    coordinate: [672, 516.0]
     rotation: 0
     state: enabled
 - name: network_tcp_sink_0
@@ -735,7 +816,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 744.0]
+    coordinate: [1056, 680.0]
     rotation: 0
     state: true
 - name: pdu_add_system_time_0
@@ -767,7 +848,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1928, 440.0]
+    coordinate: [1592, 480.0]
     rotation: 0
     state: true
 - name: pdu_add_system_time_1_0
@@ -783,7 +864,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1928, 488.0]
+    coordinate: [1592, 528.0]
     rotation: 0
     state: true
 - name: pdu_pdu_to_tagged_stream_0_0_0
@@ -809,9 +890,9 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    decim: '12'
+    decim: '6'
     fbw: '0'
-    interp: '25'
+    interp: '125'
     maxoutbuf: '0'
     minoutbuf: '0'
     taps: '[]'
@@ -823,46 +904,6 @@ blocks:
     coordinate: [1528, 296.0]
     rotation: 0
     state: enabled
-- name: rational_resampler_xxx_1
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '25'
-    fbw: '0'
-    interp: '12'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: '[]'
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 548.0]
-    rotation: 0
-    state: true
-- name: rational_resampler_xxx_1_0
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '10'
-    fbw: '0'
-    interp: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: '[]'
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1008, 728.0]
-    rotation: 0
-    state: true
 - name: soapy_hackrf_sink_0
   id: soapy_hackrf_sink
   parameters:
@@ -870,7 +911,7 @@ blocks:
     alias: ''
     amp: tx_amp
     bandwidth: '0'
-    center_freq: freq
+    center_freq: freq-rx_freq_offset
     comment: ''
     dev_args: '"driver=hackrf,serial=9e5f"'
     samp_rate: samp_rate
@@ -880,7 +921,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 320.0]
+    coordinate: [1920, 320.0]
     rotation: 0
     state: enabled
 - name: soapy_hackrf_source_0
@@ -903,7 +944,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 556.0]
+    coordinate: [32, 552.0]
     rotation: 0
     state: enabled
 - name: zeromq_pull_msg_source_0
@@ -1109,7 +1150,9 @@ connections:
 - [UTAT_HERON_esttc_deframer_0, crc_ok, zeromq_push_msg_sink_0, in]
 - [UTAT_HERON_esttc_framer_0, pdu_out, pdu_pdu_to_tagged_stream_0_0_0, pdus]
 - [UTAT_HERON_tagged_stream_fixed_length_padder_0, '0', digital_gfsk_mod_0, '0']
-- [analog_agc_xx_1, '0', rational_resampler_xxx_1, '0']
+- [analog_agc_xx_1, '0', digital_gfsk_demod_0, '0']
+- [analog_agc_xx_1, '0', network_tcp_sink_0, '0']
+- [blocks_freqshift_cc_0, '0', iio_pluto_sink_0, '0']
 - [blocks_freqshift_cc_0, '0', soapy_hackrf_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
 - [blocks_stream_to_tagged_stream_0, '0', blocks_tagged_stream_mux_0, '0']
@@ -1122,15 +1165,14 @@ connections:
 - [epy_block_0, tx_vga_gain, gpredict_MsgPairToVar_0_1_0, inpair]
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
-- [low_pass_filter_0, '0', analog_agc_xx_1, '0']
+- [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
+- [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
+- [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, print]
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
-- [rational_resampler_xxx_1, '0', digital_gfsk_demod_0, '0']
-- [rational_resampler_xxx_1, '0', rational_resampler_xxx_1_0, '0']
-- [rational_resampler_xxx_1_0, '0', network_tcp_sink_0, '0']
 - [soapy_hackrf_source_0, '0', blocks_freqshift_cc_1, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, epy_block_0, tx_mag]
