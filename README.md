@@ -4,7 +4,7 @@ Ground station documentation describing the use of this repository as well as th
 
 ## GNURadio Set-up
 * Download and install GNURadio v3.8 through whatever means you want. Technically PyBOMBS is preferred, but any method should function
-* Clone the gr-utat repository as well as gr-osmosdr (https://github.com/osmocom/gr-osmosdr)
+* Clone the gr-utat repository as well as gr-osmosdr (https://github.com/osmocom/gr-osmosdr) and gr-gpredict (https://github.com/ghostop14/gr-gpredict-doppler)
 * For each of those repos, run the following commands:
 
 ```cd <local repo>/
