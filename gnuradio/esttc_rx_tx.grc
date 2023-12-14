@@ -262,7 +262,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1288, 560.0]
+    coordinate: [1360, 560.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_esttc_framer_0
@@ -316,7 +316,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 544.0]
+    coordinate: [992, 544.0]
     rotation: 0
     state: true
 - name: blocks_freqshift_cc_0
@@ -475,7 +475,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1040, 528.0]
+    coordinate: [1152, 528.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_mod_0
@@ -496,7 +496,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1336, 304.0]
+    coordinate: [1344, 304.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -696,7 +696,7 @@ blocks:
     filter: ''
     filter_source: '''Auto'''
     fpass: '0'
-    frequency: int(freq)
+    frequency: int(freq - rx_freq_offset)
     fstop: '0'
     len_tag_key: ''
     samplerate: int(samp_rate)
@@ -774,7 +774,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [472, 516.0]
+    coordinate: [448, 516.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0_0
@@ -785,12 +785,12 @@ blocks:
     beta: '6.76'
     comment: ''
     cutoff_freq: 10e3
-    decim: '25'
-    gain: '6'
+    decim: '2'
+    gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate
+    samp_rate: samp_rate/5
     type: fir_filter_ccf
     width: 5e3
     win: window.WIN_HAMMING
@@ -798,7 +798,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [672, 516.0]
+    coordinate: [632, 516.0]
     rotation: 0
     state: enabled
 - name: network_tcp_sink_0
@@ -816,7 +816,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1056, 680.0]
+    coordinate: [1152, 680.0]
     rotation: 0
     state: true
 - name: pdu_add_system_time_0
@@ -848,7 +848,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1592, 480.0]
+    coordinate: [1656, 480.0]
     rotation: 0
     state: true
 - name: pdu_add_system_time_1_0
@@ -864,7 +864,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1592, 528.0]
+    coordinate: [1656, 528.0]
     rotation: 0
     state: true
 - name: pdu_pdu_to_tagged_stream_0_0_0
@@ -904,6 +904,26 @@ blocks:
     coordinate: [1528, 296.0]
     rotation: 0
     state: enabled
+- name: rational_resampler_xxx_1
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '25'
+    fbw: '0'
+    interp: '12'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 544.0]
+    rotation: 0
+    state: true
 - name: soapy_hackrf_sink_0
   id: soapy_hackrf_sink
   parameters:
@@ -1140,7 +1160,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1552, 624.0]
+    coordinate: [1616, 624.0]
     rotation: 0
     state: true
 
@@ -1167,12 +1187,13 @@ connections:
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
 - [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
-- [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
+- [low_pass_filter_0_0, '0', rational_resampler_xxx_1, '0']
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, print]
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
+- [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
 - [soapy_hackrf_source_0, '0', blocks_freqshift_cc_1, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, epy_block_0, tx_mag]
