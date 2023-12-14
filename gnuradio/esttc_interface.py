@@ -1,49 +1,48 @@
-
 import pmt
 import zmq
-from subprocess import Popen
 
-class _ESTTC_TX_Wrapper:
-    def __init__(self):
+
+class ESTTCWrapper:
+    TX_PORT: int = 50491
+    RX_PORT: int = 50492
+
+    def __init__(self, ip: str):
+        self.ip = ip
+
         self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.PUSH)
-        self.socket.connect('tcp://10.0.7.38:50491')
-    
+        self.rxsocket = self.context.socket(zmq.PULL)
+        self.rxsocket.connect(f"tcp://{self.ip}:{self.RX_PORT}")
+
+        self.txsocket = self.context.socket(zmq.PUSH)
+        self.txsocket.connect(f"tcp://{self.ip}:{self.TX_PORT}")
+
     def __del__(self):
-        # self.tx_flowgraph.terminate()
-        self.socket.close()
+        self.rxsocket.close()
+        self.txsocket.close()
         self.context.term()
-    
-    def __call__(self, message):
-        if isinstance(message, str):
-            message = [ord(c) for c in message]
+
+    def tx(self, msg: str) -> None:
+        message = [ord(c) for c in msg]
         message = pmt.init_u8vector(len(message), message)
         message = pmt.cons(pmt.PMT_NIL, message)
         message = pmt.serialize_str(message)
-        self.socket.send(message)
+        self.txsocket.send(message)
 
-class _ESTTC_RX_Wrapper:
-    def __init__(self):
-        self.interpret_as_string = True
-        self.context = zmq.Context()
-        self.socket = self.context.socket(zmq.PULL)
-        self.socket.connect('tcp://10.0.7.38:50492')
-    
-    def __del__(self):
-        self.socket.close()
-        self.context.term()
-    
-    def __call__(self):
-        message = self.socket.recv()
+    def tx_bytes(self, msg: bytes) -> None:
+        message = pmt.init_u8vector(len(msg), msg)
+        message = pmt.cons(pmt.PMT_NIL, message)
+        message = pmt.serialize_str(message)
+        self.txsocket.send(message)
+
+    def rx(self) -> str:
+        message = self.rxsocket.recv()
         message = pmt.deserialize_str(message)
         message = pmt.cdr(message)
         message = pmt.u8vector_elements(message)
-        if(self.interpret_as_string):
-            message = ''.join(chr(c) for c in message)
-        return message
+        return "".join(chr(c) for c in message)
 
-    def set_interpret_as_string(val):
-        self.interpret_as_string = val
-
-esttc_tx = _ESTTC_TX_Wrapper()
-esttc_rx = _ESTTC_RX_Wrapper()
+    def rx_bytes(self) -> bytes:
+        message = self.rxsocket.recv()
+        message = pmt.deserialize_str(message)
+        message = pmt.cdr(message)
+        return pmt.u8vector_elements(message)

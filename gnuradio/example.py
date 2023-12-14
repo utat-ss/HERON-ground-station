@@ -1,25 +1,28 @@
-from esttc_interface import esttc_rx, esttc_tx
 import time
-import zmq
 from threading import Thread
 
+from esttc_interface import ESTTCWrapper
+
 keep_running = True
+esttc = ESTTCWrapper("localhost")
+
 
 def tx_indefinitely():
     while keep_running:
-        esttc_tx("ES+R2200\r")
+        esttc.tx("ES+R2200")
         time.sleep(1)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     t = Thread(target=tx_indefinitely)
     t.start()
 
     try:
         while True:
-            print(esttc_rx())
+            print(esttc.rx())
     except KeyboardInterrupt:
         keep_running = False
 
-    print("Exitting...\n")
+    print("Exiting...")
     t.join()
-    print("\nExit\n")
+    print("All threads exited!")
