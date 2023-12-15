@@ -9,7 +9,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: no_gui
+    generate_options: qt_gui
     hier_block_src_path: '.:'
     id: esttc_loopback
     max_nouts: '0'
@@ -44,7 +44,7 @@ blocks:
     bus_structure: null
     coordinate: [408, 148.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: samp_rate
   id: variable
   parameters:
@@ -69,7 +69,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [688, 320.0]
+    coordinate: [456, 456.0]
     rotation: 0
     state: enabled
 - name: blocks_message_strobe_2
@@ -88,7 +88,7 @@ blocks:
     bus_structure: null
     coordinate: [408, 220.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_null_source_0
   id: blocks_null_source
   parameters:
@@ -136,12 +136,49 @@ blocks:
     label: Host IP Address
     short_id: ''
     type: str
-    value: 10.0.7.38
+    value: 127.0.0.1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [192, 92.0]
+    rotation: 0
+    state: true
+- name: pdu_random_pdu_0
+  id: pdu_random_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    length_modulo: '2'
+    mask: '0xFF'
+    maxoutbuf: '0'
+    maxsize: '10'
+    minoutbuf: '0'
+    minsize: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 296.0]
+    rotation: 0
+    state: true
+- name: push_button_0
+  id: variable_qtgui_msg_push_button
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Send
+    msgName: pressed
+    relBackgroundColor: default
+    relFontColor: default
+    type: int
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [88, 296.0]
     rotation: 0
     state: true
 - name: zeromq_pull_msg_source_0
@@ -159,7 +196,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 332.0]
+    coordinate: [144, 472.0]
     rotation: 0
     state: enabled
 - name: zeromq_push_msg_sink_0
@@ -182,6 +219,8 @@ blocks:
 connections:
 - [blocks_message_strobe_2, strobe, zeromq_push_msg_sink_0, in]
 - [blocks_null_source_0, '0', blocks_throttle_0, '0']
+- [pdu_random_pdu_0, pdus, zeromq_push_msg_sink_0, in]
+- [push_button_0, pressed, pdu_random_pdu_0, generate]
 - [zeromq_pull_msg_source_0, out, blocks_message_debug_0, print]
 
 metadata:

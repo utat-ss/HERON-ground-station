@@ -49,7 +49,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '10'
+    value: '40'
   states:
     bus_sink: false
     bus_source: false
@@ -205,7 +205,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 1e6
+    value: 8e6
   states:
     bus_sink: false
     bus_source: false
@@ -280,7 +280,7 @@ blocks:
     bus_structure: null
     coordinate: [1720, 144.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: UTAT_HERON_esttc_framer_0
   id: UTAT_HERON_esttc_framer
   parameters:
@@ -299,7 +299,7 @@ blocks:
 - name: UTAT_HERON_tagged_stream_fixed_length_padder_0
   id: UTAT_HERON_tagged_stream_fixed_length_padder
   parameters:
-    additional_symb_overflow: '1'
+    additional_symb_overflow: '5'
     affinity: ''
     alias: ''
     comment: ''
@@ -313,9 +313,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1072, 296.0]
+    coordinate: [1048, 304.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: analog_agc_xx_1
   id: analog_agc_xx
   parameters:
@@ -335,7 +335,7 @@ blocks:
     bus_structure: null
     coordinate: [992, 544.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_freqshift_cc_0
   id: blocks_freqshift_cc
   parameters:
@@ -369,7 +369,7 @@ blocks:
     bus_structure: null
     coordinate: [264, 560.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_message_debug_0
   id: blocks_message_debug
   parameters:
@@ -431,7 +431,7 @@ blocks:
     bus_structure: null
     coordinate: [608, 256.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_tagged_stream_mux_0
   id: blocks_tagged_stream_mux
   parameters:
@@ -449,9 +449,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 312.0]
+    coordinate: [848, 256.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_vector_source_x_0
   id: blocks_vector_source_x
   parameters:
@@ -471,7 +471,7 @@ blocks:
     bus_structure: null
     coordinate: [440, 248.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: digital_gfsk_demod_0
   id: digital_gfsk_demod
   parameters:
@@ -517,7 +517,7 @@ blocks:
     bus_structure: null
     coordinate: [1512, 112.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: digital_gfsk_mod_0
   id: digital_gfsk_mod
   parameters:
@@ -801,7 +801,7 @@ blocks:
     beta: '6.76'
     comment: ''
     cutoff_freq: 75e3
-    decim: '5'
+    decim: '40'
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
@@ -830,7 +830,7 @@ blocks:
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate/5
+    samp_rate: samp_rate/40
     type: fir_filter_ccf
     width: 5e3
     win: window.WIN_HAMMING
@@ -858,7 +858,7 @@ blocks:
     bus_structure: null
     coordinate: [1152, 680.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: pdu_add_system_time_0
   id: pdu_add_system_time
   parameters:
@@ -874,7 +874,7 @@ blocks:
     bus_structure: null
     coordinate: [280, 200.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: pdu_add_system_time_1
   id: pdu_add_system_time
   parameters:
@@ -890,7 +890,7 @@ blocks:
     bus_structure: null
     coordinate: [1656, 480.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: pdu_add_system_time_1_0
   id: pdu_add_system_time
   parameters:
@@ -906,7 +906,7 @@ blocks:
     bus_structure: null
     coordinate: [1656, 528.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: pdu_add_system_time_1_0_0
   id: pdu_add_system_time
   parameters:
@@ -922,7 +922,7 @@ blocks:
     bus_structure: null
     coordinate: [1936, 160.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: pdu_add_system_time_1_1
   id: pdu_add_system_time
   parameters:
@@ -938,7 +938,7 @@ blocks:
     bus_structure: null
     coordinate: [1936, 112.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: pdu_pdu_to_tagged_stream_0_0_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -953,7 +953,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [496, 336.0]
+    coordinate: [616, 336.0]
     rotation: 0
     state: enabled
 - name: rational_resampler_xxx_0
@@ -962,9 +962,9 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    decim: '6'
+    decim: '3'
     fbw: '0'
-    interp: '125'
+    interp: '500'
     maxoutbuf: '0'
     minoutbuf: '0'
     taps: '[]'
@@ -995,7 +995,7 @@ blocks:
     bus_structure: null
     coordinate: [816, 544.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: soapy_hackrf_sink_0
   id: soapy_hackrf_sink
   parameters:
@@ -1005,7 +1005,7 @@ blocks:
     bandwidth: '0'
     center_freq: freq-rx_freq_offset
     comment: ''
-    dev_args: '"driver=hackrf,serial=9e5f"'
+    dev_args: '"driver=hackrf,serial=9e5f,buffers=32"'
     samp_rate: samp_rate
     type: fc32
     vga: tx_vga_gain
@@ -1025,7 +1025,7 @@ blocks:
     bandwidth: '0'
     center_freq: freq + rx_freq_offset
     comment: ''
-    dev_args: '"driver=hackrf,serial=915f"'
+    dev_args: '"driver=hackrf,serial=915f,buffers=32"'
     gain: rx_if_gain
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -1234,7 +1234,7 @@ blocks:
     bus_structure: null
     coordinate: [1616, 624.0]
     rotation: 0
-    state: true
+    state: enabled
 
 connections:
 - [UTAT_HERON_esttc_deframer_0, crc_fail, pdu_add_system_time_1_0, pdu]
@@ -1269,6 +1269,8 @@ connections:
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1_0_0, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1_1, pdu, blocks_message_debug_0, print]
+- [pdu_pdu_to_tagged_stream_0_0_0, '0', UTAT_HERON_tagged_stream_fixed_length_padder_0,
+  '0']
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
 - [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
