@@ -265,6 +265,22 @@ blocks:
     coordinate: [1360, 560.0]
     rotation: 0
     state: enabled
+- name: UTAT_HERON_esttc_deframer_0_0
+  id: UTAT_HERON_esttc_deframer
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: gfsk_samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1720, 144.0]
+    rotation: 0
+    state: disabled
 - name: UTAT_HERON_esttc_framer_0
   id: UTAT_HERON_esttc_framer
   parameters:
@@ -283,6 +299,7 @@ blocks:
 - name: UTAT_HERON_tagged_stream_fixed_length_padder_0
   id: UTAT_HERON_tagged_stream_fixed_length_padder
   parameters:
+    additional_symb_overflow: '1'
     affinity: ''
     alias: ''
     comment: ''
@@ -478,6 +495,29 @@ blocks:
     coordinate: [1152, 528.0]
     rotation: 0
     state: enabled
+- name: digital_gfsk_demod_0_0
+  id: digital_gfsk_demod
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq_error: '0.0'
+    gain_mu: 175e-3
+    log: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mu: '0.5'
+    omega_relative_limit: '0.005'
+    samples_per_symbol: int(gfsk_sps)
+    sensitivity: gfsk_sensitivity
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1512, 112.0]
+    rotation: 0
+    state: disabled
 - name: digital_gfsk_mod_0
   id: digital_gfsk_mod
   parameters:
@@ -834,7 +874,7 @@ blocks:
     bus_structure: null
     coordinate: [280, 200.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: pdu_add_system_time_1
   id: pdu_add_system_time
   parameters:
@@ -867,6 +907,38 @@ blocks:
     coordinate: [1656, 528.0]
     rotation: 0
     state: true
+- name: pdu_add_system_time_1_0_0
+  id: pdu_add_system_time
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    key: pmt.intern("Tx CRC FAIL")
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1936, 160.0]
+    rotation: 0
+    state: disabled
+- name: pdu_add_system_time_1_1
+  id: pdu_add_system_time
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    key: pmt.intern("Tx")
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1936, 112.0]
+    rotation: 0
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_0_0_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -1168,6 +1240,8 @@ connections:
 - [UTAT_HERON_esttc_deframer_0, crc_fail, pdu_add_system_time_1_0, pdu]
 - [UTAT_HERON_esttc_deframer_0, crc_ok, pdu_add_system_time_1, pdu]
 - [UTAT_HERON_esttc_deframer_0, crc_ok, zeromq_push_msg_sink_0, in]
+- [UTAT_HERON_esttc_deframer_0_0, crc_fail, pdu_add_system_time_1_0_0, pdu]
+- [UTAT_HERON_esttc_deframer_0_0, crc_ok, pdu_add_system_time_1_1, pdu]
 - [UTAT_HERON_esttc_framer_0, pdu_out, pdu_pdu_to_tagged_stream_0_0_0, pdus]
 - [UTAT_HERON_tagged_stream_fixed_length_padder_0, '0', digital_gfsk_mod_0, '0']
 - [analog_agc_xx_1, '0', digital_gfsk_demod_0, '0']
@@ -1180,6 +1254,8 @@ connections:
   '0']
 - [blocks_vector_source_x_0, '0', blocks_stream_to_tagged_stream_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
+- [digital_gfsk_demod_0_0, '0', UTAT_HERON_esttc_deframer_0_0, '0']
+- [digital_gfsk_mod_0, '0', digital_gfsk_demod_0_0, '0']
 - [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
 - [epy_block_0, tx_amp, gpredict_MsgPairToVar_0_0_0_0, inpair]
 - [epy_block_0, tx_vga_gain, gpredict_MsgPairToVar_0_1_0, inpair]
@@ -1191,6 +1267,8 @@ connections:
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1, pdu, blocks_message_debug_0, print]
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, print]
+- [pdu_add_system_time_1_0_0, pdu, blocks_message_debug_0, print]
+- [pdu_add_system_time_1_1, pdu, blocks_message_debug_0, print]
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', blocks_tagged_stream_mux_0, '1']
 - [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
 - [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
