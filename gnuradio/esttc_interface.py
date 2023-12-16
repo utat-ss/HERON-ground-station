@@ -3,18 +3,17 @@ import zmq
 
 
 class ESTTCWrapper:
-    TX_PORT: int = 50491
-    RX_PORT: int = 50492
-
-    def __init__(self, ip: str):
+    def __init__(self, ip: str, tx_port: int = 50491, rx_port: int = 50492):
         self.ip = ip
+        self.tx_port = tx_port
+        self.rx_port = rx_port
 
         self.context = zmq.Context()
         self.rxsocket = self.context.socket(zmq.PULL)
-        self.rxsocket.connect(f"tcp://{self.ip}:{self.RX_PORT}")
+        self.rxsocket.connect(f"tcp://{self.ip}:{self.rx_port}")
 
         self.txsocket = self.context.socket(zmq.PUSH)
-        self.txsocket.connect(f"tcp://{self.ip}:{self.TX_PORT}")
+        self.txsocket.connect(f"tcp://{self.ip}:{self.tx_port}")
 
     def __del__(self):
         self.rxsocket.close()
