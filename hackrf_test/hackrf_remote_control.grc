@@ -33,6 +33,18 @@ options:
     state: enabled
 
 blocks:
+- name: control_port
+  id: variable
+  parameters:
+    comment: ''
+    value: base_port
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [248, 168.0]
+    rotation: 0
+    state: true
 - name: freq
   id: variable_qtgui_range
   parameters:
@@ -45,7 +57,7 @@ blocks:
     start: 420e6
     step: 250e3
     stop: 450e6
-    value: 446.040e6
+    value: 435e6
     widget: counter
   states:
     bus_sink: false
@@ -68,7 +80,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1240, 16.0]
+    coordinate: [1264, 16.0]
     rotation: 0
     state: true
 - name: rx_freq_offset
@@ -89,7 +101,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [408, 16.0]
+    coordinate: [416, 16.0]
     rotation: 0
     state: true
 - name: rx_if_gain
@@ -110,7 +122,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [688, 16.0]
+    coordinate: [704, 16.0]
     rotation: 0
     state: true
 - name: rx_vga_gain
@@ -131,7 +143,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [792, 16.0]
+    coordinate: [808, 16.0]
     rotation: 0
     state: true
 - name: samp_rate
@@ -164,7 +176,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [520, 16.0]
+    coordinate: [536, 16.0]
+    rotation: 0
+    state: true
+- name: stream_port
+  id: variable
+  parameters:
+    comment: ''
+    value: base_port+1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [344, 168.0]
     rotation: 0
     state: true
 - name: tx_amp
@@ -181,7 +205,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1112, 16.0]
+    coordinate: [1136, 16.0]
     rotation: 0
     state: true
 - name: tx_vga_gain
@@ -202,7 +226,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [904, 16.0]
+    coordinate: [920, 16.0]
     rotation: 0
     state: true
 - name: volume
@@ -223,7 +247,24 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1016, 16.0]
+    coordinate: [1032, 16.0]
+    rotation: 0
+    state: true
+- name: base_port
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Base Port
+    short_id: ''
+    type: intx
+    value: '52000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [144, 168.0]
     rotation: 0
     state: true
 - name: blocks_var_to_msg_0
@@ -388,12 +429,12 @@ blocks:
     label: IP Address
     short_id: ''
     type: str
-    value: 10.0.7.38
+    value: 127.0.0.1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 164.0]
+    coordinate: [40, 168.0]
     rotation: 0
     state: true
 - name: network_tcp_source_0
@@ -405,7 +446,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    port: '52100'
+    port: stream_port
     server: 'False'
     type: complex
     vlen: '1'
@@ -561,7 +602,7 @@ blocks:
 - name: zeromq_push_msg_sink_0
   id: zeromq_push_msg_sink
   parameters:
-    address: '"tcp://"+ip+":52101"'
+    address: '"tcp://"+ip+":"+str(control_port)'
     affinity: ''
     alias: ''
     bind: 'False'
@@ -574,145 +615,17 @@ blocks:
     coordinate: [928, 196.0]
     rotation: 0
     state: true
-- name: zeromq_push_msg_sink_0_0
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52102"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 268.0]
-    rotation: 0
-    state: true
-- name: zeromq_push_msg_sink_0_0_0
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52105"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 484.0]
-    rotation: 0
-    state: true
-- name: zeromq_push_msg_sink_0_1
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52103"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 340.0]
-    rotation: 0
-    state: true
-- name: zeromq_push_msg_sink_0_1_0
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52106"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 556.0]
-    rotation: 0
-    state: true
-- name: zeromq_push_msg_sink_0_2
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52104"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 412.0]
-    rotation: 0
-    state: true
-- name: zeromq_push_msg_sink_0_3
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52107"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 628.0]
-    rotation: 0
-    state: true
-- name: zeromq_push_msg_sink_0_3_0
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52108"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 700.0]
-    rotation: 0
-    state: true
-- name: zeromq_push_msg_sink_0_3_1
-  id: zeromq_push_msg_sink
-  parameters:
-    address: '"tcp://"+ip+":52109"'
-    affinity: ''
-    alias: ''
-    bind: 'False'
-    comment: ''
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 772.0]
-    rotation: 0
-    state: true
 
 connections:
 - [blocks_var_to_msg_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_0, msgout, zeromq_push_msg_sink_0_0, in]
-- [blocks_var_to_msg_0_0_0, msgout, zeromq_push_msg_sink_0_0_0, in]
-- [blocks_var_to_msg_0_1, msgout, zeromq_push_msg_sink_0_1, in]
-- [blocks_var_to_msg_0_1_0, msgout, zeromq_push_msg_sink_0_1_0, in]
-- [blocks_var_to_msg_0_2, msgout, zeromq_push_msg_sink_0_2, in]
-- [blocks_var_to_msg_0_3, msgout, zeromq_push_msg_sink_0_3, in]
-- [blocks_var_to_msg_0_3_0, msgout, zeromq_push_msg_sink_0_3_0, in]
-- [blocks_var_to_msg_0_3_1, msgout, zeromq_push_msg_sink_0_3_1, in]
+- [blocks_var_to_msg_0_0, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_0_0, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_1, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_1_0, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_2, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_3, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_0, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1, msgout, zeromq_push_msg_sink_0, in]
 - [network_tcp_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [network_tcp_source_0, '0', qtgui_waterfall_sink_x_0, '0']
 
