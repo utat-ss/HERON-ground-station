@@ -19,7 +19,11 @@ if __name__ == "__main__":
 
     try:
         while True:
-            print(esttc.rx())
+            rxed = esttc.rx()
+            if rxed == "ES+R2200":
+                print("Loopback")
+            else:
+                print(rxed)
     except KeyboardInterrupt:
         keep_running = False
 
