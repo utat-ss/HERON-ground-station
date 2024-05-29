@@ -1,7 +1,0 @@
-add a LOGGER block
-
--> logs to DB and to a file
--> no output 
--> DB and file names are parameters
--> everything before it remains a sync
--> kinda replaces the endurosat sync/sink block
