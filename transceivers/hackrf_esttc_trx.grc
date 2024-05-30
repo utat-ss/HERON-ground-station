@@ -324,7 +324,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    variable_name: rx_freq_offset
+    variable_name: freq_offset
   states:
     bus_sink: false
     bus_source: false
@@ -654,7 +654,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    target: rx_freq_offset
+    target: freq_offset
   states:
     bus_sink: false
     bus_source: false
