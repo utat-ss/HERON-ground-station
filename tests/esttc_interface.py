@@ -2,27 +2,14 @@ import pmt
 import zmq
 import time
 
-from toptek import Toptek
-
-SLEEPY_TIME = 0.1
-
-
 class ESTTCWrapper:
-    def __init__(self, ip: str, tx_port: int = 50491, rx_port: int = 50492, ser: str = "/dev/ttyAmplifier"):
-        self.ip = ip
-        self.tx_port = tx_port
-        self.rx_port = rx_port
-
+    def __init__(self, zmq_tx: str = "tcp://localhost:50491", zmq_rx: str = "tcp://localhost:50492"):
         self.context = zmq.Context()
         self.rxsocket = self.context.socket(zmq.PULL)
-        self.rxsocket.connect(f"tcp://{self.ip}:{self.rx_port}")
+        self.rxsocket.connect(zmq_rx)
 
         self.txsocket = self.context.socket(zmq.PUSH)
-        self.txsocket.connect(f"tcp://{self.ip}:{self.tx_port}")
-
-        self.amp = Toptek(ser)
-        self.amp.pa_on()
-        self.amp.lna_on()
+        self.txsocket.connect(zmq_tx)
 
     def __del__(self):
         self.rxsocket.close()
@@ -34,10 +21,7 @@ class ESTTCWrapper:
         message = pmt.init_u8vector(len(message), message)
         message = pmt.cons(pmt.PMT_NIL, message)
         message = pmt.serialize_str(message)
-        self.amp.da_on()
         self.txsocket.send(message)
-        time.sleep(SLEEPY_TIME)
-        self.amp.da_off()
 
     def tx_bytes(self, msg: bytes) -> None:
         message = pmt.init_u8vector(len(msg), msg)
@@ -45,15 +29,15 @@ class ESTTCWrapper:
         message = pmt.serialize_str(message)
         self.txsocket.send(message)
 
-    def rx(self) -> str:
-        message = self.rxsocket.recv()
+    def rx(self, flags=0) -> str:
+        message = self.rxsocket.recv(flags)
         message = pmt.deserialize_str(message)
         message = pmt.cdr(message)
         message = pmt.u8vector_elements(message)
         return "".join(chr(c) for c in message)
 
-    def rx_bytes(self) -> bytes:
-        message = self.rxsocket.recv()
+    def rx_bytes(self, flags=0) -> bytes:
+        message = self.rxsocket.recv(flags)
         message = pmt.deserialize_str(message)
         message = pmt.cdr(message)
         return pmt.u8vector_elements(message)
