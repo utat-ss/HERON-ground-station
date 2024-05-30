@@ -3,6 +3,4 @@
 **/*.py[cod]
 
 # Compiled GNURadio files
-hackrf_test/*.py
-gnuradio/esttc_loopback.py
-gnuradio/esttc_rx_tx.py
+tests/grc/*.py
