@@ -4,3 +4,6 @@
 
 # Compiled GNURadio files
 tests/grc/*.py
+transceivers/hackrf_esttc_trx.py
+transceivers/pluto_esttc_trx.py
+
