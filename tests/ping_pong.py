@@ -4,7 +4,7 @@ import zmq
 from esttc_interface import ESTTCWrapper
 
 ping_delay = 1
-ping_msg = "ES+R2200"
+ping_msg = "ES+R2200\r"
 pong_msg = "ACK"
 
 pings = 0
@@ -14,25 +14,23 @@ run = True
 ping_esttc = ESTTCWrapper("tcp://10.0.7.91:50491", "tcp://10.0.7.91:50492")
 pong_esttc = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
 
-
 def ping_tx():
     while run:
         ping_esttc.tx(ping_msg)
         pings += 1
         time.sleep(ping_delay)
 
-
 def ping_rx():
     while run:
         try:
             rx = ping_esttc.rx(zmq.NOBLOCK)
             if rx == pong_msg:
-                print("pong received!")
+                print("------ pong received!")
                 ping_pongs += 1
             elif rx == ping_msg:
                 print("ping back")
             else:
-                print("weird pong: ", rx)
+                print("------ weird pong: ", rx)
         except zmq.ZMQError:
             continue
 
@@ -41,13 +39,13 @@ def pong():
         try:
             rx = pong_esttc.rx(zmq.NOBLOCK)
             if rx == ping_msg:
-                print("ping received!")
+                print("--- ping received!")
                 pong_esttc.tx(pong_msg)
                 pongs += 1
             elif rx == pong_msg:
-                print("pong back")
+                print("--- pong back")
             else:
-                print("weird ping: ", rx)
+                print("--- weird ping: ", rx)
         except zmq.ZMQError:
             continue
 
