@@ -33,23 +33,6 @@ options:
     state: enabled
 
 blocks:
-- name: da
-  id: variable_qtgui_check_box
-  parameters:
-    comment: ''
-    'false': 'False'
-    gui_hint: control_tab@2:2,0,1,1
-    label: DA
-    'true': 'True'
-    type: bool
-    value: 'False'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 488.0]
-    rotation: 0
-    state: true
 - name: freq
   id: variable_qtgui_range
   parameters:
@@ -71,13 +54,13 @@ blocks:
     coordinate: [296, 16.0]
     rotation: 0
     state: enabled
-- name: lna
+- name: rx_agc
   id: variable_qtgui_check_box
   parameters:
     comment: ''
     'false': 'False'
-    gui_hint: control_tab@2:1,0,1,1
-    label: LNA
+    gui_hint: 'control_tab@1: 0, 2, 1, 1'
+    label: RX AGC
     'true': 'True'
     type: bool
     value: 'False'
@@ -85,41 +68,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [928, 376.0]
-    rotation: 0
-    state: true
-- name: pa
-  id: variable_qtgui_check_box
-  parameters:
-    comment: ''
-    'false': 'False'
-    gui_hint: control_tab@2:0,0,1,1
-    label: PA
-    'true': 'True'
-    type: bool
-    value: 'False'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 264.0]
-    rotation: 0
-    state: true
-- name: rx_amp
-  id: variable_qtgui_check_box
-  parameters:
-    comment: ''
-    'false': 'False'
-    gui_hint: 'control_tab@1: 1, 3, 1, 1'
-    label: RX RF Amplifier
-    'true': 'True'
-    type: bool
-    value: 'True'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1264, 16.0]
+    coordinate: [912, 16.0]
     rotation: 0
     state: true
 - name: rx_freq_offset
@@ -143,46 +92,25 @@ blocks:
     coordinate: [416, 16.0]
     rotation: 0
     state: true
-- name: rx_if_gain
+- name: rx_gain
   id: variable_qtgui_range
   parameters:
     comment: ''
     gui_hint: 'control_tab@1: 0, 0, 1, 2'
-    label: RX IF Gain
+    label: RX Gain
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '1'
-    stop: '40'
-    value: '40'
+    stop: '73'
+    value: '73'
     widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [704, 16.0]
-    rotation: 0
-    state: true
-- name: rx_vga_gain
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: 'control_tab@1: 1, 0, 1, 2'
-    label: RX VGA Gain
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
-    rangeType: float
-    start: '0'
-    step: '1'
-    stop: '62'
-    value: '50'
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [808, 16.0]
     rotation: 0
     state: true
 - name: samp_rate
@@ -201,7 +129,7 @@ blocks:
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 'control_tab@3: 0, 0, 1, 1'
+    gui_hint: 'control_tab@2: 0, 0, 1, 1'
     label: Squelch Threshold (dB)
     min_len: '200'
     orient: QtCore.Qt.Horizontal
@@ -218,79 +146,32 @@ blocks:
     coordinate: [536, 16.0]
     rotation: 0
     state: enabled
-- name: tx_amp
-  id: variable_qtgui_check_box
-  parameters:
-    comment: ''
-    'false': 'False'
-    gui_hint: 'control_tab@1: 1, 2, 1, 1'
-    label: TX RF Amplifier
-    'true': 'True'
-    type: bool
-    value: 'True'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1136, 16.0]
-    rotation: 0
-    state: true
-- name: tx_pwr
-  id: variable_qtgui_chooser
-  parameters:
-    comment: ''
-    gui_hint: 'control_tab@2: 0,1,3,1'
-    label: TX Power
-    label0: ''
-    label1: ''
-    label2: ''
-    label3: ''
-    label4: ''
-    labels: '[]'
-    num_opts: '4'
-    option0: '20'
-    option1: '40'
-    option2: '60'
-    option3: '80'
-    option4: '4'
-    options: '[0, 1, 2]'
-    orient: Qt.QVBoxLayout
-    type: int
-    value: '20'
-    widget: radio_buttons
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1120, 316.0]
-    rotation: 0
-    state: true
-- name: tx_vga_gain
+- name: tx_gain
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 'control_tab@1: 0, 2, 1, 2'
-    label: TX VGA Gain
+    gui_hint: 'control_tab@1: 1, 0, 1, 2'
+    label: TX Gain
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
     step: '1'
-    stop: '47'
-    value: '47'
+    stop: '89'
+    value: '89'
     widget: counter_slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [920, 16.0]
+    coordinate: [808, 16.0]
     rotation: 0
     state: true
 - name: volume
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 'control_tab@3: 1, 0, 1, 1'
+    gui_hint: 'control_tab@2: 1, 0, 1, 1'
     label: Volume
     min_len: '200'
     orient: QtCore.Qt.Horizontal
@@ -321,7 +202,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 160.0]
+    coordinate: [376, 160.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0
@@ -405,8 +286,8 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    msgname: rx_vga_gain
-    target: rx_vga_gain
+    msgname: tx_gain
+    target: tx_gain
   states:
     bus_sink: false
     bus_source: false
@@ -422,8 +303,8 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    msgname: tx_vga_gain
-    target: tx_vga_gain
+    msgname: rx_agc
+    target: rx_agc
   states:
     bus_sink: false
     bus_source: false
@@ -439,149 +320,13 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    msgname: rx_if_gain
-    target: rx_if_gain
+    msgname: rx_gain
+    target: rx_gain
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [568, 320.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: tx_amp
-    target: tx_amp
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 512.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: rx_amp
-    target: rx_amp
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 576.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: pa
-    target: pa
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 640.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1_0_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: lna
-    target: lna
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 704.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1_0_1
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: da
-    target: da
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 768.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1_0_1_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: tx_pwr
-    target: tx_pwr
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 832.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1_0_1_0_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: squelch_threshold
-    target: squelch_threshold
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 896.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1_0_1_0_0_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: volume
-    target: volume
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 960.0]
     rotation: 0
     state: enabled
 - name: control_tab
@@ -602,7 +347,7 @@ blocks:
     label17: Tab 17
     label18: Tab 18
     label19: Tab 19
-    label2: Toptek
+    label2: Misc
     label3: Misc
     label4: Tab 4
     label5: Tab 5
@@ -610,7 +355,7 @@ blocks:
     label7: Tab 7
     label8: Tab 8
     label9: Tab 9
-    num_tabs: '4'
+    num_tabs: '3'
   states:
     bus_sink: false
     bus_source: false
@@ -909,7 +654,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [928, 196.0]
+    coordinate: [896, 192.0]
     rotation: 0
     state: enabled
 - name: zeromq_sub_source_0
@@ -944,12 +689,12 @@ blocks:
     label: ZMQ Baseband Stream
     short_id: ''
     type: str
-    value: tcp://10.0.7.91:52001
+    value: tcp://10.0.1.165:52001
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [200, 160.0]
+    coordinate: [208, 160.0]
     rotation: 0
     state: enabled
 - name: zmq_control
@@ -961,7 +706,7 @@ blocks:
     label: ZMQ Control
     short_id: ''
     type: str
-    value: tcp://10.0.7.91:52000
+    value: tcp://10.0.1.165:52000
   states:
     bus_sink: false
     bus_source: false
@@ -976,14 +721,6 @@ connections:
 - [blocks_var_to_msg_0_0_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_1_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_2, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1_0_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1_0_0_0, msgout, zeromq_push_msg_sink_0, in]
 - [zeromq_sub_source_0, '0', blocks_file_sink_0, '0']
 - [zeromq_sub_source_0, '0', blocks_throttle2_0, '0']
 - [zeromq_sub_source_0, '0', qtgui_freq_sink_x_0, '0']

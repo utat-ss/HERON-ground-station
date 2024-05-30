@@ -573,23 +573,6 @@ blocks:
     coordinate: [792, 1216.0]
     rotation: 0
     state: true
-- name: control_port
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: control port
-    short_id: ''
-    type: intx
-    value: '52000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [664, 80.0]
-    rotation: 0
-    state: enabled
 - name: digital_gfsk_demod_0
   id: digital_gfsk_demod
   parameters:
@@ -764,7 +747,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 80.0]
+    coordinate: [1224, 80.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -994,23 +977,6 @@ blocks:
     coordinate: [56, 704.0]
     rotation: 0
     state: enabled
-- name: stream_port
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: strean port
-    short_id: ''
-    type: intx
-    value: '52001'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [776, 80.0]
-    rotation: 0
-    state: enabled
 - name: toptek_digital_PTT_0
   id: toptek_digital_PTT
   parameters:
@@ -1047,7 +1013,7 @@ blocks:
 - name: zeromq_pub_sink_0
   id: zeromq_pub_sink
   parameters:
-    address: '"tcp://*:"+str(stream_port)'
+    address: zmq_baseband_stream
     affinity: ''
     alias: ''
     bind: 'True'
@@ -1087,7 +1053,7 @@ blocks:
 - name: zeromq_pull_msg_source_0_3
   id: zeromq_pull_msg_source
   parameters:
-    address: '"tcp://*:"+str(control_port)'
+    address: zmq_control
     affinity: ''
     alias: ''
     bind: 'True'
@@ -1118,6 +1084,40 @@ blocks:
     coordinate: [1848, 704.0]
     rotation: 0
     state: enabled
+- name: zmq_baseband_stream
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Baseband Stream
+    short_id: ''
+    type: str
+    value: tcp://*:52001
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [784, 80.0]
+    rotation: 0
+    state: enabled
+- name: zmq_control
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Control
+    short_id: ''
+    type: str
+    value: tcp://*:52000
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 80.0]
+    rotation: 0
+    state: enabled
 - name: zmq_rx
   id: parameter
   parameters:
@@ -1132,7 +1132,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1144, 80.0]
+    coordinate: [1088, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_tx
@@ -1149,7 +1149,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1008, 80.0]
+    coordinate: [952, 80.0]
     rotation: 0
     state: enabled
 
