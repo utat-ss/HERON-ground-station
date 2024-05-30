@@ -4,7 +4,7 @@ from threading import Thread
 from esttc_interface import ESTTCWrapper
 
 keep_running = True
-esttc = ESTTCWrapper("localhost")
+esttc = ESTTCWrapper("tcp://localhost:50491", "tcp://localhost:50492")
 
 
 def tx_indefinitely():
