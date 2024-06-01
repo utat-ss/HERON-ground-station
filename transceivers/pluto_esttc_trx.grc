@@ -348,6 +348,24 @@ blocks:
     coordinate: [1000, 536.0]
     rotation: 0
     state: enabled
+- name: blocks_file_sink_0
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: output
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1160, 800.0]
+    rotation: 0
+    state: enabled
 - name: blocks_freqshift_cc_0
   id: blocks_freqshift_cc
   parameters:
@@ -678,6 +696,23 @@ blocks:
     coordinate: [640, 508.0]
     rotation: 0
     state: enabled
+- name: output
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Output IQ file
+    short_id: ''
+    type: str
+    value: /dev/null
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1344, 80.0]
+    rotation: 0
+    state: enabled
 - name: pdu_add_system_time_0
   id: pdu_add_system_time
   parameters:
@@ -955,6 +990,7 @@ connections:
 - [UTAT_HERON_variable_filter_0_0, out, gpredict_MsgPairToVar_0_0, inpair]
 - [UTAT_HERON_variable_filter_1, out, gpredict_MsgPairToVar_0_2, inpair]
 - [UTAT_HERON_variable_filter_1_1, out, gpredict_MsgPairToVar_0_1_0, inpair]
+- [analog_agc_xx_1, '0', blocks_file_sink_0, '0']
 - [analog_agc_xx_1, '0', digital_gfsk_demod_0, '0']
 - [analog_agc_xx_1, '0', zeromq_pub_sink_0, '0']
 - [blocks_freqshift_cc_0, '0', iio_pluto_sink_0, '0']
