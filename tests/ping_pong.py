@@ -15,12 +15,14 @@ ping_esttc = ESTTCWrapper("tcp://10.0.7.91:50491", "tcp://10.0.7.91:50492")
 pong_esttc = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
 
 def ping_tx():
+    global pings
     while run:
         ping_esttc.tx(ping_msg)
         pings += 1
         time.sleep(ping_delay)
 
 def ping_rx():
+    global ping_pongs
     while run:
         try:
             rx = ping_esttc.rx(zmq.NOBLOCK)
@@ -35,6 +37,7 @@ def ping_rx():
             continue
 
 def pong():
+    global pongs
     while run:
         try:
             rx = pong_esttc.rx(zmq.NOBLOCK)
@@ -65,9 +68,9 @@ if __name__ == '__main__':
     t_ping_rx.join()
     t_ping_tx.join()
 
-    ping_loss = "{.2f} %".format((pings-pongs)/pings*100) if pings != 0 else 'N/A'
-    pong_loss = "{.2f} %".format((pongs-ping_pongs)/pongs*100) if pongs != 0 else 'N/A'
-    total_loss = "{.2f} %".format((pings-ping_pongs)/pings*100) if pings != 0 else 'N/A'
+    ping_loss = "{0:.2f} %".format((pings-pongs)/pings*100) if pings != 0 else 'N/A'
+    pong_loss = "{0:.2f} %".format((pongs-ping_pongs)/pongs*100) if pongs != 0 else 'N/A'
+    total_loss = "{0:.2f} %".format((pings-ping_pongs)/pings*100) if pings != 0 else 'N/A'
 
     print('Statistics:')
     print('  pings:      ', pings)
