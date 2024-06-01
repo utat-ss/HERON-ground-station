@@ -1,0 +1,987 @@
+options:
+  parameters:
+    author: Swarnava Ghosh
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: University of Toronto Aerospace Team
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: no_gui
+    hier_block_src_path: '.:'
+    id: hackrf_cw_trx
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: HackRF NBFM Transceiver
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: freq
+  id: variable
+  parameters:
+    comment: ''
+    value: 435e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [608, 8.0]
+    rotation: 0
+    state: true
+- name: freq_offset
+  id: variable
+  parameters:
+    comment: ''
+    value: 100e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 8.0]
+    rotation: 0
+    state: true
+- name: front_padding_nbytes
+  id: variable
+  parameters:
+    comment: ''
+    value: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1208, 8.0]
+    rotation: 0
+    state: true
+- name: gfsk_bps
+  id: variable
+  parameters:
+    comment: ''
+    value: '9600'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 8.0]
+    rotation: 0
+    state: true
+- name: gfsk_bt
+  id: variable
+  parameters:
+    comment: ''
+    value: '0.5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 8.0]
+    rotation: 0
+    state: true
+- name: gfsk_freq_dev
+  id: variable
+  parameters:
+    comment: ''
+    value: '2400'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [344, 8.0]
+    rotation: 0
+    state: enabled
+- name: gfsk_mod_ind
+  id: variable
+  parameters:
+    comment: ''
+    value: 2 * gfsk_freq_dev / gfsk_bps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 80.0]
+    rotation: 0
+    state: true
+- name: gfsk_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: gfsk_sps * gfsk_bps
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 80.0]
+    rotation: 0
+    state: true
+- name: gfsk_sensitivity
+  id: variable
+  parameters:
+    comment: ''
+    value: 2*pi*gfsk_freq_dev/gfsk_samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 80.0]
+    rotation: 0
+    state: true
+- name: gfsk_sps
+  id: variable
+  parameters:
+    comment: ''
+    value: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 8.0]
+    rotation: 0
+    state: true
+- name: rx_amp
+  id: variable
+  parameters:
+    comment: ''
+    value: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1128, 8.0]
+    rotation: 0
+    state: true
+- name: rx_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [584, 80.0]
+    rotation: 0
+    state: true
+- name: rx_if_gain
+  id: variable
+  parameters:
+    comment: ''
+    value: '40'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 8.0]
+    rotation: 0
+    state: true
+- name: rx_vga_gain
+  id: variable
+  parameters:
+    comment: ''
+    value: '50'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 8.0]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 4e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 8.0]
+    rotation: 0
+    state: enabled
+- name: tx_amp
+  id: variable
+  parameters:
+    comment: ''
+    value: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1048, 8.0]
+    rotation: 0
+    state: true
+- name: tx_freq
+  id: variable
+  parameters:
+    comment: ''
+    value: freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 80.0]
+    rotation: 0
+    state: true
+- name: tx_vga_gain
+  id: variable
+  parameters:
+    comment: ''
+    value: '47'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 8.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_0
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 1000.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_0_0
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: freq_offset
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 1048.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: rx_if_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 1096.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_0
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: rx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 1144.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_0_1
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: rx_amp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 1288.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_0_1_0
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: pa
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 656.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_0_1_0_0
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: da
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 704.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_0_1_0_0_0
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: lna
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 752.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_0_1_0_1
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: tx_pwr
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 800.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_1
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: tx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 1192.0]
+    rotation: 0
+    state: true
+- name: UTAT_HERON_variable_filter_1_2
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: tx_amp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 1240.0]
+    rotation: 0
+    state: true
+- name: analog_agc_xx_1
+  id: analog_agc_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gain: '1'
+    max_gain: '10'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    rate: 625e-6
+    reference: '1.0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1032, 464.0]
+    rotation: 0
+    state: enabled
+- name: analog_const_source_x_0
+  id: analog_const_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [112, 280.0]
+    rotation: 0
+    state: enabled
+- name: analog_nbfm_tx_0
+  id: analog_nbfm_tx
+  parameters:
+    affinity: ''
+    alias: ''
+    audio_rate: int(gfsk_samp_rate)
+    comment: ''
+    fh: '-1.0'
+    max_dev: 5e3
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quad_rate: int(gfsk_samp_rate)
+    tau: 75e-6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 248.0]
+    rotation: 0
+    state: enabled
+- name: blocks_freqshift_cc_0
+  id: blocks_freqshift_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: tx_freq-freq+freq_offset
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [752, 272.0]
+    rotation: 0
+    state: true
+- name: blocks_freqshift_cc_1
+  id: blocks_freqshift_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    freq: freq_offset + (freq-rx_freq)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sample_rate: samp_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 480.0]
+    rotation: 0
+    state: enabled
+- name: blocks_msgpair_to_var_0
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: rx_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [784, 880.0]
+    rotation: 0
+    state: true
+- name: blocks_msgpair_to_var_1
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: tx_freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [784, 928.0]
+    rotation: 0
+    state: true
+- name: gpredict_MsgPairToVar_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1000.0]
+    rotation: 0
+    state: true
+- name: gpredict_MsgPairToVar_0_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: freq_offset
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1048.0]
+    rotation: 0
+    state: true
+- name: gpredict_MsgPairToVar_0_0_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: rx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1144.0]
+    rotation: 0
+    state: true
+- name: gpredict_MsgPairToVar_0_0_0_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: tx_amp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1240.0]
+    rotation: 0
+    state: true
+- name: gpredict_MsgPairToVar_0_1_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: tx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1192.0]
+    rotation: 0
+    state: true
+- name: gpredict_MsgPairToVar_0_1_0_0
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: rx_amp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1288.0]
+    rotation: 0
+    state: true
+- name: gpredict_MsgPairToVar_0_2
+  id: gpredict_MsgPairToVar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: rx_if_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [736, 1096.0]
+    rotation: 0
+    state: true
+- name: gpredict_doppler_0
+  id: gpredict_doppler
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    gpredict_host: 0.0.0.0
+    gpredict_port: gpredict_port
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    verbose: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [480, 888.0]
+    rotation: 0
+    state: true
+- name: gpredict_port
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: gpredict port
+    short_id: ''
+    type: intx
+    value: '52002'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1224, 80.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: from math import pi
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 144.0]
+    rotation: 0
+    state: true
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 75e3
+    decim: '10'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_ccf
+    width: 25e3
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [488, 436.0]
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 10e3
+    decim: '4'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate/10
+    type: fir_filter_ccf
+    width: 5e3
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [672, 436.0]
+    rotation: 0
+    state: enabled
+- name: rational_resampler_xxx_0
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '3'
+    fbw: '0'
+    interp: '250'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 256.0]
+    rotation: 0
+    state: enabled
+- name: rational_resampler_xxx_1
+  id: rational_resampler_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    decim: '25'
+    fbw: '0'
+    interp: '12'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    taps: '[]'
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 464.0]
+    rotation: 0
+    state: enabled
+- name: soapy_hackrf_sink_0
+  id: soapy_hackrf_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: tx_amp
+    bandwidth: '0'
+    center_freq: freq-freq_offset
+    comment: ''
+    dev_args: '"driver=hackrf,serial=9e5f,buffers=32"'
+    samp_rate: samp_rate
+    type: fc32
+    vga: tx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 280.0]
+    rotation: 0
+    state: enabled
+- name: soapy_hackrf_source_0
+  id: soapy_hackrf_source
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: rx_amp
+    bandwidth: '0'
+    center_freq: freq + freq_offset
+    comment: ''
+    dev_args: '"driver=hackrf,serial=915f,buffers=32"'
+    gain: rx_if_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fc32
+    vga: rx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [72, 472.0]
+    rotation: 0
+    state: enabled
+- name: toptek_toptek_control_0
+  id: toptek_toptek_control
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    serial_port: /dev/ttyAmplifier
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 688.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_pub_sink_0
+  id: zeromq_pub_sink
+  parameters:
+    address: zmq_baseband_stream
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1200, 456.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_pull_msg_source_0_3
+  id: zeromq_pull_msg_source
+  parameters:
+    address: zmq_control
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [240, 992.0]
+    rotation: 0
+    state: true
+- name: zmq_baseband_stream
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Baseband Stream
+    short_id: ''
+    type: str
+    value: tcp://*:52001
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [784, 80.0]
+    rotation: 0
+    state: enabled
+- name: zmq_control
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Control
+    short_id: ''
+    type: str
+    value: tcp://*:52000
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [664, 80.0]
+    rotation: 0
+    state: enabled
+- name: zmq_rx
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Rx location
+    short_id: ''
+    type: str
+    value: tcp://*:50492
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 80.0]
+    rotation: 0
+    state: enabled
+- name: zmq_tx
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Tx location
+    short_id: ''
+    type: str
+    value: tcp://*:50491
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 80.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [UTAT_HERON_variable_filter_0, out, blocks_msgpair_to_var_0, inpair]
+- [UTAT_HERON_variable_filter_0, out, blocks_msgpair_to_var_1, inpair]
+- [UTAT_HERON_variable_filter_0, out, gpredict_MsgPairToVar_0, inpair]
+- [UTAT_HERON_variable_filter_0_0, out, gpredict_MsgPairToVar_0_0, inpair]
+- [UTAT_HERON_variable_filter_1, out, gpredict_MsgPairToVar_0_2, inpair]
+- [UTAT_HERON_variable_filter_1_0, out, gpredict_MsgPairToVar_0_0_0, inpair]
+- [UTAT_HERON_variable_filter_1_0_1, out, gpredict_MsgPairToVar_0_1_0_0, inpair]
+- [UTAT_HERON_variable_filter_1_0_1_0, out, toptek_toptek_control_0, pa]
+- [UTAT_HERON_variable_filter_1_0_1_0_0, out, toptek_toptek_control_0, da]
+- [UTAT_HERON_variable_filter_1_0_1_0_0_0, out, toptek_toptek_control_0, lna]
+- [UTAT_HERON_variable_filter_1_0_1_0_1, out, toptek_toptek_control_0, tx_pwr]
+- [UTAT_HERON_variable_filter_1_1, out, gpredict_MsgPairToVar_0_1_0, inpair]
+- [UTAT_HERON_variable_filter_1_2, out, gpredict_MsgPairToVar_0_0_0_0, inpair]
+- [analog_agc_xx_1, '0', zeromq_pub_sink_0, '0']
+- [analog_const_source_x_0, '0', analog_nbfm_tx_0, '0']
+- [analog_nbfm_tx_0, '0', rational_resampler_xxx_0, '0']
+- [blocks_freqshift_cc_0, '0', soapy_hackrf_sink_0, '0']
+- [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
+- [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
+- [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
+- [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
+- [low_pass_filter_0_0, '0', rational_resampler_xxx_1, '0']
+- [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
+- [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
+- [soapy_hackrf_source_0, '0', blocks_freqshift_cc_1, '0']
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0_0, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_0, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_0_0, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_1, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_1, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_2, in]
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.10.0
