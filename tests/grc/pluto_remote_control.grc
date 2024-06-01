@@ -54,23 +54,6 @@ blocks:
     coordinate: [296, 16.0]
     rotation: 0
     state: enabled
-- name: rx_agc
-  id: variable_qtgui_check_box
-  parameters:
-    comment: ''
-    'false': 'False'
-    gui_hint: 'control_tab@1: 0, 2, 1, 1'
-    label: RX AGC
-    'true': 'True'
-    type: bool
-    value: 'False'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [912, 16.0]
-    rotation: 0
-    state: true
 - name: rx_freq_offset
   id: variable_qtgui_range
   parameters:
@@ -102,9 +85,9 @@ blocks:
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
-    step: '1'
-    stop: '73'
-    value: '73'
+    step: '0.5'
+    stop: '71'
+    value: '71'
     widget: counter_slider
   states:
     bus_sink: false
@@ -156,9 +139,9 @@ blocks:
     orient: QtCore.Qt.Horizontal
     rangeType: float
     start: '0'
-    step: '1'
-    stop: '89'
-    value: '89'
+    step: '0.25'
+    stop: '89.75'
+    value: '89.75'
     widget: counter_slider
   states:
     bus_sink: false
@@ -185,7 +168,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1032, 16.0]
+    coordinate: [928, 16.0]
     rotation: 0
     state: true
 - name: baseband_samp_rate
@@ -293,23 +276,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [568, 384.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_1_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: rx_agc
-    target: rx_agc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 448.0]
     rotation: 0
     state: enabled
 - name: blocks_var_to_msg_0_2
@@ -719,7 +685,6 @@ connections:
 - [blocks_var_to_msg_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_0_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_1_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_2, msgout, zeromq_push_msg_sink_0, in]
 - [zeromq_sub_source_0, '0', blocks_file_sink_0, '0']
 - [zeromq_sub_source_0, '0', blocks_throttle2_0, '0']

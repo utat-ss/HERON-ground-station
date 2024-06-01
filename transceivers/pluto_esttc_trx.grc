@@ -66,7 +66,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1000, 8.0]
+    coordinate: [928, 8.0]
     rotation: 0
     state: true
 - name: gfsk_bps
@@ -153,18 +153,6 @@ blocks:
     coordinate: [448, 8.0]
     rotation: 0
     state: true
-- name: rx_agc
-  id: variable
-  parameters:
-    comment: ''
-    value: 'False'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [920, 8.0]
-    rotation: 0
-    state: enabled
 - name: rx_freq
   id: variable
   parameters:
@@ -181,7 +169,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '73'
+    value: '71'
   states:
     bus_sink: false
     bus_source: false
@@ -217,7 +205,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '89'
+    value: '89.75'
   states:
     bus_sink: false
     bus_source: false
@@ -406,7 +394,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 360.0]
+    coordinate: [1848, 384.0]
     rotation: 0
     state: true
 - name: blocks_msgpair_to_var_0
@@ -572,6 +560,63 @@ blocks:
     coordinate: [1224, 80.0]
     rotation: 0
     state: enabled
+- name: iio_pluto_sink_0
+  id: iio_pluto_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    attenuation1: 89.75-tx_gain
+    bandwidth: '20000000'
+    buffer_size: 2**17
+    comment: ''
+    cyclic: 'False'
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: int(freq - freq_offset + 4e3)
+    fstop: '0'
+    len_tag_key: ''
+    samplerate: int(samp_rate)
+    type: fc32
+    uri: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1784, 204.0]
+    rotation: 0
+    state: enabled
+- name: iio_pluto_source_0
+  id: iio_pluto_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bandwidth: '20000000'
+    bbdc: 'True'
+    buffer_size: 2**17
+    comment: ''
+    filter: ''
+    filter_source: '''Auto'''
+    fpass: '0'
+    frequency: int(freq + freq_offset + 4e3)
+    fstop: '0'
+    gain1: '''manual'''
+    len_tag_key: ''
+    manual_gain1: rx_gain
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    quadrature: 'True'
+    rfdc: 'True'
+    samplerate: int(samp_rate)
+    type: fc32
+    uri: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [56, 476.0]
+    rotation: 0
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -646,7 +691,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 336.0]
+    coordinate: [288, 376.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_1
@@ -754,47 +799,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [824, 536.0]
-    rotation: 0
-    state: enabled
-- name: soapy_plutosdr_sink_0
-  id: soapy_plutosdr_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    bandwidth: '0.0'
-    center_freq: freq - freq_offset + 4e3
-    comment: ''
-    dev_args: ''
-    gain: tx_gain
-    samp_rate: samp_rate
-    type: fc32
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1792, 272.0]
-    rotation: 0
-    state: enabled
-- name: soapy_plutosdr_source_0
-  id: soapy_plutosdr_source
-  parameters:
-    affinity: ''
-    agc: rx_agc
-    alias: ''
-    bandwidth: '0.0'
-    center_freq: freq + freq_offset + 4e3
-    comment: ''
-    dev_args: ''
-    gain: rx_gain
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fc32
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [64, 552.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -953,12 +957,13 @@ connections:
 - [UTAT_HERON_variable_filter_1_1, out, gpredict_MsgPairToVar_0_1_0, inpair]
 - [analog_agc_xx_1, '0', digital_gfsk_demod_0, '0']
 - [analog_agc_xx_1, '0', zeromq_pub_sink_0, '0']
-- [blocks_freqshift_cc_0, '0', soapy_plutosdr_sink_0, '0']
+- [blocks_freqshift_cc_0, '0', iio_pluto_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
 - [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
+- [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
 - [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
 - [low_pass_filter_0_0, '0', rational_resampler_xxx_1, '0']
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, log]
@@ -971,7 +976,6 @@ connections:
   '0']
 - [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
 - [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
-- [soapy_plutosdr_source_0, '0', blocks_freqshift_cc_1, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0, in]
