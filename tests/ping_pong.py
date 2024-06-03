@@ -3,7 +3,7 @@ from threading import Thread
 import zmq
 from esttc_interface import ESTTCWrapper
 
-ping_delay = 1
+ping_delay = 0.5
 ping_msg = "ES+R2200\r"
 pong_msg = "ACK"
 
