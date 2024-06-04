@@ -23,34 +23,39 @@ def ping_tx():
 
 def ping_rx():
     global ping_pongs
-    while run:
+    recv_flush = 1000
+    while run or recv_flush>0:
         try:
             rx = ping_esttc.rx(zmq.NOBLOCK)
             if rx == pong_msg:
-                print("------ pong received!")
                 ping_pongs += 1
+                print("------ pong received [{}]".format(ping_pongs))
             elif rx == ping_msg:
                 print("ping back")
             else:
                 print("------ weird pong: ", rx)
         except zmq.ZMQError:
-            continue
+            pass
+        recv_flush = 1-run
 
 def pong():
     global pongs
-    while run:
+    recv_flush = 1000
+    while run or recv_flush>0:
         try:
             rx = pong_esttc.rx(zmq.NOBLOCK)
             if rx == ping_msg:
-                print("--- ping received!")
-                pong_esttc.tx(pong_msg)
                 pongs += 1
+                print("--- ping received [{}]".format(pongs))
+                if run:
+                    pong_esttc.tx(pong_msg)
             elif rx == pong_msg:
                 print("--- pong back")
             else:
                 print("--- weird ping: ", rx)
         except zmq.ZMQError:
-            continue
+            pass
+        recv_flush = 1-run
 
 if __name__ == '__main__':
     t_pong = Thread(target=pong)
@@ -61,7 +66,7 @@ if __name__ == '__main__':
     t_ping_rx.start()
     t_ping_tx.start()
 
-    input("Press Enter to quit...")
+    input("Press Enter to quit...\n")
     run = False
 
     t_pong.join()
