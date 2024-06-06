@@ -14,6 +14,10 @@ class ESTTCWrapper:
         self.rxsocket.close()
         self.txsocket.close()
         self.context.term()
+    
+    def set_timeout(self, t):
+        self.rxsocket.setsockopt(zmq.RCVTIMEO, t)
+        self.rxsocket.setsockopt(zmq.LINGER, 0)
 
     def tx(self, msg: str) -> None:
         message = [ord(c) for c in msg]
