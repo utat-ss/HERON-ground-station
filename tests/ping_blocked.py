@@ -16,6 +16,7 @@ def ping():
     while run:
         esttc.tx(ping_msg)
         pings_sent += 1
+        time.sleep(0.1)
         try:
             msg = esttc.rx()
             print('[{}] {}'.format(pings_sent, msg))
