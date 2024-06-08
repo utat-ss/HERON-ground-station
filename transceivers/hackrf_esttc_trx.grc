@@ -544,9 +544,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1912, 256.0]
+    coordinate: [2064, 272.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: blocks_freqshift_cc_1
   id: blocks_freqshift_cc
   parameters:
@@ -576,7 +576,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1848, 408.0]
+    coordinate: [2376, 416.0]
     rotation: 0
     state: true
 - name: blocks_msgpair_to_var_0
@@ -607,6 +607,46 @@ blocks:
     coordinate: [792, 1216.0]
     rotation: 0
     state: true
+- name: blocks_tagged_stream_multiply_length_0
+  id: blocks_tagged_stream_multiply_length
+  parameters:
+    affinity: ''
+    alias: ''
+    c: gfsk_sps*decim
+    comment: ''
+    lengthtagname: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1472, 272.0]
+    rotation: 0
+    state: enabled
+- name: digital_burst_shaper_xx_0
+  id: digital_burst_shaper_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    insert_phasing: 'False'
+    length_tag_name: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    post_padding: int(gfsk_sps*decim)
+    pre_padding: int(gfsk_sps*decim)
+    type: complex
+    window: firdes.window(window.WIN_HANN, int(gfsk_sps*decim), 0)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1744, 248.0]
+    rotation: 0
+    state: enabled
 - name: digital_gfsk_demod_0
   id: digital_gfsk_demod
   parameters:
@@ -627,7 +667,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1184, 680.0]
+    coordinate: [1192, 680.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_mod_0
@@ -648,7 +688,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1264, 240.0]
+    coordinate: [1216, 240.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -683,9 +723,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1704, 320.0]
+    coordinate: [2064, 352.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -1138,7 +1178,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2160, 172.0]
+    coordinate: [2376, 188.0]
     rotation: 0
     state: enabled
 - name: osmosdr_source_0
@@ -1528,7 +1568,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [288, 376.0]
+    coordinate: [288, 416.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_1
@@ -1569,7 +1609,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: padding
-    fn: 'lambda x: np.append(x, (syms_per_buf-(len(x)%syms_per_buf))*(np.uint8(0),))'
+    fn: 'lambda x: np.append(x, (syms_per_buf-((len(x)+3)%syms_per_buf))*(np.uint8(0),))'
     key: pmt.intern("key")
     maxoutbuf: '0'
     metadict: Uniform Vector
@@ -1578,7 +1618,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [752, 264.0]
+    coordinate: [736, 264.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_lambda_1
@@ -1613,29 +1653,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1024, 264.0]
+    coordinate: [984, 264.0]
     rotation: 0
     state: enabled
-- name: rational_resampler_xxx_0
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: int(gfsk_sps/gfsk_sps)
-    fbw: '0.4'
-    interp: int(gfsk_sps*decim/gfsk_sps)
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: '[]'
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1496, 240.0]
-    rotation: 0
-    state: bypassed
 - name: rational_resampler_xxx_1
   id: rational_resampler_xxx
   parameters:
@@ -1672,7 +1692,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 416.0]
+    coordinate: [720, 488.0]
     rotation: 0
     state: disabled
 - name: toptek_toptek_control_0
@@ -1686,7 +1706,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1008, 416.0]
+    coordinate: [992, 488.0]
     rotation: 0
     state: disabled
 - name: zeromq_pub_sink_0
@@ -1854,8 +1874,11 @@ connections:
 - [analog_agc_xx_1, '0', zeromq_pub_sink_0, '0']
 - [blocks_freqshift_cc_0, '0', osmosdr_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
+- [blocks_tagged_stream_multiply_length_0, '0', digital_burst_shaper_xx_0, '0']
+- [digital_burst_shaper_xx_0, '0', blocks_freqshift_cc_0, '0']
+- [digital_burst_shaper_xx_0, '0', epy_block_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
-- [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
+- [digital_gfsk_mod_0, '0', blocks_tagged_stream_multiply_length_0, '0']
 - [epy_block_0, out, blocks_message_debug_0, log]
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
@@ -1871,8 +1894,6 @@ connections:
 - [pdu_pdu_lambda_0, pdu, toptek_digital_PTT_0, tx_msg]
 - [pdu_pdu_lambda_1, pdu, pdu_pdu_lambda_0, pdu]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gfsk_mod_0, '0']
-- [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
-- [rational_resampler_xxx_0, '0', epy_block_0, '0']
 - [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
 - [toptek_digital_PTT_0, da, toptek_toptek_control_0, da]
 - [toptek_digital_PTT_0, lna, toptek_toptek_control_0, lna]
