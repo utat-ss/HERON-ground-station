@@ -298,7 +298,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1384, 712.0]
+    coordinate: [1392, 712.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_esttc_framer_0
@@ -509,9 +509,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1040, 696.0]
+    coordinate: [920, 912.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -527,7 +527,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1216, 1000.0]
+    coordinate: [1192, 920.0]
     rotation: 0
     state: enabled
 - name: blocks_freqshift_cc_0
@@ -607,6 +607,44 @@ blocks:
     coordinate: [792, 1216.0]
     rotation: 0
     state: true
+- name: blocks_tag_debug_0
+  id: blocks_tag_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    display: 'True'
+    filter: '""'
+    name: ''
+    num_inputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2064, 168.0]
+    rotation: 0
+    state: disabled
+- name: blocks_tag_gate_0
+  id: blocks_tag_gate
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    propagate_tags: 'False'
+    single_key: '""'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1600, 512.0]
+    rotation: 180
+    state: disabled
 - name: blocks_tagged_stream_multiply_length_0
   id: blocks_tagged_stream_multiply_length
   parameters:
@@ -626,13 +664,34 @@ blocks:
     coordinate: [1472, 272.0]
     rotation: 0
     state: enabled
+- name: blocks_throttle2_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1584, 448.0]
+    rotation: 180
+    state: disabled
 - name: digital_burst_shaper_xx_0
   id: digital_burst_shaper_xx
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    insert_phasing: 'False'
+    insert_phasing: 'True'
     length_tag_name: '"packet_len"'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -654,7 +713,7 @@ blocks:
     alias: ''
     comment: ''
     freq_error: '0.0'
-    gain_mu: 175e-3
+    gain_mu: 2*175e-3
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -879,7 +938,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 75e3
+    cutoff_freq: 100e3
     decim: '8'
     gain: '1'
     interp: '1'
@@ -887,13 +946,13 @@ blocks:
     minoutbuf: '0'
     samp_rate: samp_rate
     type: fir_filter_ccf
-    width: 25e3
+    width: 50e3
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 668.0]
+    coordinate: [512, 668.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0_0
@@ -1656,26 +1715,6 @@ blocks:
     coordinate: [984, 264.0]
     rotation: 0
     state: enabled
-- name: rational_resampler_xxx_1
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '25'
-    fbw: '0'
-    interp: '12'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: '[]'
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [872, 696.0]
-    rotation: 0
-    state: bypassed
 - name: toptek_digital_PTT_0
   id: toptek_digital_PTT
   parameters:
@@ -1728,7 +1767,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1216, 872.0]
+    coordinate: [1192, 808.0]
     rotation: 0
     state: enabled
 - name: zeromq_pull_msg_source_0
@@ -1874,8 +1913,12 @@ connections:
 - [analog_agc_xx_1, '0', zeromq_pub_sink_0, '0']
 - [blocks_freqshift_cc_0, '0', osmosdr_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
+- [blocks_tag_gate_0, '0', low_pass_filter_0, '0']
 - [blocks_tagged_stream_multiply_length_0, '0', digital_burst_shaper_xx_0, '0']
 - [digital_burst_shaper_xx_0, '0', blocks_freqshift_cc_0, '0']
+- [digital_burst_shaper_xx_0, '0', blocks_tag_debug_0, '0']
+- [digital_burst_shaper_xx_0, '0', blocks_tag_gate_0, '0']
+- [digital_burst_shaper_xx_0, '0', blocks_throttle2_0, '0']
 - [digital_burst_shaper_xx_0, '0', epy_block_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
 - [digital_gfsk_mod_0, '0', blocks_tagged_stream_multiply_length_0, '0']
@@ -1883,18 +1926,19 @@ connections:
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
-- [low_pass_filter_0_0, '0', rational_resampler_xxx_1, '0']
+- [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
+- [low_pass_filter_0_0, '0', blocks_file_sink_0, '0']
+- [low_pass_filter_0_0, '0', digital_gfsk_demod_0, '0']
+- [low_pass_filter_0_0, '0', zeromq_pub_sink_0, '0']
 - [osmosdr_source_0, '0', blocks_freqshift_cc_1, '0']
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1, pdu, zeromq_push_msg_sink_0, in]
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, log]
-- [pdu_add_system_time_1_0, pdu, zeromq_push_msg_sink_0, in]
 - [pdu_pdu_lambda_0, pdu, pdu_pdu_to_tagged_stream_0, pdus]
 - [pdu_pdu_lambda_0, pdu, toptek_digital_PTT_0, tx_msg]
 - [pdu_pdu_lambda_1, pdu, pdu_pdu_lambda_0, pdu]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gfsk_mod_0, '0']
-- [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
 - [toptek_digital_PTT_0, da, toptek_toptek_control_0, da]
 - [toptek_digital_PTT_0, lna, toptek_toptek_control_0, lna]
 - [toptek_digital_PTT_0, pa, toptek_toptek_control_0, pa]
