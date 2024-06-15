@@ -189,6 +189,18 @@ blocks:
     coordinate: [176, 8.0]
     rotation: 0
     state: enabled
+- name: tx_buf
+  id: variable
+  parameters:
+    comment: ''
+    value: 2**17
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 152.0]
+    rotation: 0
+    state: true
 - name: tx_freq
   id: variable
   parameters:
@@ -211,6 +223,18 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [848, 8.0]
+    rotation: 0
+    state: true
+- name: tx_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 4e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 152.0]
     rotation: 0
     state: true
 - name: UTAT_HERON_esttc_deframer_0
@@ -243,7 +267,7 @@ blocks:
     bus_structure: null
     coordinate: [288, 272.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: UTAT_HERON_tagged_stream_fixed_length_padder_0
   id: UTAT_HERON_tagged_stream_fixed_length_padder
   parameters:
@@ -263,7 +287,7 @@ blocks:
     bus_structure: null
     coordinate: [960, 232.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: UTAT_HERON_variable_filter_0
   id: UTAT_HERON_variable_filter
   parameters:
@@ -375,14 +399,14 @@ blocks:
     freq: tx_freq-freq+freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
+    sample_rate: tx_samp_rate
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [1592, 256.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: blocks_freqshift_cc_1
   id: blocks_freqshift_cc
   parameters:
@@ -450,7 +474,7 @@ blocks:
     alias: ''
     comment: ''
     freq_error: '0.0'
-    gain_mu: 175e-3
+    gain_mu: 3*175e-3
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -484,9 +508,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1232, 248.0]
+    coordinate: [1368, 248.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -585,7 +609,7 @@ blocks:
     alias: ''
     attenuation1: 89.75-tx_gain
     bandwidth: '20000000'
-    buffer_size: 2**17
+    buffer_size: tx_buf
     comment: ''
     cyclic: 'False'
     filter: ''
@@ -594,7 +618,7 @@ blocks:
     frequency: int(freq - freq_offset + 4e3)
     fstop: '0'
     len_tag_key: ''
-    samplerate: int(samp_rate)
+    samplerate: int(tx_samp_rate)
     type: fc32
     uri: ''
   states:
@@ -603,7 +627,7 @@ blocks:
     bus_structure: null
     coordinate: [1784, 204.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: iio_pluto_source_0
   id: iio_pluto_source
   parameters:
@@ -778,7 +802,7 @@ blocks:
     bus_structure: null
     coordinate: [480, 264.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: pdu_pdu_to_tagged_stream_0_0_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -795,27 +819,7 @@ blocks:
     bus_structure: null
     coordinate: [728, 264.0]
     rotation: 0
-    state: enabled
-- name: rational_resampler_xxx_0
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '3'
-    fbw: '0'
-    interp: '250'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: '[]'
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1416, 240.0]
-    rotation: 0
-    state: enabled
+    state: disabled
 - name: rational_resampler_xxx_1
   id: rational_resampler_xxx
   parameters:
@@ -875,7 +879,7 @@ blocks:
     bus_structure: null
     coordinate: [32, 256.0]
     rotation: 0
-    state: true
+    state: disabled
 - name: zeromq_pull_msg_source_0_3
   id: zeromq_pull_msg_source
   parameters:
@@ -996,7 +1000,7 @@ connections:
 - [blocks_freqshift_cc_0, '0', iio_pluto_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
-- [digital_gfsk_mod_0, '0', rational_resampler_xxx_0, '0']
+- [digital_gfsk_mod_0, '0', blocks_freqshift_cc_0, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
@@ -1010,7 +1014,6 @@ connections:
 - [pdu_pdu_lambda_0, pdu, pdu_pdu_to_tagged_stream_0_0_0, pdus]
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', UTAT_HERON_tagged_stream_fixed_length_padder_0,
   '0']
-- [rational_resampler_xxx_0, '0', blocks_freqshift_cc_0, '0']
 - [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
@@ -1021,4 +1024,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.10.0
+  grc_version: 3.10.7.0
