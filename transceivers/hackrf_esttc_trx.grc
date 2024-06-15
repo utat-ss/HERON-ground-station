@@ -625,7 +625,7 @@ blocks:
     bus_structure: null
     coordinate: [2064, 168.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_tag_gate_0
   id: blocks_tag_gate
   parameters:
@@ -1958,4 +1958,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.9.2
+  grc_version: 3.10.10.0
