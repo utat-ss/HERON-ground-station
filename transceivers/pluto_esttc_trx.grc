@@ -33,6 +33,18 @@ options:
     state: enabled
 
 blocks:
+- name: baud_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: '9600'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 80.0]
+    rotation: 0
+    state: true
 - name: freq
   id: variable
   parameters:
@@ -42,7 +54,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [608, 8.0]
+    coordinate: [720, 8.0]
     rotation: 0
     state: true
 - name: freq_offset
@@ -54,43 +66,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [688, 8.0]
-    rotation: 0
-    state: true
-- name: front_padding_nbytes
-  id: variable
-  parameters:
-    comment: ''
-    value: '10'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [928, 8.0]
-    rotation: 0
-    state: true
-- name: gfsk_bps
-  id: variable
-  parameters:
-    comment: ''
-    value: '9600'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [264, 8.0]
-    rotation: 0
-    state: true
-- name: gfsk_bt
-  id: variable
-  parameters:
-    comment: ''
-    value: '0.5'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [528, 8.0]
+    coordinate: [800, 8.0]
     rotation: 0
     state: true
 - name: gfsk_freq_dev
@@ -102,55 +78,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [344, 8.0]
+    coordinate: [616, 8.0]
     rotation: 0
     state: enabled
-- name: gfsk_mod_ind
+- name: rx_decim
   id: variable
   parameters:
     comment: ''
-    value: 2 * gfsk_freq_dev / gfsk_bps
+    value: 2**5
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [400, 80.0]
-    rotation: 0
-    state: true
-- name: gfsk_samp_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: gfsk_sps * gfsk_bps
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [176, 80.0]
-    rotation: 0
-    state: true
-- name: gfsk_sensitivity
-  id: variable
-  parameters:
-    comment: ''
-    value: 2*pi*gfsk_freq_dev/gfsk_samp_rate
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [288, 80.0]
-    rotation: 0
-    state: true
-- name: gfsk_sps
-  id: variable
-  parameters:
-    comment: ''
-    value: '5'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [448, 8.0]
+    coordinate: [496, 80.0]
     rotation: 0
     state: true
 - name: rx_freq
@@ -162,7 +102,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [584, 80.0]
+    coordinate: [760, 80.0]
     rotation: 0
     state: true
 - name: rx_gain
@@ -174,31 +114,67 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [776, 8.0]
+    coordinate: [888, 8.0]
     rotation: 0
     state: true
-- name: samp_rate
+- name: rx_samp_per_baud
   id: variable
   parameters:
     comment: ''
-    value: 4e6
+    value: '8'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 80.0]
+    rotation: 0
+    state: enabled
+- name: rx_samp_rate1
+  id: variable
+  parameters:
+    comment: ''
+    value: rx_samp_per_baud*baud_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 80.0]
+    rotation: 0
+    state: enabled
+- name: rx_samp_rate2
+  id: variable
+  parameters:
+    comment: ''
+    value: rx_samp_rate1*rx_decim
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 80.0]
+    rotation: 0
+    state: enabled
+- name: tx_baud_per_buf
+  id: variable
+  parameters:
+    comment: ''
+    value: 2**9
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [176, 8.0]
     rotation: 0
-    state: enabled
-- name: tx_buf
+    state: true
+- name: tx_buffer
   id: variable
   parameters:
     comment: ''
-    value: 2**17
+    value: tx_samp_per_baud*tx_baud_per_buf
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [176, 152.0]
+    coordinate: [416, 8.0]
     rotation: 0
     state: true
 - name: tx_freq
@@ -210,7 +186,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 80.0]
+    coordinate: [680, 80.0]
     rotation: 0
     state: true
 - name: tx_gain
@@ -222,21 +198,33 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 8.0]
+    coordinate: [960, 8.0]
     rotation: 0
     state: true
-- name: tx_samp_rate
+- name: tx_samp_per_baud
   id: variable
   parameters:
     comment: ''
-    value: 4e6
+    value: 2**8
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 152.0]
+    coordinate: [288, 8.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: tx_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: tx_samp_per_baud*baud_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [512, 8.0]
+    rotation: 0
+    state: enabled
 - name: UTAT_HERON_esttc_deframer_0
   id: UTAT_HERON_esttc_deframer
   parameters:
@@ -245,12 +233,12 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: gfsk_samp_rate
+    samp_rate: rx_samp_rate1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1368, 552.0]
+    coordinate: [1208, 552.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_esttc_framer_0
@@ -267,27 +255,7 @@ blocks:
     bus_structure: null
     coordinate: [288, 272.0]
     rotation: 0
-    state: disabled
-- name: UTAT_HERON_tagged_stream_fixed_length_padder_0
-  id: UTAT_HERON_tagged_stream_fixed_length_padder
-  parameters:
-    additional_symb_overflow: '5'
-    affinity: ''
-    alias: ''
-    comment: ''
-    filler: '0x01'
-    final_buffer_len: 2**17
-    final_samples_per_symbol: 8*samp_rate/gfsk_bps
-    len_tag_key: packet_len
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [960, 232.0]
-    rotation: 0
-    state: disabled
+    state: enabled
 - name: UTAT_HERON_variable_filter_0
   id: UTAT_HERON_variable_filter
   parameters:
@@ -369,7 +337,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1000, 536.0]
+    coordinate: [840, 536.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0
@@ -387,7 +355,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1160, 800.0]
+    coordinate: [1000, 800.0]
     rotation: 0
     state: enabled
 - name: blocks_freqshift_cc_0
@@ -404,9 +372,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1592, 256.0]
+    coordinate: [1432, 256.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_freqshift_cc_1
   id: blocks_freqshift_cc
   parameters:
@@ -416,12 +384,12 @@ blocks:
     freq: freq_offset + (freq-rx_freq)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
+    sample_rate: rx_samp_rate2
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [272, 552.0]
+    coordinate: [264, 552.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0
@@ -436,7 +404,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1848, 384.0]
+    coordinate: [1696, 384.0]
     rotation: 0
     state: true
 - name: blocks_msgpair_to_var_0
@@ -480,37 +448,37 @@ blocks:
     minoutbuf: '0'
     mu: '0.5'
     omega_relative_limit: '0.005'
-    samples_per_symbol: int(gfsk_sps)
-    sensitivity: gfsk_sensitivity
+    samples_per_symbol: int(rx_samp_per_baud)
+    sensitivity: 2*pi*gfsk_freq_dev/rx_samp_rate1
     verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1160, 520.0]
+    coordinate: [1000, 520.0]
     rotation: 0
     state: enabled
-- name: digital_gfsk_mod_0
+- name: digital_gfsk_mod_0_0
   id: digital_gfsk_mod
   parameters:
     affinity: ''
     alias: ''
-    bt: gfsk_bt
+    bt: '0.5'
     comment: ''
-    do_unpack: 'True'
+    do_unpack: 'False'
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_symbol: int(gfsk_sps)
-    sensitivity: gfsk_sensitivity
+    samples_per_symbol: int(tx_samp_per_baud)
+    sensitivity: 2*pi*gfsk_freq_dev/tx_samp_rate
     verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1368, 248.0]
+    coordinate: [1232, 240.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -599,7 +567,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1224, 80.0]
+    coordinate: [1400, 80.0]
     rotation: 0
     state: enabled
 - name: iio_pluto_sink_0
@@ -609,7 +577,7 @@ blocks:
     alias: ''
     attenuation1: 89.75-tx_gain
     bandwidth: '20000000'
-    buffer_size: tx_buf
+    buffer_size: tx_buffer
     comment: ''
     cyclic: 'False'
     filter: ''
@@ -625,9 +593,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1784, 204.0]
+    coordinate: [1640, 204.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: iio_pluto_source_0
   id: iio_pluto_source
   parameters:
@@ -649,7 +617,7 @@ blocks:
     minoutbuf: '0'
     quadrature: 'True'
     rfdc: 'True'
-    samplerate: int(samp_rate)
+    samplerate: int(rx_samp_rate2)
     type: fc32
     uri: ''
   states:
@@ -679,21 +647,21 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 75e3
-    decim: '10'
+    cutoff_freq: 100e3
+    decim: '8'
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate
+    samp_rate: rx_samp_rate2
     type: fir_filter_ccf
-    width: 25e3
+    width: 50e3
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [456, 508.0]
+    coordinate: [464, 508.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0_0
@@ -709,7 +677,7 @@ blocks:
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate/10
+    samp_rate: rx_samp_rate2/8
     type: fir_filter_ccf
     width: 5e3
     win: window.WIN_HAMMING
@@ -717,7 +685,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [640, 508.0]
+    coordinate: [648, 508.0]
     rotation: 0
     state: enabled
 - name: output
@@ -734,7 +702,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 80.0]
+    coordinate: [1520, 80.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_0
@@ -766,7 +734,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1592, 528.0]
+    coordinate: [1440, 528.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_1_0
@@ -782,7 +750,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1592, 576.0]
+    coordinate: [1440, 576.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_lambda_0
@@ -790,8 +758,26 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: ''
-    fn: 'lambda x: np.insert(x, 0, front_padding_nbytes*(0xAA,))'
+    comment: padding
+    fn: 'lambda x: np.append(x, (tx_baud_per_buf-((len(x)+3)%tx_baud_per_buf))*(np.uint8(0),))'
+    key: pmt.intern("key")
+    maxoutbuf: '0'
+    metadict: Uniform Vector
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [728, 264.0]
+    rotation: 0
+    state: enabled
+- name: pdu_pdu_lambda_1
+  id: pdu_pdu_lambda
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: unpack bits
+    fn: 'lambda x: np.unpackbits(x)'
     key: pmt.intern("key")
     maxoutbuf: '0'
     metadict: Uniform Vector
@@ -802,7 +788,7 @@ blocks:
     bus_structure: null
     coordinate: [480, 264.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: pdu_pdu_to_tagged_stream_0_0_0
   id: pdu_pdu_to_tagged_stream
   parameters:
@@ -817,27 +803,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 264.0]
-    rotation: 0
-    state: disabled
-- name: rational_resampler_xxx_1
-  id: rational_resampler_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '25'
-    fbw: '0'
-    interp: '12'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    taps: '[]'
-    type: ccc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [824, 536.0]
+    coordinate: [1000, 264.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -859,7 +825,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1160, 672.0]
+    coordinate: [1000, 672.0]
     rotation: 0
     state: enabled
 - name: zeromq_pull_msg_source_0
@@ -879,7 +845,7 @@ blocks:
     bus_structure: null
     coordinate: [32, 256.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: zeromq_pull_msg_source_0_3
   id: zeromq_pull_msg_source
   parameters:
@@ -911,7 +877,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1832, 544.0]
+    coordinate: [1680, 544.0]
     rotation: 0
     state: enabled
 - name: zmq_baseband_stream
@@ -928,7 +894,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [784, 80.0]
+    coordinate: [960, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_control
@@ -945,7 +911,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [664, 80.0]
+    coordinate: [840, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_rx
@@ -962,7 +928,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1088, 80.0]
+    coordinate: [1264, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_tx
@@ -979,15 +945,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [952, 80.0]
+    coordinate: [1128, 80.0]
     rotation: 0
     state: enabled
 
 connections:
 - [UTAT_HERON_esttc_deframer_0, crc_fail, pdu_add_system_time_1_0, pdu]
 - [UTAT_HERON_esttc_deframer_0, crc_ok, pdu_add_system_time_1, pdu]
-- [UTAT_HERON_esttc_framer_0, pdu_out, pdu_pdu_lambda_0, pdu]
-- [UTAT_HERON_tagged_stream_fixed_length_padder_0, '0', digital_gfsk_mod_0, '0']
+- [UTAT_HERON_esttc_framer_0, pdu_out, pdu_pdu_lambda_1, pdu]
 - [UTAT_HERON_variable_filter_0, out, blocks_msgpair_to_var_0, inpair]
 - [UTAT_HERON_variable_filter_0, out, blocks_msgpair_to_var_1, inpair]
 - [UTAT_HERON_variable_filter_0, out, gpredict_MsgPairToVar_0, inpair]
@@ -1000,21 +965,20 @@ connections:
 - [blocks_freqshift_cc_0, '0', iio_pluto_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
-- [digital_gfsk_mod_0, '0', blocks_freqshift_cc_0, '0']
+- [digital_gfsk_mod_0_0, '0', blocks_freqshift_cc_0, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
 - [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
-- [low_pass_filter_0_0, '0', rational_resampler_xxx_1, '0']
+- [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1, pdu, zeromq_push_msg_sink_0, in]
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1_0, pdu, zeromq_push_msg_sink_0, in]
 - [pdu_pdu_lambda_0, pdu, pdu_pdu_to_tagged_stream_0_0_0, pdus]
-- [pdu_pdu_to_tagged_stream_0_0_0, '0', UTAT_HERON_tagged_stream_fixed_length_padder_0,
-  '0']
-- [rational_resampler_xxx_1, '0', analog_agc_xx_1, '0']
+- [pdu_pdu_lambda_1, pdu, pdu_pdu_lambda_0, pdu]
+- [pdu_pdu_to_tagged_stream_0_0_0, '0', digital_gfsk_mod_0_0, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0, in]
@@ -1024,4 +988,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.7.0
+  grc_version: 3.10.9.2
