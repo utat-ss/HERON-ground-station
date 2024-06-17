@@ -372,7 +372,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1432, 256.0]
+    coordinate: [1944, 272.0]
     rotation: 0
     state: enabled
 - name: blocks_freqshift_cc_1
@@ -435,6 +435,46 @@ blocks:
     coordinate: [760, 760.0]
     rotation: 0
     state: true
+- name: blocks_tagged_stream_multiply_length_0
+  id: blocks_tagged_stream_multiply_length
+  parameters:
+    affinity: ''
+    alias: ''
+    c: tx_samp_per_baud
+    comment: ''
+    lengthtagname: packet_len
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1440, 272.0]
+    rotation: 0
+    state: enabled
+- name: digital_burst_shaper_xx_0
+  id: digital_burst_shaper_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    insert_phasing: 'True'
+    length_tag_name: '"packet_len"'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    post_padding: int(tx_samp_per_baud)
+    pre_padding: int(tx_samp_per_baud)
+    type: complex
+    window: firdes.window(window.WIN_HANN, int(tx_samp_per_baud), 0)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1712, 248.0]
+    rotation: 0
+    state: enabled
 - name: digital_gfsk_demod_0
   id: digital_gfsk_demod
   parameters:
@@ -476,7 +516,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1232, 240.0]
+    coordinate: [1208, 240.0]
     rotation: 0
     state: enabled
 - name: gpredict_MsgPairToVar_0
@@ -593,7 +633,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1640, 204.0]
+    coordinate: [2152, 220.0]
     rotation: 0
     state: enabled
 - name: iio_pluto_source_0
@@ -803,7 +843,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1000, 264.0]
+    coordinate: [984, 264.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -964,8 +1004,10 @@ connections:
 - [analog_agc_xx_1, '0', zeromq_pub_sink_0, '0']
 - [blocks_freqshift_cc_0, '0', iio_pluto_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
+- [blocks_tagged_stream_multiply_length_0, '0', digital_burst_shaper_xx_0, '0']
+- [digital_burst_shaper_xx_0, '0', blocks_freqshift_cc_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
-- [digital_gfsk_mod_0_0, '0', blocks_freqshift_cc_0, '0']
+- [digital_gfsk_mod_0_0, '0', blocks_tagged_stream_multiply_length_0, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
@@ -988,4 +1030,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.9.2
+  grc_version: 3.10.10.0
