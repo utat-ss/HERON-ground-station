@@ -33,18 +33,18 @@ options:
     state: enabled
 
 blocks:
-- name: decim
+- name: baud_rate
   id: variable
   parameters:
     comment: ''
-    value: 2**5
+    value: '9600'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [384, 8.0]
+    coordinate: [176, 80.0]
     rotation: 0
-    state: enabled
+    state: true
 - name: freq
   id: variable
   parameters:
@@ -54,43 +54,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [720, 8.0]
+    coordinate: [728, 8.0]
     rotation: 0
     state: true
 - name: freq_offset
   id: variable
   parameters:
     comment: ''
-    value: samp_rate/16
+    value: 100e3
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [800, 8.0]
-    rotation: 0
-    state: true
-- name: front_padding_nbytes
-  id: variable
-  parameters:
-    comment: ''
-    value: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1320, 8.0]
-    rotation: 0
-    state: true
-- name: gfsk_bt
-  id: variable
-  parameters:
-    comment: ''
-    value: '0.5'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [640, 8.0]
+    coordinate: [808, 8.0]
     rotation: 0
     state: true
 - name: gfsk_freq_dev
@@ -102,69 +78,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [536, 8.0]
+    coordinate: [624, 8.0]
     rotation: 0
     state: enabled
-- name: gfsk_mod_ind
-  id: variable
-  parameters:
-    comment: ''
-    value: 2 * gfsk_freq_dev / sym_rate
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [576, 80.0]
-    rotation: 0
-    state: true
-- name: gfsk_samp_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: samp_rate/decim
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [272, 80.0]
-    rotation: 0
-    state: true
-- name: gfsk_sensitivity
-  id: variable
-  parameters:
-    comment: ''
-    value: 2*pi*gfsk_freq_dev/gfsk_samp_rate
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [464, 80.0]
-    rotation: 0
-    state: true
-- name: gfsk_sps
-  id: variable
-  parameters:
-    comment: ''
-    value: gfsk_samp_rate/sym_rate
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [384, 80.0]
-    rotation: 0
-    state: true
-- name: hackrf_buffer
-  id: variable
-  parameters:
-    comment: ''
-    value: 2**17
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [176, 8.0]
-    rotation: 0
-    state: true
 - name: rx_amp
   id: variable
   parameters:
@@ -174,7 +90,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1240, 8.0]
+    coordinate: [1248, 8.0]
+    rotation: 0
+    state: true
+- name: rx_decim
+  id: variable
+  parameters:
+    comment: ''
+    value: 2**5
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 80.0]
     rotation: 0
     state: true
 - name: rx_freq
@@ -198,9 +126,45 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [888, 8.0]
+    coordinate: [896, 8.0]
     rotation: 0
     state: true
+- name: rx_samp_per_baud
+  id: variable
+  parameters:
+    comment: ''
+    value: '8'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 80.0]
+    rotation: 0
+    state: enabled
+- name: rx_samp_rate1
+  id: variable
+  parameters:
+    comment: ''
+    value: rx_samp_per_baud*baud_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 80.0]
+    rotation: 0
+    state: enabled
+- name: rx_samp_rate2
+  id: variable
+  parameters:
+    comment: ''
+    value: rx_samp_rate1*rx_decim
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [576, 80.0]
+    rotation: 0
+    state: enabled
 - name: rx_vga_gain
   id: variable
   parameters:
@@ -210,43 +174,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [968, 8.0]
-    rotation: 0
-    state: true
-- name: samp_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: (sym_rate*hackrf_buffer)/syms_per_buf
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [176, 80.0]
-    rotation: 0
-    state: enabled
-- name: sym_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: '9600'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [456, 8.0]
-    rotation: 0
-    state: true
-- name: syms_per_buf
-  id: variable
-  parameters:
-    comment: ''
-    value: 2**9
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [280, 8.0]
+    coordinate: [976, 8.0]
     rotation: 0
     state: true
 - name: tx_amp
@@ -258,7 +186,31 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1160, 8.0]
+    coordinate: [1168, 8.0]
+    rotation: 0
+    state: true
+- name: tx_baud_per_buf
+  id: variable
+  parameters:
+    comment: ''
+    value: 2**9
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [280, 8.0]
+    rotation: 0
+    state: true
+- name: tx_buffer
+  id: variable
+  parameters:
+    comment: ''
+    value: 2**17
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 8.0]
     rotation: 0
     state: true
 - name: tx_freq
@@ -273,6 +225,30 @@ blocks:
     coordinate: [680, 80.0]
     rotation: 0
     state: true
+- name: tx_samp_per_baud
+  id: variable
+  parameters:
+    comment: ''
+    value: tx_buffer/tx_baud_per_buf
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [392, 8.0]
+    rotation: 0
+    state: enabled
+- name: tx_samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: tx_samp_per_baud*baud_rate
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 8.0]
+    rotation: 0
+    state: enabled
 - name: tx_vga_gain
   id: variable
   parameters:
@@ -282,7 +258,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1064, 8.0]
+    coordinate: [1072, 8.0]
     rotation: 0
     state: true
 - name: UTAT_HERON_esttc_deframer_0
@@ -293,7 +269,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: gfsk_samp_rate
+    samp_rate: rx_samp_rate1
   states:
     bus_sink: false
     bus_source: false
@@ -539,12 +515,12 @@ blocks:
     freq: tx_freq-freq+freq_offset
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
+    sample_rate: tx_samp_rate
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2064, 272.0]
+    coordinate: [1992, 272.0]
     rotation: 0
     state: enabled
 - name: blocks_freqshift_cc_1
@@ -556,7 +532,7 @@ blocks:
     freq: freq_offset + (freq-rx_freq)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: samp_rate
+    sample_rate: rx_samp_rate2
   states:
     bus_sink: false
     bus_source: false
@@ -623,7 +599,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2064, 168.0]
+    coordinate: [1992, 176.0]
     rotation: 0
     state: disabled
 - name: blocks_tag_gate_0
@@ -650,7 +626,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    c: gfsk_sps*decim
+    c: tx_samp_per_baud
     comment: ''
     lengthtagname: packet_len
     maxoutbuf: '0'
@@ -661,7 +637,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1472, 272.0]
+    coordinate: [1448, 272.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0
@@ -675,7 +651,7 @@ blocks:
     maximum: '0.1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_second: samp_rate
+    samples_per_second: tx_samp_rate
     type: complex
     vlen: '1'
   states:
@@ -695,15 +671,15 @@ blocks:
     length_tag_name: '"packet_len"'
     maxoutbuf: '0'
     minoutbuf: '0'
-    post_padding: int(gfsk_sps*decim)
-    pre_padding: int(gfsk_sps*decim)
+    post_padding: int(tx_samp_per_baud)
+    pre_padding: int(tx_samp_per_baud)
     type: complex
-    window: firdes.window(window.WIN_HANN, int(gfsk_sps*decim), 0)
+    window: firdes.window(window.WIN_HANN, int(tx_samp_per_baud), 0)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1744, 248.0]
+    coordinate: [1720, 248.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_demod_0
@@ -719,8 +695,8 @@ blocks:
     minoutbuf: '0'
     mu: '0.5'
     omega_relative_limit: '0.005'
-    samples_per_symbol: int(gfsk_sps)
-    sensitivity: gfsk_sensitivity
+    samples_per_symbol: rx_samp_per_baud
+    sensitivity: 2*pi*gfsk_freq_dev/rx_samp_rate1
     verbose: 'False'
   states:
     bus_sink: false
@@ -734,14 +710,14 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    bt: gfsk_bt
+    bt: '0.5'
     comment: ''
     do_unpack: 'False'
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples_per_symbol: int(gfsk_sps*decim)
-    sensitivity: gfsk_sensitivity/decim
+    samples_per_symbol: int(tx_samp_per_baud)
+    sensitivity: 2*pi*gfsk_freq_dev/tx_samp_rate
     verbose: 'False'
   states:
     bus_sink: false
@@ -775,14 +751,14 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    samples: syms_per_buf*gfsk_sps*decim
+    samples: tx_buffer
   states:
     _io_cache: ('Woo Hoo', 'blk', [('samples', '131072')], [('0', 'complex', 1)],
       [('out', 'message', 1)], 'Shout Woo Hoo when samples are reached', [])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2064, 352.0]
+    coordinate: [2016, 344.0]
     rotation: 0
     state: disabled
 - name: gpredict_MsgPairToVar_0
@@ -944,7 +920,7 @@ blocks:
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate
+    samp_rate: rx_samp_rate2
     type: fir_filter_ccf
     width: 50e3
     win: window.WIN_HAMMING
@@ -968,7 +944,7 @@ blocks:
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate/8
+    samp_rate: rx_samp_rate2/8
     type: fir_filter_ccf
     width: 5e3
     win: window.WIN_HAMMING
@@ -1222,7 +1198,7 @@ blocks:
     minoutbuf: '0'
     nchan: '1'
     num_mboards: '1'
-    sample_rate: samp_rate
+    sample_rate: tx_samp_rate
     sync: sync
     time_source0: ''
     time_source1: ''
@@ -1237,7 +1213,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2376, 188.0]
+    coordinate: [2272, 188.0]
     rotation: 0
     state: enabled
 - name: osmosdr_source_0
@@ -1579,7 +1555,7 @@ blocks:
     minoutbuf: '0'
     nchan: '1'
     num_mboards: '1'
-    sample_rate: samp_rate
+    sample_rate: rx_samp_rate2
     sync: sync
     time_source0: ''
     time_source1: ''
@@ -1668,7 +1644,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: padding
-    fn: 'lambda x: np.append(x, (syms_per_buf-((len(x)+3)%syms_per_buf))*(np.uint8(0),))'
+    fn: 'lambda x: np.append(x, (tx_baud_per_buf-((len(x)+3)%tx_baud_per_buf))*(np.uint8(0),))'
     key: pmt.intern("key")
     maxoutbuf: '0'
     metadict: Uniform Vector
@@ -1726,7 +1702,7 @@ blocks:
     extra_s: 50e-3
     maxoutbuf: '0'
     minoutbuf: '0'
-    padding_nbytes: front_padding_nbytes
+    padding_nbytes: '0'
   states:
     bus_sink: false
     bus_source: false
@@ -1958,4 +1934,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.10.0
+  grc_version: 3.10.9.2
