@@ -946,7 +946,7 @@ blocks:
     minoutbuf: '0'
     samp_rate: rx_samp_rate2/8
     type: fir_filter_ccf
-    width: 30e3
+    width: 10e3
     win: window.WIN_HAMMING
   states:
     bus_sink: false
