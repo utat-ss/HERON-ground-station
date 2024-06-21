@@ -28,7 +28,7 @@ def ping_rx():
                 pings_rcvd += 1
                 print("--- ping received [{}]".format(pings_rcvd))
             else:
-                print("--- weird ping: ", rx)
+                print("--- weird ping")
         except zmq.ZMQError:
             pass
         recv_flush -= 1-run

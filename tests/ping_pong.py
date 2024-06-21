@@ -33,7 +33,7 @@ def ping_rx():
             elif rx == ping_msg:
                 print("ping back")
             else:
-                print("------ weird pong: ", rx)
+                print("------ weird pong")
         except zmq.ZMQError:
             pass
         recv_flush -= 1-run
@@ -52,7 +52,7 @@ def pong():
             elif rx == pong_msg:
                 print("--- pong back")
             else:
-                print("--- weird ping: ", rx)
+                print("--- weird ping")
         except zmq.ZMQError:
             pass
         recv_flush -= 1-run
