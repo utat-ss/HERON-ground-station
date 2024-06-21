@@ -85,7 +85,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 'True'
+    value: 'False'
   states:
     bus_sink: false
     bus_source: false
@@ -121,7 +121,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '40'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
@@ -169,7 +169,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '50'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
@@ -181,7 +181,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 'True'
+    value: 'False'
   states:
     bus_sink: false
     bus_source: false
@@ -253,7 +253,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '47'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
@@ -1934,4 +1934,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.9.2
+  grc_version: 3.10.10.0

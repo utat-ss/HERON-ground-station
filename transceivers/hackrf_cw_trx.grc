@@ -157,7 +157,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 'True'
+    value: 'False'
   states:
     bus_sink: false
     bus_source: false
@@ -181,7 +181,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '40'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
@@ -193,7 +193,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '50'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
@@ -217,7 +217,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 'True'
+    value: 'False'
   states:
     bus_sink: false
     bus_source: false
@@ -241,7 +241,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '47'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
