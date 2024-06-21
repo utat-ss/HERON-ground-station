@@ -3,7 +3,7 @@ from threading import Thread
 import zmq
 from esttc_interface import ESTTCWrapper
 
-ping_delay = 0.5
+ping_delay = 1
 ping_msg = "ES+R2200\r"
 pong_msg = "ACK"
 
@@ -23,7 +23,7 @@ def ping_tx():
 
 def ping_rx():
     global ping_pongs
-    recv_flush = 1000
+    recv_flush = 100000
     while run or recv_flush>0:
         try:
             rx = ping_esttc.rx(zmq.NOBLOCK)
@@ -36,11 +36,11 @@ def ping_rx():
                 print("------ weird pong: ", rx)
         except zmq.ZMQError:
             pass
-        recv_flush = 1-run
+        recv_flush -= 1-run
 
 def pong():
     global pongs
-    recv_flush = 1000
+    recv_flush = 100000
     while run or recv_flush>0:
         try:
             rx = pong_esttc.rx(zmq.NOBLOCK)
@@ -55,7 +55,7 @@ def pong():
                 print("--- weird ping: ", rx)
         except zmq.ZMQError:
             pass
-        recv_flush = 1-run
+        recv_flush -= 1-run
 
 if __name__ == '__main__':
     t_pong = Thread(target=pong)
