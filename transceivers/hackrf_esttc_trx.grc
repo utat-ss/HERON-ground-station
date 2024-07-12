@@ -387,7 +387,7 @@ blocks:
     bus_structure: null
     coordinate: [504, 944.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: UTAT_HERON_variable_filter_1_0_1_0_0
   id: UTAT_HERON_variable_filter
   parameters:
@@ -403,7 +403,7 @@ blocks:
     bus_structure: null
     coordinate: [504, 992.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: UTAT_HERON_variable_filter_1_0_1_0_0_0
   id: UTAT_HERON_variable_filter
   parameters:
@@ -419,7 +419,7 @@ blocks:
     bus_structure: null
     coordinate: [504, 1040.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: UTAT_HERON_variable_filter_1_0_1_0_1
   id: UTAT_HERON_variable_filter
   parameters:
@@ -435,7 +435,7 @@ blocks:
     bus_structure: null
     coordinate: [504, 1088.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: UTAT_HERON_variable_filter_1_1
   id: UTAT_HERON_variable_filter
   parameters:
@@ -520,7 +520,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1992, 272.0]
+    coordinate: [2176, 272.0]
     rotation: 0
     state: enabled
 - name: blocks_freqshift_cc_1
@@ -599,7 +599,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1992, 176.0]
+    coordinate: [2176, 176.0]
     rotation: 0
     state: disabled
 - name: blocks_tag_gate_0
@@ -637,7 +637,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1448, 272.0]
+    coordinate: [1632, 272.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0
@@ -679,7 +679,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1720, 248.0]
+    coordinate: [1904, 248.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_demod_0
@@ -694,7 +694,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     mu: '0.5'
-    omega_relative_limit: '0.005'
+    omega_relative_limit: 1*0.005
     samples_per_symbol: rx_samp_per_baud
     sensitivity: 2*pi*gfsk_freq_dev/rx_samp_rate1
     verbose: 'False'
@@ -723,7 +723,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1216, 240.0]
+    coordinate: [1400, 240.0]
     rotation: 0
     state: enabled
 - name: epy_block_0
@@ -758,7 +758,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2016, 344.0]
+    coordinate: [2200, 344.0]
     rotation: 0
     state: disabled
 - name: gpredict_MsgPairToVar_0
@@ -993,7 +993,7 @@ blocks:
     ant8: ''
     ant9: ''
     args: '"hackrf=9e5f"'
-    bb_gain0: '20'
+    bb_gain0: '0'
     bb_gain1: '20'
     bb_gain10: '20'
     bb_gain11: '20'
@@ -1213,7 +1213,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2272, 188.0]
+    coordinate: [2456, 188.0]
     rotation: 0
     state: enabled
 - name: osmosdr_source_0
@@ -1644,7 +1644,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: padding
-    fn: 'lambda x: np.append(x, (tx_baud_per_buf-((len(x)+3)%tx_baud_per_buf))*(np.uint8(0),))'
+    fn: 'lambda x: np.append(x, (tx_baud_per_buf-((len(x)+3)%tx_baud_per_buf))*(np.uint8(1),))'
     key: pmt.intern("key")
     maxoutbuf: '0'
     metadict: Uniform Vector
@@ -1653,7 +1653,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [736, 264.0]
+    coordinate: [952, 264.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_lambda_1
@@ -1671,7 +1671,25 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [496, 264.0]
+    coordinate: [712, 264.0]
+    rotation: 0
+    state: enabled
+- name: pdu_pdu_lambda_2
+  id: pdu_pdu_lambda
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: extra clock
+    fn: 'lambda x: np.append(10*(np.uint8(0xAA),), x)'
+    key: pmt.intern("key")
+    maxoutbuf: '0'
+    metadict: Uniform Vector
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [472, 264.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_to_tagged_stream_0
@@ -1688,7 +1706,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [984, 264.0]
+    coordinate: [1184, 264.0]
     rotation: 0
     state: enabled
 - name: toptek_digital_PTT_0
@@ -1696,10 +1714,10 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    baud_rate: '9600'
+    baud_rate: baud_rate
     comment: ''
-    delay_s: 120e-3
-    extra_s: 50e-3
+    delay_s: 120e-3 - 120e-3
+    extra_s: 250e-3
     maxoutbuf: '0'
     minoutbuf: '0'
     padding_nbytes: '0'
@@ -1709,7 +1727,7 @@ blocks:
     bus_structure: null
     coordinate: [720, 488.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: toptek_toptek_control_0
   id: toptek_toptek_control
   parameters:
@@ -1723,7 +1741,7 @@ blocks:
     bus_structure: null
     coordinate: [992, 488.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: zeromq_pub_sink_0
   id: zeromq_pub_sink
   parameters:
@@ -1761,7 +1779,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 256.0]
+    coordinate: [16, 256.0]
     rotation: 0
     state: true
 - name: zeromq_pull_msg_source_0_3
@@ -1870,7 +1888,7 @@ blocks:
 connections:
 - [UTAT_HERON_esttc_deframer_0, crc_fail, pdu_add_system_time_1_0, pdu]
 - [UTAT_HERON_esttc_deframer_0, crc_ok, pdu_add_system_time_1, pdu]
-- [UTAT_HERON_esttc_framer_0, pdu_out, pdu_pdu_lambda_1, pdu]
+- [UTAT_HERON_esttc_framer_0, pdu_out, pdu_pdu_lambda_2, pdu]
 - [UTAT_HERON_variable_filter_0, out, blocks_msgpair_to_var_0, inpair]
 - [UTAT_HERON_variable_filter_0, out, blocks_msgpair_to_var_1, inpair]
 - [UTAT_HERON_variable_filter_0, out, gpredict_MsgPairToVar_0, inpair]
@@ -1912,8 +1930,9 @@ connections:
 - [pdu_add_system_time_1, pdu, zeromq_push_msg_sink_0, in]
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, log]
 - [pdu_pdu_lambda_0, pdu, pdu_pdu_to_tagged_stream_0, pdus]
-- [pdu_pdu_lambda_0, pdu, toptek_digital_PTT_0, tx_msg]
 - [pdu_pdu_lambda_1, pdu, pdu_pdu_lambda_0, pdu]
+- [pdu_pdu_lambda_1, pdu, toptek_digital_PTT_0, tx_msg]
+- [pdu_pdu_lambda_2, pdu, pdu_pdu_lambda_1, pdu]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gfsk_mod_0, '0']
 - [toptek_digital_PTT_0, da, toptek_toptek_control_0, da]
 - [toptek_digital_PTT_0, lna, toptek_toptek_control_0, lna]
