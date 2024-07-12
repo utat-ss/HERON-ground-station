@@ -3,7 +3,7 @@ from threading import Thread
 import zmq
 from esttc_interface import ESTTCWrapper
 
-ping_delay = 0.5
+ping_delay = 1
 ping_msg = "ES+R2200\r"
 
 pings_sent = 0
@@ -20,7 +20,7 @@ def ping_tx():
 
 def ping_rx():
     global pings_rcvd
-    recv_flush = 1000
+    recv_flush = 100000
     while run or recv_flush>0:
         try:
             rx = ping_esttc.rx(zmq.NOBLOCK)
