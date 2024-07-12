@@ -48,6 +48,7 @@ def pong():
                 pongs += 1
                 print("--- ping received [{}]".format(pongs))
                 if run:
+                    time.sleep(0.25)
                     pong_esttc.tx(pong_msg)
             elif rx == pong_msg:
                 print("--- pong back")
