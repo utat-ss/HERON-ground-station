@@ -224,7 +224,7 @@ blocks:
     bus_structure: null
     coordinate: [336, 224.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: tx_interp2
   id: variable
   parameters:
@@ -236,7 +236,7 @@ blocks:
     bus_structure: null
     coordinate: [592, 232.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: tx_samp_rate1
   id: variable
   parameters:
@@ -248,7 +248,7 @@ blocks:
     bus_structure: null
     coordinate: [416, 224.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: tx_samp_rate2
   id: variable
   parameters:
@@ -260,7 +260,7 @@ blocks:
     bus_structure: null
     coordinate: [672, 232.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: tx_vga_gain
   id: variable
   parameters:
@@ -366,7 +366,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 944.0]
+    coordinate: [520, 904.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_variable_filter_1_0_1_0_0
@@ -382,7 +382,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 992.0]
+    coordinate: [520, 952.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_variable_filter_1_0_1_0_0_0
@@ -398,7 +398,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 1040.0]
+    coordinate: [512, 1000.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_variable_filter_1_0_1_0_1
@@ -414,7 +414,23 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [504, 1088.0]
+    coordinate: [496, 1048.0]
+    rotation: 0
+    state: enabled
+- name: UTAT_HERON_variable_filter_1_0_1_0_2
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: ptt
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [512, 1096.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_variable_filter_1_1
@@ -507,7 +523,7 @@ blocks:
     bus_structure: null
     coordinate: [336, 288.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_file_sink_0
   id: blocks_file_sink
   parameters:
@@ -542,7 +558,7 @@ blocks:
     bus_structure: null
     coordinate: [808, 312.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_freqshift_cc_1
   id: blocks_freqshift_cc
   parameters:
@@ -1042,7 +1058,7 @@ blocks:
     bus_structure: null
     coordinate: [1056, 228.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: osmosdr_source_0
   id: osmosdr_source
   parameters:
@@ -1436,7 +1452,7 @@ blocks:
     bus_structure: null
     coordinate: [592, 296.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: toptek_toptek_control_0
   id: toptek_toptek_control
   parameters:
@@ -1444,11 +1460,12 @@ blocks:
     alias: ''
     comment: ''
     serial_port: /dev/ttyAmplifier
+    verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 408.0]
+    coordinate: [768, 912.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -1471,6 +1488,28 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1112, 928.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_pub_sink_1
+  id: zeromq_pub_sink
+  parameters:
+    address: zmq_rx
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    drop_on_hwm: 'True'
+    hwm: '-1'
+    key: ''
+    pass_tags: 'False'
+    timeout: '100'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1344, 688.0]
     rotation: 0
     state: enabled
 - name: zeromq_pull_msg_source_0_3
@@ -1511,26 +1550,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [136, 296.0]
-    rotation: 0
-    state: disabled
-- name: zeromq_push_sink_0
-  id: zeromq_push_sink
-  parameters:
-    address: zmq_rx
-    affinity: ''
-    alias: ''
-    bind: 'True'
-    comment: ''
-    hwm: '-1'
-    pass_tags: 'False'
-    timeout: '100'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1336, 696.0]
     rotation: 0
     state: enabled
 - name: zmq_baseband_stream
@@ -1614,9 +1633,10 @@ connections:
 - [UTAT_HERON_variable_filter_1_0_1_0_0, out, toptek_toptek_control_0, da]
 - [UTAT_HERON_variable_filter_1_0_1_0_0_0, out, toptek_toptek_control_0, lna]
 - [UTAT_HERON_variable_filter_1_0_1_0_1, out, toptek_toptek_control_0, tx_pwr]
+- [UTAT_HERON_variable_filter_1_0_1_0_2, out, toptek_toptek_control_0, ptt]
 - [UTAT_HERON_variable_filter_1_1, out, gpredict_MsgPairToVar_0_1_0, inpair]
 - [UTAT_HERON_variable_filter_1_2, out, gpredict_MsgPairToVar_0_0_0_0, inpair]
-- [analog_nbfm_rx_0, '0', zeromq_push_sink_0, '0']
+- [analog_nbfm_rx_0, '0', zeromq_pub_sink_1, '0']
 - [analog_nbfm_tx_0, '0', rational_resampler_xxx_0, '0']
 - [blocks_freqshift_cc_0, '0', osmosdr_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
@@ -1638,6 +1658,7 @@ connections:
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_0, in]
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_0_0, in]
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_1, in]
+- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_2, in]
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_1, in]
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_2, in]
 - [zeromq_pull_source_0, '0', analog_nbfm_tx_0, '0']

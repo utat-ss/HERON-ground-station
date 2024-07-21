@@ -105,6 +105,23 @@ blocks:
     coordinate: [928, 264.0]
     rotation: 0
     state: true
+- name: ptt
+  id: variable_qtgui_push_button
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@3: 2, 0, 1, 1'
+    label: PTT
+    pressed: 'True'
+    released: 'False'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1392, 16.0]
+    rotation: 0
+    state: enabled
 - name: rx_amp
   id: variable_qtgui_check_box
   parameters:
@@ -298,7 +315,7 @@ blocks:
     start: '0'
     step: '0.1'
     stop: '10'
-    value: '1'
+    value: '0'
     widget: counter_slider
   states:
     bus_sink: false
@@ -307,6 +324,40 @@ blocks:
     coordinate: [1032, 16.0]
     rotation: 0
     state: true
+- name: analog_standard_squelch_0
+  id: analog_standard_squelch
+  parameters:
+    affinity: ''
+    alias: ''
+    audio_rate: baseband_samp_rate
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    threshold: squelch_threshold
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1104, 712.0]
+    rotation: 0
+    state: enabled
+- name: audio_sink_0
+  id: audio_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    device_name: ''
+    num_inputs: '1'
+    ok_to_block: 'True'
+    samp_rate: int(baseband_samp_rate)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 792.0]
+    rotation: 180
+    state: enabled
 - name: baseband_samp_rate
   id: parameter
   parameters:
@@ -339,9 +390,27 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 568.0]
+    coordinate: [368, 544.0]
     rotation: 0
     state: disabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: volume
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 720.0]
+    rotation: 0
+    state: enabled
 - name: blocks_throttle2_0
   id: blocks_throttle2
   parameters:
@@ -550,7 +619,7 @@ blocks:
     coordinate: [568, 832.0]
     rotation: 0
     state: enabled
-- name: blocks_var_to_msg_0_3_1_0_1_0_0
+- name: blocks_var_to_msg_0_3_1_0_1_0_1
   id: blocks_var_to_msg
   parameters:
     affinity: ''
@@ -558,30 +627,13 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    msgname: squelch_threshold
-    target: squelch_threshold
+    msgname: ptt
+    target: ptt
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [568, 896.0]
-    rotation: 0
-    state: enabled
-- name: blocks_var_to_msg_0_3_1_0_1_0_0_0
-  id: blocks_var_to_msg
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    msgname: volume
-    target: volume
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [568, 960.0]
     rotation: 0
     state: enabled
 - name: control_tab
@@ -799,6 +851,29 @@ blocks:
     coordinate: [120, 344.0]
     rotation: 0
     state: enabled
+- name: zeromq_sub_source_1
+  id: zeromq_sub_source
+  parameters:
+    address: zmq_rx
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    hwm: '-1'
+    key: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pass_tags: 'False'
+    timeout: '100'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 688.0]
+    rotation: 0
+    state: enabled
 - name: zmq_baseband_stream
   id: parameter
   parameters:
@@ -833,8 +908,27 @@ blocks:
     coordinate: [40, 160.0]
     rotation: 0
     state: enabled
+- name: zmq_rx
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Rx
+    short_id: ''
+    type: str
+    value: tcp://10.0.7.91:50492
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1264, 200.0]
+    rotation: 0
+    state: enabled
 
 connections:
+- [analog_standard_squelch_0, '0', blocks_multiply_const_vxx_0, '0']
+- [blocks_multiply_const_vxx_0, '0', audio_sink_0, '0']
 - [blocks_var_to_msg_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_0_0, msgout, zeromq_push_msg_sink_0, in]
@@ -846,12 +940,12 @@ connections:
 - [blocks_var_to_msg_0_3_1_0_0, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_3_1_0_1, msgout, zeromq_push_msg_sink_0, in]
 - [blocks_var_to_msg_0_3_1_0_1_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1_0_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1_0_0_0, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1_0_1_0_1, msgout, zeromq_push_msg_sink_0, in]
 - [zeromq_sub_source_0, '0', blocks_file_sink_0, '0']
 - [zeromq_sub_source_0, '0', blocks_throttle2_0, '0']
 - [zeromq_sub_source_0, '0', qtgui_freq_sink_x_0, '0']
 - [zeromq_sub_source_0, '0', qtgui_waterfall_sink_x_0, '0']
+- [zeromq_sub_source_1, '0', analog_standard_squelch_0, '0']
 
 metadata:
   file_format: 1
