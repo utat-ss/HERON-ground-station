@@ -955,6 +955,24 @@ blocks:
     coordinate: [696, 668.0]
     rotation: 0
     state: enabled
+- name: mmse_resampler_xx_0
+  id: mmse_resampler_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    phase_shift: '0'
+    resamp_ratio: 48e3/rx_samp_rate1
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [952, 800.0]
+    rotation: 0
+    state: enabled
 - name: osmosdr_sink_0
   id: osmosdr_sink
   parameters:
@@ -1908,7 +1926,6 @@ connections:
 - [analog_agc_xx_1, '0', zeromq_pub_sink_0, '0']
 - [blocks_freqshift_cc_0, '0', osmosdr_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
-- [blocks_tag_gate_0, '0', low_pass_filter_0, '0']
 - [blocks_tagged_stream_multiply_length_0, '0', digital_burst_shaper_xx_0, '0']
 - [digital_burst_shaper_xx_0, '0', blocks_freqshift_cc_0, '0']
 - [digital_burst_shaper_xx_0, '0', blocks_tag_debug_0, '0']
@@ -1922,9 +1939,10 @@ connections:
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
 - [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
-- [low_pass_filter_0_0, '0', blocks_file_sink_0, '0']
 - [low_pass_filter_0_0, '0', digital_gfsk_demod_0, '0']
-- [low_pass_filter_0_0, '0', zeromq_pub_sink_0, '0']
+- [low_pass_filter_0_0, '0', mmse_resampler_xx_0, '0']
+- [mmse_resampler_xx_0, '0', blocks_file_sink_0, '0']
+- [mmse_resampler_xx_0, '0', zeromq_pub_sink_0, '0']
 - [osmosdr_source_0, '0', blocks_freqshift_cc_1, '0']
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1, pdu, blocks_message_debug_0, log]
