@@ -1720,12 +1720,12 @@ blocks:
     extra_s: 250e-3
     maxoutbuf: '0'
     minoutbuf: '0'
-    padding_nbytes: '0'
+    padding_nbauds: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [720, 488.0]
+    coordinate: [704, 528.0]
     rotation: 0
     state: enabled
 - name: toptek_toptek_control_0
@@ -1735,11 +1735,12 @@ blocks:
     alias: ''
     comment: ''
     serial_port: /dev/ttyAmplifier
+    verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [992, 488.0]
+    coordinate: [1000, 432.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -1934,9 +1935,7 @@ connections:
 - [pdu_pdu_lambda_1, pdu, toptek_digital_PTT_0, tx_msg]
 - [pdu_pdu_lambda_2, pdu, pdu_pdu_lambda_1, pdu]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gfsk_mod_0, '0']
-- [toptek_digital_PTT_0, da, toptek_toptek_control_0, da]
-- [toptek_digital_PTT_0, lna, toptek_toptek_control_0, lna]
-- [toptek_digital_PTT_0, pa, toptek_toptek_control_0, pa]
+- [toptek_digital_PTT_0, ptt, toptek_toptek_control_0, ptt]
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
 - [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0, in]
