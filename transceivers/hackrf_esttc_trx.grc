@@ -1753,7 +1753,7 @@ blocks:
     alias: ''
     comment: ''
     serial_port: /dev/ttyAmplifier
-    verbose: 'False'
+    verbose: 'True'
   states:
     bus_sink: false
     bus_source: false
@@ -1801,24 +1801,6 @@ blocks:
     coordinate: [16, 256.0]
     rotation: 0
     state: true
-- name: zeromq_pull_msg_source_0_3
-  id: zeromq_pull_msg_source
-  parameters:
-    address: zmq_control
-    affinity: ''
-    alias: ''
-    bind: 'True'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [248, 1280.0]
-    rotation: 0
-    state: true
 - name: zeromq_push_msg_sink_0
   id: zeromq_push_msg_sink
   parameters:
@@ -1833,6 +1815,24 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1848, 704.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_sub_msg_source_0
+  id: zeromq_sub_msg_source
+  parameters:
+    address: zmq_control
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [176, 1200.0]
     rotation: 0
     state: enabled
 - name: zmq_baseband_stream
@@ -1956,17 +1956,17 @@ connections:
 - [toptek_digital_PTT_0, ptt, toptek_toptek_control_0, ptt]
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_0_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_0_1_0_1, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_1, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_2, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_0_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_0_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_0_0_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_0_1, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_1, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_2, in]
 
 metadata:
   file_format: 1

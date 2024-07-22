@@ -904,24 +904,6 @@ blocks:
     coordinate: [32, 256.0]
     rotation: 0
     state: enabled
-- name: zeromq_pull_msg_source_0_3
-  id: zeromq_pull_msg_source
-  parameters:
-    address: zmq_control
-    affinity: ''
-    alias: ''
-    bind: 'True'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    timeout: '100'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [216, 824.0]
-    rotation: 0
-    state: true
 - name: zeromq_push_msg_sink_0
   id: zeromq_push_msg_sink
   parameters:
@@ -936,6 +918,24 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1680, 544.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_sub_msg_source_0
+  id: zeromq_sub_msg_source
+  parameters:
+    address: zmq_control
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timeout: '100'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 824.0]
     rotation: 0
     state: enabled
 - name: zmq_baseband_stream
@@ -1042,10 +1042,10 @@ connections:
 - [pdu_pdu_to_tagged_stream_0_0_0, '0', digital_gfsk_mod_0_0, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_0_0, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1, in]
-- [zeromq_pull_msg_source_0_3, out, UTAT_HERON_variable_filter_1_1, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_0_0, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_1, in]
 
 metadata:
   file_format: 1

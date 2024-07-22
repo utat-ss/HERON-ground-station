@@ -760,8 +760,8 @@ blocks:
     coordinate: [368, 448.0]
     rotation: 0
     state: enabled
-- name: zeromq_push_msg_sink_0
-  id: zeromq_push_msg_sink
+- name: zeromq_pub_msg_sink_0
+  id: zeromq_pub_msg_sink
   parameters:
     address: zmq_control
     affinity: ''
@@ -773,7 +773,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [928, 196.0]
+    coordinate: [928, 192.0]
     rotation: 0
     state: enabled
 - name: zeromq_sub_source_0
@@ -835,18 +835,18 @@ blocks:
     state: enabled
 
 connections:
-- [blocks_var_to_msg_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_0_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_1_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_2, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1_0, msgout, zeromq_push_msg_sink_0, in]
-- [blocks_var_to_msg_0_3_1_0_1_0_1, msgout, zeromq_push_msg_sink_0, in]
+- [blocks_var_to_msg_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_0_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_1_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_2, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1_0_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1_0_1, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1_0_1_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_3_1_0_1_0_1, msgout, zeromq_pub_msg_sink_0, in]
 - [zeromq_sub_source_0, '0', blocks_file_sink_0, '0']
 - [zeromq_sub_source_0, '0', blocks_throttle2_0, '0']
 - [zeromq_sub_source_0, '0', qtgui_freq_sink_x_0, '0']
