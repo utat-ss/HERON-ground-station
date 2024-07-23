@@ -1752,7 +1752,11 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
+    da: 'False'
+    lna: 'False'
+    pa: 'False'
     serial_port: /dev/ttyAmplifier
+    tx_pwr: '0'
     verbose: 'True'
   states:
     bus_sink: false
