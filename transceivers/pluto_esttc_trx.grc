@@ -81,18 +81,30 @@ blocks:
     coordinate: [616, 8.0]
     rotation: 0
     state: enabled
-- name: rx_decim
+- name: rx_decim1
   id: variable
   parameters:
     comment: ''
-    value: 2**5
+    value: '4'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [496, 80.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: rx_decim2
+  id: variable
+  parameters:
+    comment: ''
+    value: '8'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 80.0]
+    rotation: 0
+    state: enabled
 - name: rx_freq
   id: variable
   parameters:
@@ -102,7 +114,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [760, 80.0]
+    coordinate: [960, 80.0]
     rotation: 0
     state: true
 - name: rx_gain
@@ -145,12 +157,24 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: rx_samp_rate1*rx_decim
+    value: rx_samp_rate1*rx_decim1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [576, 80.0]
+    coordinate: [584, 80.0]
+    rotation: 0
+    state: enabled
+- name: rx_samp_rate3
+  id: variable
+  parameters:
+    comment: ''
+    value: rx_samp_rate2*rx_decim2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 80.0]
     rotation: 0
     state: enabled
 - name: tx_baud_per_buf
@@ -186,7 +210,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 80.0]
+    coordinate: [880, 80.0]
     rotation: 0
     state: true
 - name: tx_gain
@@ -233,7 +257,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: rx_samp_rate1
+    samp_rate: baud_rate
   states:
     bus_sink: false
     bus_source: false
@@ -337,7 +361,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [832, 464.0]
+    coordinate: [872, 464.0]
     rotation: 0
     state: disabled
 - name: blocks_file_sink_0
@@ -384,7 +408,7 @@ blocks:
     freq: freq_offset + (freq-rx_freq)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: rx_samp_rate2
+    sample_rate: rx_samp_rate3
   states:
     bus_sink: false
     bus_source: false
@@ -607,7 +631,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1400, 80.0]
+    coordinate: [1576, 80.0]
     rotation: 0
     state: enabled
 - name: iio_pluto_sink_0
@@ -657,7 +681,7 @@ blocks:
     minoutbuf: '0'
     quadrature: 'True'
     rfdc: 'True'
-    samplerate: int(rx_samp_rate2)
+    samplerate: int(rx_samp_rate3)
     type: fc32
     uri: ''
   states:
@@ -693,7 +717,7 @@ blocks:
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: rx_samp_rate2
+    samp_rate: rx_samp_rate3
     type: fir_filter_ccf
     width: 50e3
     win: window.WIN_HAMMING
@@ -712,12 +736,12 @@ blocks:
     beta: '6.76'
     comment: ''
     cutoff_freq: 20e3
-    decim: '4'
+    decim: rx_decim1
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: rx_samp_rate2/8
+    samp_rate: rx_samp_rate2
     type: fir_filter_ccf
     width: 10e3
     win: window.WIN_HAMMING
@@ -737,7 +761,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     phase_shift: '0'
-    resamp_ratio: 48e3/rx_samp_rate1
+    resamp_ratio: rx_samp_rate1/48e3
     type: complex
   states:
     bus_sink: false
@@ -760,7 +784,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1520, 80.0]
+    coordinate: [1688, 80.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_0
@@ -952,7 +976,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 80.0]
+    coordinate: [1160, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_control
@@ -969,7 +993,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 80.0]
+    coordinate: [1040, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_rx
@@ -986,7 +1010,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1264, 80.0]
+    coordinate: [1448, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_tx
@@ -1003,7 +1027,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 80.0]
+    coordinate: [1320, 80.0]
     rotation: 0
     state: enabled
 

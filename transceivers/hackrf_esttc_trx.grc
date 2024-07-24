@@ -54,7 +54,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 8.0]
+    coordinate: [720, 8.0]
     rotation: 0
     state: true
 - name: freq_offset
@@ -66,7 +66,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [808, 8.0]
+    coordinate: [800, 8.0]
     rotation: 0
     state: true
 - name: gfsk_freq_dev
@@ -78,7 +78,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [624, 8.0]
+    coordinate: [616, 8.0]
     rotation: 0
     state: enabled
 - name: rx_amp
@@ -90,21 +90,33 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1248, 8.0]
+    coordinate: [1232, 8.0]
     rotation: 0
     state: true
-- name: rx_decim
+- name: rx_decim1
   id: variable
   parameters:
     comment: ''
-    value: 2**5
+    value: '4'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [496, 80.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: rx_decim2
+  id: variable
+  parameters:
+    comment: ''
+    value: '8'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 80.0]
+    rotation: 0
+    state: enabled
 - name: rx_freq
   id: variable
   parameters:
@@ -114,7 +126,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [760, 80.0]
+    coordinate: [960, 80.0]
     rotation: 0
     state: true
 - name: rx_if_gain
@@ -126,7 +138,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 8.0]
+    coordinate: [888, 8.0]
     rotation: 0
     state: true
 - name: rx_samp_per_baud
@@ -157,12 +169,24 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: rx_samp_rate1*rx_decim
+    value: rx_decim1*rx_samp_rate1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [576, 80.0]
+    coordinate: [584, 80.0]
+    rotation: 0
+    state: enabled
+- name: rx_samp_rate3
+  id: variable
+  parameters:
+    comment: ''
+    value: rx_decim2*rx_samp_rate2
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [776, 80.0]
     rotation: 0
     state: enabled
 - name: rx_vga_gain
@@ -174,7 +198,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [976, 8.0]
+    coordinate: [968, 8.0]
     rotation: 0
     state: true
 - name: tx_amp
@@ -186,7 +210,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1168, 8.0]
+    coordinate: [1152, 8.0]
     rotation: 0
     state: true
 - name: tx_baud_per_buf
@@ -198,7 +222,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [280, 8.0]
+    coordinate: [272, 8.0]
     rotation: 0
     state: true
 - name: tx_buffer
@@ -222,7 +246,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 80.0]
+    coordinate: [880, 80.0]
     rotation: 0
     state: true
 - name: tx_samp_per_baud
@@ -234,7 +258,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [392, 8.0]
+    coordinate: [384, 8.0]
     rotation: 0
     state: enabled
 - name: tx_samp_rate
@@ -246,7 +270,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [520, 8.0]
+    coordinate: [512, 8.0]
     rotation: 0
     state: enabled
 - name: tx_vga_gain
@@ -258,7 +282,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1072, 8.0]
+    coordinate: [1064, 8.0]
     rotation: 0
     state: true
 - name: UTAT_HERON_esttc_deframer_0
@@ -269,7 +293,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: rx_samp_rate1
+    samp_rate: baud_rate
   states:
     bus_sink: false
     bus_source: false
@@ -532,7 +556,7 @@ blocks:
     freq: freq_offset + (freq-rx_freq)
     maxoutbuf: '0'
     minoutbuf: '0'
-    sample_rate: rx_samp_rate2
+    sample_rate: rx_samp_rate3
   states:
     bus_sink: false
     bus_source: false
@@ -891,7 +915,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1400, 80.0]
+    coordinate: [1576, 80.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -915,12 +939,12 @@ blocks:
     beta: '6.76'
     comment: ''
     cutoff_freq: 100e3
-    decim: '8'
+    decim: rx_decim2
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: rx_samp_rate2
+    samp_rate: rx_samp_rate3
     type: fir_filter_ccf
     width: 50e3
     win: window.WIN_HAMMING
@@ -939,12 +963,12 @@ blocks:
     beta: '6.76'
     comment: ''
     cutoff_freq: 20e3
-    decim: '4'
+    decim: rx_decim1
     gain: '1'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: rx_samp_rate2/8
+    samp_rate: rx_samp_rate2
     type: fir_filter_ccf
     width: 10e3
     win: window.WIN_HAMMING
@@ -964,7 +988,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     phase_shift: '0'
-    resamp_ratio: 48e3/rx_samp_rate1
+    resamp_ratio: rx_samp_rate1/48e3
     type: complex
   states:
     bus_sink: false
@@ -1573,7 +1597,7 @@ blocks:
     minoutbuf: '0'
     nchan: '1'
     num_mboards: '1'
-    sample_rate: rx_samp_rate2
+    sample_rate: rx_samp_rate3
     sync: sync
     time_source0: ''
     time_source1: ''
@@ -1605,7 +1629,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1520, 80.0]
+    coordinate: [1688, 80.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_0
@@ -1743,7 +1767,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [704, 528.0]
+    coordinate: [720, 480.0]
     rotation: 0
     state: enabled
 - name: toptek_toptek_control_0
@@ -1762,7 +1786,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1000, 432.0]
+    coordinate: [1000, 384.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_0
@@ -1853,7 +1877,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [960, 80.0]
+    coordinate: [1160, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_control
@@ -1870,7 +1894,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 80.0]
+    coordinate: [1040, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_rx
@@ -1887,7 +1911,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1264, 80.0]
+    coordinate: [1448, 80.0]
     rotation: 0
     state: enabled
 - name: zmq_tx
@@ -1904,7 +1928,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 80.0]
+    coordinate: [1320, 80.0]
     rotation: 0
     state: enabled
 
