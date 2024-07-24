@@ -90,7 +90,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1112, 632.0]
+    coordinate: [1328, 632.0]
     rotation: 0
     state: enabled
 - name: rx_decim2
@@ -150,7 +150,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 632.0]
+    coordinate: [1408, 632.0]
     rotation: 0
     state: enabled
 - name: rx_samp_rate2
@@ -187,6 +187,18 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [528, 8.0]
+    rotation: 0
+    state: true
+- name: squelch_threshold
+  id: variable
+  parameters:
+    comment: ''
+    value: '-50'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 8.0]
     rotation: 0
     state: true
 - name: tx_amp
@@ -433,6 +445,22 @@ blocks:
     coordinate: [512, 1096.0]
     rotation: 0
     state: enabled
+- name: UTAT_HERON_variable_filter_1_0_1_1
+  id: UTAT_HERON_variable_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    variable_name: squelch_threshold
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [480, 1624.0]
+    rotation: 0
+    state: true
 - name: UTAT_HERON_variable_filter_1_1
   id: UTAT_HERON_variable_filter
   parameters:
@@ -501,7 +529,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1112, 696.0]
+    coordinate: [1328, 696.0]
     rotation: 0
     state: enabled
 - name: analog_nbfm_tx_0
@@ -522,6 +550,26 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [336, 288.0]
+    rotation: 0
+    state: enabled
+- name: analog_pwr_squelch_xx_0
+  id: analog_pwr_squelch_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: 1e-4
+    comment: ''
+    gate: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ramp: '0'
+    threshold: squelch_threshold
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1096, 696.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0
@@ -604,6 +652,20 @@ blocks:
     coordinate: [792, 1216.0]
     rotation: 0
     state: true
+- name: blocks_msgpair_to_var_2
+  id: blocks_msgpair_to_var
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    target: squelch_threshold
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 1624.0]
+    rotation: 0
+    state: enabled
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -1513,7 +1575,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 688.0]
+    coordinate: [1560, 688.0]
     rotation: 0
     state: enabled
 - name: zeromq_pull_source_0
@@ -1638,17 +1700,19 @@ connections:
 - [UTAT_HERON_variable_filter_1_0_1_0_0_0, out, toptek_toptek_control_0, lna]
 - [UTAT_HERON_variable_filter_1_0_1_0_1, out, toptek_toptek_control_0, tx_pwr]
 - [UTAT_HERON_variable_filter_1_0_1_0_2, out, toptek_toptek_control_0, ptt]
+- [UTAT_HERON_variable_filter_1_0_1_1, out, blocks_msgpair_to_var_2, inpair]
 - [UTAT_HERON_variable_filter_1_1, out, gpredict_MsgPairToVar_0_1_0, inpair]
 - [UTAT_HERON_variable_filter_1_2, out, gpredict_MsgPairToVar_0_0_0_0, inpair]
 - [analog_nbfm_rx_0, '0', zeromq_pub_sink_1, '0']
 - [analog_nbfm_tx_0, '0', rational_resampler_xxx_0, '0']
+- [analog_pwr_squelch_xx_0, '0', analog_nbfm_rx_0, '0']
 - [blocks_freqshift_cc_0, '0', osmosdr_sink_0, '0']
 - [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
 - [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
-- [low_pass_filter_0_0, '0', analog_nbfm_rx_0, '0']
+- [low_pass_filter_0_0, '0', analog_pwr_squelch_xx_0, '0']
 - [low_pass_filter_0_0, '0', blocks_file_sink_0, '0']
 - [low_pass_filter_0_0, '0', zeromq_pub_sink_0, '0']
 - [osmosdr_source_0, '0', blocks_freqshift_cc_1, '0']
@@ -1664,6 +1728,7 @@ connections:
 - [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_0_0_0, in]
 - [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_0_1, in]
 - [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_0_2, in]
+- [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_0_1_1, in]
 - [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_1, in]
 - [zeromq_sub_msg_source_0, out, UTAT_HERON_variable_filter_1_2, in]
 

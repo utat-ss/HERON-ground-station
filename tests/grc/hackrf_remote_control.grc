@@ -431,6 +431,23 @@ blocks:
     coordinate: [568, 384.0]
     rotation: 0
     state: enabled
+- name: blocks_var_to_msg_0_1
+  id: blocks_var_to_msg
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msgname: squelch_threshold
+    target: squelch_threshold
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [568, 960.0]
+    rotation: 0
+    state: enabled
 - name: blocks_var_to_msg_0_1_0
   id: blocks_var_to_msg
   parameters:
@@ -838,6 +855,7 @@ connections:
 - [blocks_var_to_msg_0, msgout, zeromq_pub_msg_sink_0, in]
 - [blocks_var_to_msg_0_0, msgout, zeromq_pub_msg_sink_0, in]
 - [blocks_var_to_msg_0_0_0, msgout, zeromq_pub_msg_sink_0, in]
+- [blocks_var_to_msg_0_1, msgout, zeromq_pub_msg_sink_0, in]
 - [blocks_var_to_msg_0_1_0, msgout, zeromq_pub_msg_sink_0, in]
 - [blocks_var_to_msg_0_2, msgout, zeromq_pub_msg_sink_0, in]
 - [blocks_var_to_msg_0_3_0, msgout, zeromq_pub_msg_sink_0, in]
