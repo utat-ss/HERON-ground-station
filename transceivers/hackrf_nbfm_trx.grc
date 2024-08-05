@@ -109,7 +109,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '8'
+    value: '25'
   states:
     bus_sink: false
     bus_source: false
@@ -819,7 +819,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 100e3
+    cutoff_freq: 0.75*(rx_samp_rate2/2)
     decim: rx_decim3
     gain: '1'
     interp: '1'
@@ -827,7 +827,7 @@ blocks:
     minoutbuf: '0'
     samp_rate: rx_samp_rate3
     type: fir_filter_ccf
-    width: 50e3
+    width: 0.25*(rx_samp_rate2/2)
     win: window.WIN_HAMMING
   states:
     bus_sink: false
