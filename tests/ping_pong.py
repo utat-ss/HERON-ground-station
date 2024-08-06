@@ -4,6 +4,7 @@ import zmq
 from esttc_interface import ESTTCWrapper
 
 ping_delay = 1
+pong_delay = 0
 ping_msg = "ES+R2200\r"
 pong_msg = "ACK"
 
@@ -48,7 +49,7 @@ def pong():
                 pongs += 1
                 print("--- ping received [{}]".format(pongs))
                 if run:
-                    time.sleep(0.25)
+                    time.sleep(pong_delay)
                     pong_esttc.tx(pong_msg)
             elif rx == pong_msg:
                 print("--- pong back")
