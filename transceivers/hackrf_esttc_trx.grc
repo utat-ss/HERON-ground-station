@@ -1783,7 +1783,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: extra clock
-    fn: 'lambda x: np.append(10*(np.uint8(0xAA),), x)'
+    fn: 'lambda x: np.append(30*(np.uint8(0xAA),), x)'
     key: pmt.intern("key")
     maxoutbuf: '0'
     metadict: Uniform Vector
