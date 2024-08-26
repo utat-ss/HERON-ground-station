@@ -893,8 +893,8 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    comment: extra clock
-    fn: 'lambda x: np.append(5*(np.uint8(0xAA),), x)'
+    comment: front padding
+    fn: 'lambda x: np.append(5*(np.uint8(0x7E),), x)'
     key: pmt.intern("key")
     maxoutbuf: '0'
     metadict: Uniform Vector
