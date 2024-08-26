@@ -45,6 +45,18 @@ blocks:
     coordinate: [176, 80.0]
     rotation: 0
     state: true
+- name: cfo
+  id: variable
+  parameters:
+    comment: ''
+    value: 435.4e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [800, 8.0]
+    rotation: 0
+    state: true
 - name: freq
   id: variable
   parameters:
@@ -55,18 +67,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [720, 8.0]
-    rotation: 0
-    state: true
-- name: freq_offset
-  id: variable
-  parameters:
-    comment: ''
-    value: 100e3
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [800, 8.0]
     rotation: 0
     state: true
 - name: gfsk_freq_dev
@@ -85,7 +85,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '4'
+    value: '2'
   states:
     bus_sink: false
     bus_source: false
@@ -103,6 +103,24 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [688, 80.0]
+    rotation: 0
+    state: enabled
+- name: rx_filter_taps
+  id: variable_low_pass_filter_taps
+  parameters:
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: 0.75*(rx_samp_rate2/2)
+    gain: '1.0'
+    samp_rate: rx_samp_rate3
+    value: ''
+    width: 0.25*(rx_samp_rate2/2)
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 436.0]
     rotation: 0
     state: enabled
 - name: rx_freq
@@ -133,7 +151,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '2'
+    value: '4'
   states:
     bus_sink: false
     bus_source: false
@@ -304,7 +322,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    variable_name: freq_offset
+    variable_name: cfo
   states:
     bus_sink: false
     bus_source: false
@@ -388,7 +406,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    freq: tx_freq-freq+freq_offset
+    freq: tx_freq-cfo
     maxoutbuf: '0'
     minoutbuf: '0'
     sample_rate: tx_samp_rate
@@ -397,23 +415,6 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1944, 272.0]
-    rotation: 0
-    state: enabled
-- name: blocks_freqshift_cc_1
-  id: blocks_freqshift_cc
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    freq: freq_offset + (freq-rx_freq)
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    sample_rate: rx_samp_rate3
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [264, 552.0]
     rotation: 0
     state: enabled
 - name: blocks_message_debug_0
@@ -526,12 +527,12 @@ blocks:
     alias: ''
     comment: ''
     freq_error: '0.0'
-    gain_mu: 3*175e-3
+    gain_mu: 3*175e-3/(3*175e-3) * 0.2
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
     mu: '0.5'
-    omega_relative_limit: '0.005'
+    omega_relative_limit: '0.0002'
     samples_per_symbol: int(rx_samp_per_baud)
     sensitivity: 2*pi*gfsk_freq_dev/rx_samp_rate1
     verbose: 'False'
@@ -563,6 +564,26 @@ blocks:
     coordinate: [1208, 240.0]
     rotation: 0
     state: enabled
+- name: freq_xlating_fir_filter_xxx_0
+  id: freq_xlating_fir_filter_xxx
+  parameters:
+    affinity: ''
+    alias: ''
+    center_freq: rx_freq-cfo
+    comment: ''
+    decim: rx_decim2
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: rx_samp_rate3
+    taps: rx_filter_taps
+    type: ccc
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 592.0]
+    rotation: 0
+    state: enabled
 - name: gpredict_MsgPairToVar_0
   id: gpredict_MsgPairToVar
   parameters:
@@ -583,7 +604,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    target: freq_offset
+    target: cfo
   states:
     bus_sink: false
     bus_source: false
@@ -667,7 +688,7 @@ blocks:
     filter: ''
     filter_source: '''Auto'''
     fpass: '0'
-    frequency: int(freq - freq_offset + 4e3)
+    frequency: int(cfo + 4e3)
     fstop: '0'
     len_tag_key: ''
     samplerate: int(tx_samp_rate)
@@ -692,7 +713,7 @@ blocks:
     filter: ''
     filter_source: '''Auto'''
     fpass: '0'
-    frequency: int(freq + freq_offset + 4e3)
+    frequency: int(cfo + 4e3)
     fstop: '0'
     gain1: '''manual'''
     len_tag_key: ''
@@ -724,30 +745,6 @@ blocks:
     coordinate: [8, 144.0]
     rotation: 0
     state: true
-- name: low_pass_filter_0
-  id: low_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    cutoff_freq: 0.75*(rx_samp_rate2/2)
-    decim: rx_decim2
-    gain: '1'
-    interp: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: rx_samp_rate3
-    type: fir_filter_ccf
-    width: 0.25*(rx_samp_rate2/2)
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [464, 508.0]
-    rotation: 0
-    state: enabled
 - name: low_pass_filter_0_0
   id: low_pass_filter
   parameters:
@@ -755,7 +752,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 0.75*(rx_samp_rate1/2)
+    cutoff_freq: (gfsk_freq_dev+baud_rate/2)
     decim: rx_decim1
     gain: '1'
     interp: '1'
@@ -763,7 +760,7 @@ blocks:
     minoutbuf: '0'
     samp_rate: rx_samp_rate2
     type: fir_filter_ccf
-    width: 0.25*(rx_samp_rate1/2)
+    width: (gfsk_freq_dev+baud_rate/2)*0.1
     win: window.WIN_HAMMING
   states:
     bus_sink: false
@@ -1080,18 +1077,17 @@ connections:
 - [UTAT_HERON_variable_filter_1, out, gpredict_MsgPairToVar_0_2, inpair]
 - [UTAT_HERON_variable_filter_1_1, out, gpredict_MsgPairToVar_0_1_0, inpair]
 - [blocks_freqshift_cc_0, '0', iio_pluto_sink_0, '0']
-- [blocks_freqshift_cc_1, '0', low_pass_filter_0, '0']
 - [blocks_tagged_stream_multiply_length_0, '0', blocks_freqshift_cc_0, '0']
 - [blocks_tagged_stream_multiply_length_0, '0', digital_burst_shaper_xx_0, '0']
 - [digital_burst_shaper_xx_0, '0', blocks_freqshift_cc_0, '0']
 - [digital_fll_band_edge_cc_0, '0', low_pass_filter_0_0, '0']
 - [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
 - [digital_gfsk_mod_0_0, '0', blocks_tagged_stream_multiply_length_0, '0']
+- [freq_xlating_fir_filter_xxx_0, '0', digital_fll_band_edge_cc_0, '0']
+- [freq_xlating_fir_filter_xxx_0, '0', low_pass_filter_0_0, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
-- [iio_pluto_source_0, '0', blocks_freqshift_cc_1, '0']
-- [low_pass_filter_0, '0', digital_fll_band_edge_cc_0, '0']
-- [low_pass_filter_0, '0', low_pass_filter_0_0, '0']
+- [iio_pluto_source_0, '0', freq_xlating_fir_filter_xxx_0, '0']
 - [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
 - [low_pass_filter_0_0, '0', digital_gfsk_demod_0, '0']
 - [low_pass_filter_0_0, '0', mmse_resampler_xx_0, '0']

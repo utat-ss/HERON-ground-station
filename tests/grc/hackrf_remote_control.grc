@@ -42,9 +42,9 @@ blocks:
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
-    start: 436.5e6-samp_rate/2
+    start: freq-samp_rate/2
     step: samp_rate/200
-    stop: 436.5e6+samp_rate/2
+    stop: freq+samp_rate/2
     value: 435.4e6
     widget: counter_slider
   states:
@@ -206,7 +206,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 4e6
+    value: 1.92e6
   states:
     bus_sink: false
     bus_source: false

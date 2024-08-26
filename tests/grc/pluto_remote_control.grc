@@ -33,6 +33,27 @@ options:
     state: enabled
 
 blocks:
+- name: cfo
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@0: 1, 0, 1, 1'
+    label: Osc Freq
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: freq-samp_rate/2
+    step: samp_rate/200
+    stop: freq+samp_rate/2
+    value: 435.4e6
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 16.0]
+    rotation: 0
+    state: true
 - name: freq
   id: variable_qtgui_range
   parameters:
@@ -54,27 +75,6 @@ blocks:
     coordinate: [296, 16.0]
     rotation: 0
     state: enabled
-- name: rx_freq_offset
-  id: variable_qtgui_range
-  parameters:
-    comment: ''
-    gui_hint: 'control_tab@0: 1, 0, 1, 1'
-    label: RX Offset
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
-    rangeType: float
-    start: -samp_rate/2
-    step: samp_rate/200
-    stop: samp_rate/2
-    value: 100e3
-    widget: counter_slider
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [416, 16.0]
-    rotation: 0
-    state: true
 - name: rx_gain
   id: variable_qtgui_range
   parameters:
@@ -100,7 +100,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 4e6
+    value: 2.4576e6
   states:
     bus_sink: false
     bus_source: false
@@ -252,8 +252,8 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    msgname: rx_freq_offset
-    target: rx_freq_offset
+    msgname: cfo
+    target: cfo
   states:
     bus_sink: false
     bus_source: false
