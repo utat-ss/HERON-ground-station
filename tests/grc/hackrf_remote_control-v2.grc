@@ -1,0 +1,797 @@
+options:
+  parameters:
+    author: Swarnava Ghosh
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: University of Toronto Aerospace Team
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: hackrf_remote_control
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: HackRF Remote Control
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: cfo
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@0: 1, 0, 1, 1'
+    label: Osc Freq
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: 1e6
+    step: 250e3
+    stop: 6e9
+    value: 435.4e6
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 56.0]
+    rotation: 0
+    state: true
+- name: da
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: control_tab@2:2,0,1,1
+    label: DA
+    'true': 'True'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 72.0]
+    rotation: 0
+    state: true
+- name: freq
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@0: 0, 0, 1, 1'
+    label: Frequency
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: cfo-samp_rate/2
+    step: 250e3
+    stop: cfo+samp_rate/2
+    value: 435e6
+    widget: counter
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [296, 56.0]
+    rotation: 0
+    state: enabled
+- name: lna
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: control_tab@2:1,0,1,1
+    label: LNA
+    'true': 'True'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1256, 72.0]
+    rotation: 0
+    state: true
+- name: pa
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: control_tab@2:0,0,1,1
+    label: PA
+    'true': 'True'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1136, 72.0]
+    rotation: 0
+    state: true
+- name: rx_amp
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: 'control_tab@1: 1, 3, 1, 1'
+    label: RX RF Amplifier
+    'true': 'True'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1008, 72.0]
+    rotation: 0
+    state: true
+- name: rx_if_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@1: 0, 0, 1, 2'
+    label: RX IF Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '40'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [552, 56.0]
+    rotation: 0
+    state: true
+- name: rx_vga_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@1: 1, 0, 1, 2'
+    label: RX VGA Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '2'
+    stop: '62'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [656, 56.0]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 1.92e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 56.0]
+    rotation: 0
+    state: enabled
+- name: squelch_threshold
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@3: 0, 0, 1, 1'
+    label: Squelch Threshold (dB)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-100'
+    step: '1'
+    stop: '0'
+    value: '-50'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1112, 304.0]
+    rotation: 0
+    state: enabled
+- name: tx_amp
+  id: variable_qtgui_check_box
+  parameters:
+    comment: ''
+    'false': 'False'
+    gui_hint: 'control_tab@1: 1, 2, 1, 1'
+    label: TX RF Amplifier
+    'true': 'True'
+    type: bool
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [880, 72.0]
+    rotation: 0
+    state: true
+- name: tx_pwr
+  id: variable_qtgui_chooser
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@2: 0,1,3,1'
+    label: TX Power
+    label0: ''
+    label1: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    labels: '[]'
+    num_opts: '4'
+    option0: '20'
+    option1: '40'
+    option2: '60'
+    option3: '80'
+    option4: '4'
+    options: '[0, 1, 2]'
+    orient: Qt.QVBoxLayout
+    type: int
+    value: '20'
+    widget: radio_buttons
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1496, 12.0]
+    rotation: 0
+    state: true
+- name: tx_vga_gain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@1: 0, 2, 1, 2'
+    label: TX VGA Gain
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '1'
+    stop: '47'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [768, 56.0]
+    rotation: 0
+    state: true
+- name: volume
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@3: 1, 0, 1, 1'
+    label: Volume
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.1'
+    stop: '10'
+    value: '0'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 304.0]
+    rotation: 0
+    state: true
+- name: baseband_samp_rate
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: baseband_samp_rate
+    short_id: ''
+    type: ''
+    value: 48e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 320.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle2_0
+  id: blocks_throttle2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    limit: auto
+    maximum: '0.1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: baseband_samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 456.0]
+    rotation: 0
+    state: enabled
+- name: control_tab
+  id: qtgui_tab_widget
+  parameters:
+    alias: ''
+    comment: ''
+    gui_hint: 0, 0, 1, 1
+    label0: Control
+    label1: SDR Amps
+    label10: Tab 10
+    label11: Tab 11
+    label12: Tab 12
+    label13: Tab 13
+    label14: Tab 14
+    label15: Tab 15
+    label16: Tab 16
+    label17: Tab 17
+    label18: Tab 18
+    label19: Tab 19
+    label2: Toptek
+    label3: Misc
+    label4: Tab 4
+    label5: Tab 5
+    label6: Tab 6
+    label7: Tab 7
+    label8: Tab 8
+    label9: Tab 9
+    num_tabs: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 312.0]
+    rotation: 0
+    state: true
+- name: qtgui_freq_sink_x_0
+  id: qtgui_freq_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    average: '1.0'
+    axislabels: 'True'
+    bw: baseband_samp_rate
+    color1: '"blue"'
+    color10: '"dark blue"'
+    color2: '"red"'
+    color3: '"green"'
+    color4: '"black"'
+    color5: '"cyan"'
+    color6: '"magenta"'
+    color7: '"yellow"'
+    color8: '"dark red"'
+    color9: '"dark green"'
+    comment: ''
+    ctrlpanel: 'True'
+    fc: '0'
+    fftsize: '2048'
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: 1,0,5,1
+    label: Relative Gain
+    label1: ''
+    label10: ''''''
+    label2: ''''''
+    label3: ''''''
+    label4: ''''''
+    label5: ''''''
+    label6: ''''''
+    label7: ''''''
+    label8: ''''''
+    label9: ''''''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    norm_window: 'False'
+    showports: 'False'
+    tr_chan: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_tag: '""'
+    type: complex
+    units: dB
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    wintype: window.WIN_BLACKMAN_hARRIS
+    ymax: '10'
+    ymin: '-140'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 528.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: baseband_samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: ''
+    fc: '0'
+    fftsize: '8192'
+    freqhalf: 'True'
+    grid: 'True'
+    gui_hint: 0,1,6,2
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.10'
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 616.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_freq
+    comment: ''
+    port: '8080'
+    variable: freq
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [296, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_cfo
+    comment: ''
+    port: '8080'
+    variable: cfo
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [408, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_rx_if_gain
+    comment: ''
+    port: '8080'
+    variable: rx_if_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [520, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_rx_vga_gain
+    comment: ''
+    port: '8080'
+    variable: rx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [656, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_tx_vga_gain
+    comment: ''
+    port: '8080'
+    variable: tx_vga_gain
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [800, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_tx_amp
+    comment: ''
+    port: '8080'
+    variable: tx_amp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_rx_amp
+    comment: ''
+    port: '8080'
+    variable: rx_amp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_pa
+    comment: ''
+    port: '8080'
+    variable: pa
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1184, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_lna
+    comment: ''
+    port: '8080'
+    variable: lna
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1296, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_da
+    comment: ''
+    port: '8080'
+    variable: da
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1408, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0_0_0_0_0
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_tx_pwr
+    comment: ''
+    port: '8080'
+    variable: tx_pwr
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1520, 192.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0_0_0_0_1
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_volume
+    comment: ''
+    port: '8080'
+    variable: volume
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1280, 440.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0_0_2
+  id: xmlrpc_client
+  parameters:
+    addr: xmlrpc_ip
+    alias: ''
+    callback: set_squelch_threshold
+    comment: ''
+    port: '8080'
+    variable: squelch_threshold
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1112, 440.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_ip
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: XMLRPC Server IP
+    short_id: ''
+    type: str
+    value: 10.0.7.91
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [96, 320.0]
+    rotation: 0
+    state: enabled
+- name: zeromq_sub_source_0
+  id: zeromq_sub_source
+  parameters:
+    address: zmq_baseband_stream
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: ''
+    hwm: '-1'
+    key: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    pass_tags: 'False'
+    timeout: '100'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [88, 512.0]
+    rotation: 0
+    state: enabled
+- name: zmq_baseband_stream
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ZMQ Baseband Stream
+    short_id: ''
+    type: str
+    value: tcp://10.0.7.91:52001
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 320.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [zeromq_sub_source_0, '0', blocks_throttle2_0, '0']
+- [zeromq_sub_source_0, '0', qtgui_freq_sink_x_0, '0']
+- [zeromq_sub_source_0, '0', qtgui_waterfall_sink_x_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.10.0
