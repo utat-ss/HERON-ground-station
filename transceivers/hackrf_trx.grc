@@ -686,7 +686,7 @@ blocks:
     baud_rate: '9600'
     comment: ''
     delay: '0'
-    extra: 230e-3
+    extra: 250e-3
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
