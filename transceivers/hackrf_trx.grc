@@ -81,6 +81,18 @@ blocks:
     coordinate: [720, 8.0]
     rotation: 0
     state: true
+- name: g3ruh
+  id: variable
+  parameters:
+    comment: ''
+    value: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1760, 80.0]
+    rotation: 0
+    state: true
 - name: gfsk_freq_dev
   id: variable
   parameters:
@@ -388,7 +400,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1728, 848.0]
+    coordinate: [2056, 832.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_esttc_framer_0
@@ -512,7 +524,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2152, 440.0]
+    coordinate: [2512, 440.0]
     rotation: 0
     state: true
 - name: blocks_msgpair_to_var_0
@@ -555,7 +567,7 @@ blocks:
     minoutbuf: '0'
     num_inputs: '1'
     num_outputs: '2'
-    output_index: mode
+    output_index: int(mode >= 1)
     showports: 'True'
     type: complex
     vlen: '1'
@@ -564,6 +576,52 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1288, 704.0]
+    rotation: 0
+    state: enabled
+- name: blocks_selector_1
+  id: blocks_selector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    enabled: 'True'
+    input_index: g3ruh
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    num_outputs: '1'
+    output_index: '0'
+    showports: 'True'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2368, 944.0]
+    rotation: 0
+    state: enabled
+- name: blocks_selector_2
+  id: blocks_selector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    enabled: 'True'
+    input_index: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '1'
+    num_outputs: '2'
+    output_index: 0 if mode == 1 else 1
+    showports: 'True'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1728, 824.0]
     rotation: 0
     state: enabled
 - name: blocks_tagged_stream_multiply_length_0
@@ -583,6 +641,24 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1632, 272.0]
+    rotation: 0
+    state: enabled
+- name: digital_descrambler_bb_0
+  id: digital_descrambler_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    len: '16'
+    mask: '0x21'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    seed: '0x0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2216, 976.0]
     rotation: 0
     state: enabled
 - name: digital_fll_band_edge_cc_0
@@ -1498,7 +1574,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1968, 832.0]
+    coordinate: [2296, 816.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_1_0
@@ -1514,7 +1590,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1968, 880.0]
+    coordinate: [2296, 864.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_lambda_0
@@ -1586,6 +1662,38 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1184, 264.0]
+    rotation: 0
+    state: enabled
+- name: satellites_hdlc_deframer_0
+  id: satellites_hdlc_deframer
+  parameters:
+    affinity: ''
+    alias: ''
+    check_fcs: 'True'
+    comment: ''
+    max_length: '10000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2560, 968.0]
+    rotation: 0
+    state: enabled
+- name: satellites_nrzi_decode_0
+  id: satellites_nrzi_decode
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2056, 968.0]
     rotation: 0
     state: enabled
 - name: toptek_toptek_control_0
@@ -1696,7 +1804,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2208, 848.0]
+    coordinate: [2848, 840.0]
     rotation: 0
     state: enabled
 - name: zmq_rx_bb
@@ -1778,9 +1886,13 @@ connections:
 - [blocks_freqshift_cc_0, '0', osmosdr_sink_0, '0']
 - [blocks_selector_0, '0', analog_pwr_squelch_xx_0, '0']
 - [blocks_selector_0, '1', digital_gfsk_demod_0, '0']
+- [blocks_selector_1, '0', satellites_hdlc_deframer_0, '0']
+- [blocks_selector_2, '0', UTAT_HERON_esttc_deframer_0, '0']
+- [blocks_selector_2, '1', satellites_nrzi_decode_0, '0']
 - [blocks_tagged_stream_multiply_length_0, '0', blocks_freqshift_cc_0, '0']
+- [digital_descrambler_bb_0, '0', blocks_selector_1, '1']
 - [digital_fll_band_edge_cc_0, '0', low_pass_filter_0_0, '0']
-- [digital_gfsk_demod_0, '0', UTAT_HERON_esttc_deframer_0, '0']
+- [digital_gfsk_demod_0, '0', blocks_selector_2, '0']
 - [digital_gfsk_mod_0, '0', blocks_tagged_stream_multiply_length_0, '0']
 - [epy_block_1, da, gpredict_MsgPairToVar_0_1_1, inpair]
 - [epy_block_1, tx_amp, gpredict_MsgPairToVar_0_0_0_0, inpair]
@@ -1803,6 +1915,10 @@ connections:
 - [pdu_pdu_lambda_1, pdu, pdu_pdu_lambda_0, pdu]
 - [pdu_pdu_lambda_2, pdu, pdu_pdu_lambda_1, pdu]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gfsk_mod_0, '0']
+- [satellites_hdlc_deframer_0, out, blocks_message_debug_0, log]
+- [satellites_hdlc_deframer_0, out, zeromq_push_msg_sink_0, in]
+- [satellites_nrzi_decode_0, '0', blocks_selector_1, '0']
+- [satellites_nrzi_decode_0, '0', digital_descrambler_bb_0, '0']
 - [zeromq_pull_msg_source_0, out, UTAT_HERON_esttc_framer_0, pdu_in]
 - [zeromq_pull_msg_source_0, out, pdu_add_system_time_0, pdu]
 

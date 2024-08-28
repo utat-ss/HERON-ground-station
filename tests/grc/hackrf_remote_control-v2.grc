@@ -117,15 +117,15 @@ blocks:
     label: Mode
     label0: NBFM Audio
     label1: ESTTC
-    label2: ''
-    label3: ''
+    label2: AX.25
+    label3: AX.25 G3RUH
     label4: ''
     labels: '[]'
-    num_opts: '2'
+    num_opts: '4'
     option0: '0'
     option1: '1'
-    option2: '60'
-    option3: '80'
+    option2: '2'
+    option3: '3'
     option4: '4'
     options: '[0, 1, 2]'
     orient: Qt.QVBoxLayout
@@ -790,7 +790,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1408, 480.0]
+    coordinate: [1408, 544.0]
     rotation: 0
     state: enabled
 - name: xmlrpc_client_0_0_0_0_0_0_0_0_2
