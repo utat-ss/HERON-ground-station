@@ -835,7 +835,7 @@ blocks:
 - name: zeromq_sub_source_1
   id: zeromq_sub_source
   parameters:
-    address: '''tcp://''+ip+'':''+str(zmq_rx_nbfm)'
+    address: '''tcp://''+ip+'':''+str(zmq_rx_audio)'
     affinity: ''
     alias: ''
     bind: 'False'
@@ -855,30 +855,13 @@ blocks:
     coordinate: [528, 488.0]
     rotation: 0
     state: enabled
-- name: zmq_rx_bb
+- name: zmq_rx_audio
   id: parameter
   parameters:
     alias: ''
     comment: ''
     hide: none
-    label: Rx Baseband
-    short_id: ''
-    type: intx
-    value: '52001'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [264, 320.0]
-    rotation: 0
-    state: enabled
-- name: zmq_rx_nbfm
-  id: parameter
-  parameters:
-    alias: ''
-    comment: ''
-    hide: none
-    label: Rx NBFM Stream
+    label: RX audio
     short_id: ''
     type: intx
     value: '50493'
@@ -887,6 +870,23 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [384, 320.0]
+    rotation: 0
+    state: enabled
+- name: zmq_rx_bb
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: RX baseband
+    short_id: ''
+    type: intx
+    value: '52001'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 320.0]
     rotation: 0
     state: enabled
 
