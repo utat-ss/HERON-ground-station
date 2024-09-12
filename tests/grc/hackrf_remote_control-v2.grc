@@ -92,6 +92,27 @@ blocks:
     coordinate: [296, 56.0]
     rotation: 0
     state: enabled
+- name: gfsk_freq_dev
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: 'control_tab@3: 2, 0, 1, 1'
+    label: GFSK Freq Dev
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '1200'
+    step: '200'
+    stop: '4800'
+    value: '2400'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1120, 560.0]
+    rotation: 0
+    state: true
 - name: lna
   id: variable_qtgui_check_box
   parameters:
@@ -113,7 +134,7 @@ blocks:
   id: variable_qtgui_chooser
   parameters:
     comment: ''
-    gui_hint: 'control_tab@3: 0, 1, 2, 1'
+    gui_hint: 'control_tab@3: 0, 1, 3, 1'
     label: Mode
     label0: NBFM Audio
     label1: ESTTC
@@ -791,6 +812,22 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1408, 544.0]
+    rotation: 0
+    state: enabled
+- name: xmlrpc_client_0_0_0_0_0_0_0_0_0_0_1_1
+  id: xmlrpc_client
+  parameters:
+    addr: ip
+    alias: ''
+    callback: set_gfsk_freq_dev
+    comment: ''
+    port: '8080'
+    variable: gfsk_freq_dev
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1120, 696.0]
     rotation: 0
     state: enabled
 - name: xmlrpc_client_0_0_0_0_0_0_0_0_2
