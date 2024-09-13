@@ -3,7 +3,7 @@ from threading import Thread
 import zmq
 from esttc_interface import ESTTCWrapper
 
-ping_delay = 1
+ping_delay = 3
 ping_msg = "ES+R2200\r"
 
 pings_sent = 0
@@ -28,7 +28,7 @@ def ping_rx():
                 pings_rcvd += 1
                 print("--- ping received [{}]".format(pings_rcvd))
             else:
-                print("--- weird ping")
+                print("--- received: {}".format(rx))
         except zmq.ZMQError:
             pass
         recv_flush -= 1-run
