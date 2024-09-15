@@ -1,32 +1,39 @@
 import time
 from threading import Thread
-
+import zmq
 from esttc_interface import ESTTCWrapper
 
-keep_running = True
-esttc = ESTTCWrapper("tcp://localhost:50491", "tcp://localhost:50492")
-
+ping_delay = 2
+ping_msg = "ES+R2200\r"
+esttc = ESTTCWrapper("tcp://10.0.7.91:50491", "tcp://10.0.7.91:50492")
+run = True
 
 def tx_indefinitely():
-    while keep_running:
-        esttc.tx("ES+R2200")
-        time.sleep(1)
+    while run:
+        esttc.tx(ping_msg)
+        time.sleep(ping_delay)
 
+def rx_indefinitely():
+    recv_flush = 100000
+    while run or recv_flush>0:
+        try:
+            msg = esttc.rx(zmq.NOBLOCK)
+            if msg != ping_msg:
+                msg = ' '.join(hex(ord(c)) for c in msg)
+                print(msg)
+        except zmq.ZMQError:
+            pass
+        recv_flush -= 1-run
 
 if __name__ == "__main__":
-    t = Thread(target=tx_indefinitely)
-    t.start()
+    t_tx = Thread(target=tx_indefinitely)
+    t_rx = Thread(target=rx_indefinitely)
 
-    try:
-        while True:
-            rxed = esttc.rx()
-            if rxed == "ES+R2200":
-                print("Loopback")
-            else:
-                print(rxed)
-    except KeyboardInterrupt:
-        keep_running = False
+    t_tx.start()
+    t_rx.start()
 
-    print("Exiting...")
-    t.join()
-    print("All threads exited!")
+    input("Press Enter to quit...\n")
+    run = False
+
+    t_tx.join()
+    t_rx.join()
