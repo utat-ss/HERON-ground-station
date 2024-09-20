@@ -46,7 +46,7 @@ blocks:
     step: 250e3
     stop: 6e9
     value: 435.4e6
-    widget: counter_slider
+    widget: counter
   states:
     bus_sink: false
     bus_source: false
@@ -63,9 +63,9 @@ blocks:
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
-    start: cfo-samp_rate/2
+    start: 1e6
     step: 250e3
-    stop: cfo+samp_rate/2
+    stop: 6e9
     value: 435e6
     widget: counter
   states:
