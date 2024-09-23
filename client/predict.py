@@ -10,7 +10,7 @@ def main():
     times = []
     shifts = []
     output = subprocess\
-        .check_output(["predict", "-t", "/home/swarnava/58287.txt", "-dp", "PICO-01B009"])\
+        .check_output(["predict", "-t", "/tmp/25544.tle", "-dp", "ISS (ZARYA)"])\
         .decode()\
         .splitlines()
     
@@ -23,19 +23,32 @@ def main():
         try:
             client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             client.connect(("10.0.7.91", 52002))
-            freq = 435000000
-            curr = int(time.time())
+            freq = 437800000
             i = 0
+            curr = int(time.time())
             while curr > times[i]:
                 i += 1
             while i < len(times):
                 curr = int(time.time())
                 time.sleep(times[i]-curr)
-                client.sendall(f"F{freq+shifts[i]}".encode("ASCII"))
-                client.sendall(f"I{freq-shifts[i]}".encode("ASCII"))
+                time.sleep(1)
+                client.sendall(f"F  {int(freq+shifts[i])}\n".encode("ASCII"))
+                if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
+                    print("bad response")
+                    break
+                client.sendall("f\n".encode("ASCII"))
+                print(client.recv(1024).decode('UTF-8').strip())
+                client.sendall(f"I  {int(freq-shifts[i])}\n".encode("ASCII"))
+                if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
+                    print("bad response")
+                    break
+                client.sendall("i\n".encode("ASCII"))
+                print(client.recv(1024).decode('UTF-8').strip())
                 i+=1
         except KeyboardInterrupt:
             pass
+        
+        client.sendall('q\n'.encode("ASCII"))
 
 if __name__ == "__main__":
     main()
