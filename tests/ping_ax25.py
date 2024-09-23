@@ -30,14 +30,14 @@ def pinger():
 
 if __name__ == '__main__':
 
-    flow.set_cfo(435400000)
-    flow.set_freq(435000000)
+    flow.set_cfo(436125000)
+    flow.set_freq(436025000)
     flow.set_lna(True)
     flow.set_rx_vga_gain(62)
     flow.set_rx_if_gain(40)
     flow.set_rx_amp(True)
-    # flow.set_pa(True)
-    # flow.set_tx_pwr(80)
+    flow.set_pa(True)
+    flow.set_tx_pwr(80)
     flow.set_mode(3)
 
     t_pinger = Thread(target=pinger)
