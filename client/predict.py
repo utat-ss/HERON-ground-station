@@ -2,28 +2,51 @@ import subprocess
 import time
 import re
 import socket
+import requests
+import tempfile
 
-line_pattern = re.compile(r"(\d*),.*,(-?\d*\.?\d*)")
+server_addr = ("10.0.7.91", 52002)
+norad = 28895
+freq = 435000000
 
 def main():
 
     times = []
     shifts = []
+
+    resp = requests.get(
+        "https://celestrak.org/NORAD/elements/gp.php",
+        params={"CATNR":str(norad)},
+        timeout=5
+    ).text
+
+    tle_file = f"{tempfile.gettempdir()}/predict.tle"
+    name = resp.splitlines()[0].strip()
+
+    with open(tle_file, "w") as f:
+        f.write(resp)
+
     output = subprocess\
-        .check_output(["predict", "-t", "/tmp/25544.tle", "-dp", "ISS (ZARYA)"])\
+        .check_output(["predict", "-t", tle_file, "-dp", name])\
         .decode()\
         .splitlines()
+
+    line_pattern = re.compile(r"(\d*),.*,(-?\d*\.?\d*)")
     
     for line in output:
         m = line_pattern.match(line)
         times.append(int(m.group(1)))
         shifts.append(float(m.group(2)))
     
+    print("Doppler Points:")
+    for i in range(len(times)):
+        formatted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(times[i]))
+        print(f"    {formatted_time}: {shifts[i]}")
+    
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
         try:
             client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            client.connect(("10.0.7.91", 52002))
-            freq = 437800000
+            client.connect(server_addr)
             i = 0
             curr = int(time.time())
             while curr > times[i]:
