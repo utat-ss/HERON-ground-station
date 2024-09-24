@@ -6,7 +6,7 @@ import requests
 import tempfile
 
 server_addr = ("10.0.7.91", 52002)
-norad = 28895
+norad = 25544
 freq = 435000000
 
 def main():
@@ -54,6 +54,7 @@ def main():
             while i < len(times):
                 curr = int(time.time())
                 time.sleep(times[i]-curr)
+                print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(times[i])))
                 client.sendall(f"F  {int(freq+shifts[i])}\n".encode("ASCII"))
                 if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
                     print("bad response")
