@@ -7,7 +7,7 @@ import tempfile
 
 server_addr = ("10.0.7.91", 52002)
 norad = 25544
-freq = 435000000
+freq = 437800000
 
 def main():
 
@@ -36,7 +36,7 @@ def main():
     for line in output:
         m = line_pattern.match(line)
         times.append(int(m.group(1)))
-        shifts.append(float(m.group(2)))
+        shifts.append(float(m.group(2)) * freq/(100e6))
     
     print("Doppler Points:")
     for i in range(len(times)):
