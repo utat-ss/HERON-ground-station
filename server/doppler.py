@@ -13,7 +13,7 @@ class DopplerServer(Thread):
 
     def __init__(self):
         Thread.__init__(self)
-        self.tle_file = tempfile.NamedTemporaryFile('w+', delete_on_close=False, delete=False)
+        self.tle_file = tempfile.NamedTemporaryFile('w+', delete_on_close=False)
         self.tle_file.close()
         self.name = None
         self.norad = 0
@@ -27,11 +27,12 @@ class DopplerServer(Thread):
     def __del__(self):
         self.tle_file.close()
 
-    def set_frequency(self, freq):
+    def set_freq(self, freq):
         self.freq = freq
     
     def enable_correction(self):
         self.enable_doppler = True
+        self.load_next_pass()
     
     def disable_correction(self):
         self.enable_doppler = False
@@ -49,10 +50,10 @@ class DopplerServer(Thread):
             params={"CATNR":str(self.norad)},
             timeout=5
         ).text
+        print(resp)
         self.name = resp.splitlines()[0].strip()
-        self.tle_file.open(self.tle_file.name, 'w+')
-        self.tle_file.write(resp)
-        self.tle_file.close()
+        with open(self.tle_file.name, mode='w+') as f:
+            f.write(resp)
     
     def load_next_pass(self):
         output = subprocess\
@@ -77,15 +78,16 @@ class DopplerServer(Thread):
                 i += 1
             while i < len(self.times) and self.enable_doppler and self.run_loop:
                 curr = int(time.time())
-                time.sleep(self.times[i]-curr)
+                if(self.times[i] < curr):
+                    time.sleep(self.times[i]-curr)
                 print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.times[i])))
-                client.sendall(f"F  {int(self.freq*(1+self.shifts[i]))}\n".encode("ASCII"))
+                client.sendall(f"F  {int(self.freq*(100e6+self.shifts[i]))}\n".encode("ASCII"))
                 if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
                     print("bad response")
                     break
                 client.sendall("f\n".encode("ASCII"))
                 print(client.recv(1024).decode('UTF-8').strip())
-                client.sendall(f"I  {int(self.freq*(1-self.shifts[i]))}\n".encode("ASCII"))
+                client.sendall(f"I  {int(self.freq*(100e6-self.shifts[i]))}\n".encode("ASCII"))
                 if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
                     print("bad response")
                     break
@@ -107,7 +109,7 @@ class DopplerServer(Thread):
                     time.sleep(1)
 
 def main():
-    server = SimpleXMLRPCServer(("0.0.0.0", 50600))
+    server = SimpleXMLRPCServer(("0.0.0.0", 50600), allow_none=True)
     inst = DopplerServer()
     server.register_instance(inst)
     t = Thread(target=server.serve_forever)
