@@ -36,7 +36,7 @@ def pkt2str(packet):
     src_ssid = (src_ssid_o >> 1) & 0b1111
     packet = packet[7:]
 
-    msg = f'\033[92m{dest}-{dest_ssid}\033[0m to {src}-{src_ssid}'
+    msg = f'\033[92m{dest}-{dest_ssid}\033[0m from {src}-{src_ssid}'
     
     if not (src_ssid_o & 1):
         r1 = ''.join(chr(c>>1) for c in packet[0:6]).strip()
