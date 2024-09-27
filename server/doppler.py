@@ -78,16 +78,16 @@ class DopplerServer(Thread):
                 i += 1
             while i < len(self.times) and self.enable_doppler and self.run_loop:
                 curr = int(time.time())
-                if(self.times[i] < curr):
+                if(self.times[i] > curr):
                     time.sleep(self.times[i]-curr)
                 print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.times[i])))
-                client.sendall(f"F  {int(self.freq*(100e6+self.shifts[i]))}\n".encode("ASCII"))
+                client.sendall(f"F  {int(self.freq*(1+self.shifts[i]/100e6))}\n".encode("ASCII"))
                 if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
                     print("bad response")
                     break
                 client.sendall("f\n".encode("ASCII"))
                 print(client.recv(1024).decode('UTF-8').strip())
-                client.sendall(f"I  {int(self.freq*(100e6-self.shifts[i]))}\n".encode("ASCII"))
+                client.sendall(f"I  {int(self.freq*(1-self.shifts[i]/100e6))}\n".encode("ASCII"))
                 if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
                     print("bad response")
                     break
