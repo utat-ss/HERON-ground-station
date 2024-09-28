@@ -23,7 +23,6 @@ class DopplerServer(Thread):
         self.trx_addr = ('localhost', 52002)
         self._enable_doppler = False
         self._run_loop = True
-        self.pass_error = False
         self.hang_time = 2
 
     def __del__(self):
@@ -61,7 +60,6 @@ class DopplerServer(Thread):
     
     def _load_next_pass(self):
         try:
-            self.pass_error = False
             output = subprocess\
                 .check_output(["predict", "-t", self.tle_file.name, "-dp", self.name])\
                 .decode()\
@@ -77,6 +75,7 @@ class DopplerServer(Thread):
             print(e)
 
     def _execute_pass(self):
+        """Blocking function that exits on pass completeion. Returns True if error ocurred"""
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
                 client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -108,20 +107,22 @@ class DopplerServer(Thread):
                 print("finished pass: " + self.name)
         except OSError as e:
             print(e)
-            self.pass_error = True
+            return True
+        return False
 
     def run(self):
+        pass_error = False
         while(self._run_loop):
             if not self._enable_doppler:
                 time.sleep(self.hang_time)
             elif len(self._times) > 0:
                 if time.time() >= self._times[-1]:
                     self._load_next_pass()
-                elif time.time() >= self._times[0]-self.hang_time and not self.pass_error:
-                    self._execute_pass()
+                elif time.time() >= self._times[0]-self.hang_time and not pass_error:
+                    pass_error = self._execute_pass()
                 else:
                     time.sleep(self.hang_time)
-                    self.pass_error = False
+                    pass_error = False
 
 def main():
     server = SimpleXMLRPCServer(("0.0.0.0", 50600), allow_none=True)
