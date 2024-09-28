@@ -3,6 +3,6 @@
 **/*.py[cod]
 
 # Compiled GNURadio files
-tests/grc/*.py
-transceivers/*.py
+client/grc/*.py
+server/transceivers/*.py
 
