@@ -13,16 +13,18 @@ class DopplerServer(Thread):
 
     def __init__(self):
         Thread.__init__(self)
-        self.tle_file = tempfile.NamedTemporaryFile('w+', delete_on_close=False)
+        self.tle_file = tempfile.NamedTemporaryFile("w+", suffix=".tle", delete_on_close=False)
         self.tle_file.close()
-        self.name = None
-        self.norad = 0
-        self.freq = 100
-        self.times = []
-        self.shifts = []
-        self.trx_addr = ('10.0.7.91', 52002)
-        self.enable_doppler = False
-        self.run_loop = True
+        self.name = "ISS (ZARYA)"
+        self.norad = 25544
+        self.freq = 437_800_000
+        self._times = []
+        self._shifts = []
+        self.trx_addr = ('localhost', 52002)
+        self._enable_doppler = False
+        self._run_loop = True
+        self.pass_error = False
+        self.hang_time = 2
 
     def __del__(self):
         self.tle_file.close()
@@ -31,14 +33,14 @@ class DopplerServer(Thread):
         self.freq = freq
     
     def enable_correction(self):
-        self.enable_doppler = True
-        self.load_next_pass()
+        self._enable_doppler = True
+        self._load_next_pass()
     
     def disable_correction(self):
-        self.enable_doppler = False
+        self._enable_doppler = False
     
     def stop(self):
-        self.run_loop = False
+        self._run_loop = False
     
     def load_norad(self, norad: int):
         self.norad = norad
@@ -51,62 +53,75 @@ class DopplerServer(Thread):
             timeout=5
         ).text
         print(resp)
+        if "No GP data found" in resp:
+            return
         self.name = resp.splitlines()[0].strip()
         with open(self.tle_file.name, mode='w+') as f:
             f.write(resp)
     
-    def load_next_pass(self):
-        output = subprocess\
-            .check_output(["predict", "-t", self.tle_file.name, "-dp", self.name])\
-            .decode()\
-            .splitlines()
-        line_pattern = re.compile(r"(\d*),.*,(-?\d*\.?\d*)")
-        self.times = []
-        self.shifts = []
-        for line in output:
-            m = line_pattern.match(line)
-            self.times.append(int(m.group(1)))
-            self.shifts.append(float(m.group(2)))
+    def _load_next_pass(self):
+        try:
+            self.pass_error = False
+            output = subprocess\
+                .check_output(["predict", "-t", self.tle_file.name, "-dp", self.name])\
+                .decode()\
+                .splitlines()
+            line_pattern = re.compile(r"(\d*),.*,(-?\d*\.?\d*)")
+            self._times = []
+            self._shifts = []
+            for line in output:
+                m = line_pattern.match(line)
+                self._times.append(int(m.group(1)))
+                self._shifts.append(float(m.group(2)))
+        except Exception as e:
+            print(e)
 
-    def execute_pass(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
-            client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            client.connect(self.trx_addr)
-            i = 0
-            curr = int(time.time())
-            while i < len(self.times) and curr > self.times[i]:
-                i += 1
-            while i < len(self.times) and self.enable_doppler and self.run_loop:
+    def _execute_pass(self):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:
+                client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                client.connect(self.trx_addr)
+                i = 0
                 curr = int(time.time())
-                if(self.times[i] > curr):
-                    time.sleep(self.times[i]-curr)
-                print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.times[i])))
-                client.sendall(f"F  {int(self.freq*(1+self.shifts[i]/100e6))}\n".encode("ASCII"))
-                if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
-                    print("bad response")
-                    break
-                client.sendall("f\n".encode("ASCII"))
-                print(client.recv(1024).decode('UTF-8').strip())
-                client.sendall(f"I  {int(self.freq*(1-self.shifts[i]/100e6))}\n".encode("ASCII"))
-                if(client.recv(1024).decode('UTF-8').strip() != "RPRT 0"):
-                    print("bad response")
-                    break
-                client.sendall("i\n".encode("ASCII"))
-                print(client.recv(1024).decode('UTF-8').strip())
-                i+=1
-            client.sendall('q\n'.encode("ASCII"))
+                while i < len(self._times) and curr > self._times[i]:
+                    i += 1
+                print("staring pass: " + self.name)
+                while i < len(self._times) and self._enable_doppler and self._run_loop:
+                    curr = int(time.time())
+                    if(self._times[i] > curr):
+                        time.sleep(self._times[i]-curr)
+                    # print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(self.times[i])))
+                    client.sendall(f"F  {int(self.freq*(1+self._shifts[i]/100e6))}\n".encode("ASCII"))
+                    if(client.recv(1024).decode("UTF-8").strip() != "RPRT 0"):
+                        print("bad response")
+                        break
+                    client.sendall("f\n".encode("ASCII"))
+                    # print(client.recv(1024).decode("UTF-8").strip())
+                    client.sendall(f"I  {int(self.freq*(1-self._shifts[i]/100e6))}\n".encode("ASCII"))
+                    if(client.recv(1024).decode("UTF-8").strip() != "RPRT 0"):
+                        print("bad response")
+                        break
+                    client.sendall("i\n".encode("ASCII"))
+                    # print(client.recv(1024).decode("UTF-8").strip())
+                    i+=1
+                client.sendall('q\n'.encode("ASCII"))
+                print("finished pass: " + self.name)
+        except OSError as e:
+            print(e)
+            self.pass_error = True
 
     def run(self):
-        while(self.run_loop):
-            if not self.enable_doppler:
-                time.sleep(1)
-            elif len(self.times) > 0:
-                if time.time() >= self.times[-1]:
-                    self.load_next_pass()
-                elif time.time() >= self.times[0] - 1:
-                    self.execute_pass()
+        while(self._run_loop):
+            if not self._enable_doppler:
+                time.sleep(self.hang_time)
+            elif len(self._times) > 0:
+                if time.time() >= self._times[-1]:
+                    self._load_next_pass()
+                elif time.time() >= self._times[0]-self.hang_time and not self.pass_error:
+                    self._execute_pass()
                 else:
-                    time.sleep(1)
+                    time.sleep(self.hang_time)
+                    self.pass_error = False
 
 def main():
     server = SimpleXMLRPCServer(("0.0.0.0", 50600), allow_none=True)

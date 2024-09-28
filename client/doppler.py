@@ -1,7 +1,7 @@
 from xmlrpc.client import ServerProxy
 
 def main():
-    dpler = ServerProxy("http://localhost:50600")
+    dpler = ServerProxy("http://10.0.7.91:50600")
     dpler.load_norad(25544)
     dpler.set_freq(437_800_000)
     dpler.enable_correction()
