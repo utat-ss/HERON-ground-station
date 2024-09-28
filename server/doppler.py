@@ -53,7 +53,7 @@ class DopplerServer(Thread):
         ).text
         print(resp)
         if "No GP data found" in resp:
-            return
+            raise LookupError("norad does not exist")
         self.name = resp.splitlines()[0].strip()
         with open(self.tle_file.name, mode='w+') as f:
             f.write(resp)
