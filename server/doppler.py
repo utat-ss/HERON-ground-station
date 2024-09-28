@@ -96,13 +96,13 @@ class DopplerServer(Thread):
                         print("bad response")
                         break
                     client.sendall("f\n".encode("ASCII"))
-                    # print(client.recv(1024).decode("UTF-8").strip())
+                    print(client.recv(1024).decode("UTF-8").strip())
                     client.sendall(f"I  {int(self.freq*(1-self._shifts[i]/100e6))}\n".encode("ASCII"))
                     if(client.recv(1024).decode("UTF-8").strip() != "RPRT 0"):
                         print("bad response")
                         break
                     client.sendall("i\n".encode("ASCII"))
-                    # print(client.recv(1024).decode("UTF-8").strip())
+                    print(client.recv(1024).decode("UTF-8").strip())
                     i+=1
                 client.sendall('q\n'.encode("ASCII"))
                 print("finished pass: " + self.name)
