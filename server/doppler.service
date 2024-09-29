@@ -4,7 +4,7 @@
 Description=Doppler correction based on predict
 
 [Service]
-ExecStart=python3 @CMAKE_INSTALL_LIBDIR@/@PROJECT_NAME@/doppler.py
+ExecStart=/usr/bin/python3 /home/heron/HERON-ground-station/server/doppler.py
 Environment=PYTHONUNBUFFERED=1
 Restart=on-failure
 Type=notify
