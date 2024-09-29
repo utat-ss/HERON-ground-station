@@ -9,6 +9,8 @@ from threading import Thread
 import signal
 import systemd.daemon
 
+# THIS IS BAD, please change to rest api or rpyc
+
 class DopplerServer(Thread):
 
     def __init__(self):
