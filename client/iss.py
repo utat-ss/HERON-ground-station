@@ -31,6 +31,7 @@ def main():
 
 
     input('Press Enter to quit')
+    rot.disable_tracking()
     dpler.disable_correction()
 
 if __name__=="__main__":
