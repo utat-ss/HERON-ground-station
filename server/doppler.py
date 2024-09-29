@@ -7,7 +7,7 @@ import requests
 import tempfile
 from threading import Thread
 import signal
-import sys
+import systemd.daemon
 
 class DopplerServer(Thread):
 
@@ -131,9 +131,11 @@ def main():
     t = Thread(target=server.serve_forever)
     t.start()
     inst.start()
+    systemd.daemon.notify("READY=1")
 
     def handler(sig=None, frame=None):
         inst.stop()
+        systemd.daemon.notify("STOPPING=1")
         
     signal.signal(signal.SIGINT, handler)
     signal.signal(signal.SIGTERM, handler)
