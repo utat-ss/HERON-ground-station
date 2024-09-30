@@ -85,7 +85,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '2400'
+    value: 2400/2
   states:
     bus_sink: false
     bus_source: false
@@ -416,16 +416,16 @@ blocks:
     max_gain: '10'
     maxoutbuf: '0'
     minoutbuf: '0'
-    rate: 1e-3
+    rate: 1e-2
     reference: '1.0'
     type: complex
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [640, 712.0]
+    coordinate: [808, 712.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: analog_nbfm_rx_0
   id: analog_nbfm_rx
   parameters:
@@ -500,7 +500,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1288, 976.0]
+    coordinate: [792, 960.0]
     rotation: 0
     state: enabled
 - name: blocks_freqshift_cc_0
@@ -546,7 +546,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [752, 976.0]
+    coordinate: [472, 920.0]
     rotation: 0
     state: true
 - name: blocks_msgpair_to_var_1
@@ -560,7 +560,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [752, 1024.0]
+    coordinate: [472, 968.0]
     rotation: 0
     state: true
 - name: blocks_selector_0
@@ -744,20 +744,20 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    filter_size: '80'
+    filter_size: '40'
     maxoutbuf: '0'
     minoutbuf: '0'
     rolloff: '0.35'
-    samps_per_sym: rx_samp_rate2/baud_rate
+    samps_per_sym: rx_samp_per_baud
     type: cc
-    w: 2*math.pi/(rx_samp_rate2/baud_rate)/20
+    w: 2*math.pi/(rx_samp_per_baud)/20
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [824, 696.0]
+    coordinate: [992, 696.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: digital_gfsk_demod_0
   id: digital_gfsk_demod
   parameters:
@@ -948,7 +948,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [464, 992.0]
+    coordinate: [184, 936.0]
     rotation: 0
     state: true
 - name: gpredict_port
@@ -1002,7 +1002,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1080, 684.0]
+    coordinate: [568, 684.0]
     rotation: 0
     state: enabled
 - name: mmse_resampler_xx_0
@@ -1978,7 +1978,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1288, 864.0]
+    coordinate: [792, 848.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_1
@@ -2166,19 +2166,18 @@ connections:
 - [blocks_selector_3, '1', pdu_tagged_stream_to_pdu_0_0, '0']
 - [blocks_tagged_stream_multiply_length_0, '0', blocks_selector_0_0, '1']
 - [digital_descrambler_bb_0, '0', blocks_selector_1, '1']
-- [digital_fll_band_edge_cc_0, '0', low_pass_filter_0_0, '0']
+- [digital_fll_band_edge_cc_0, '0', blocks_selector_0, '0']
 - [digital_gfsk_demod_0, '0', blocks_selector_2, '0']
 - [digital_gfsk_mod_0, '0', blocks_tagged_stream_multiply_length_0, '0']
 - [digital_scrambler_bb_0, '0', blocks_selector_1_0, '1']
 - [epy_block_1, da, gpredict_MsgPairToVar_0_1_1, inpair]
 - [epy_block_1, tx_amp, gpredict_MsgPairToVar_0_0_0_0, inpair]
 - [epy_block_1, tx_vga_gain, gpredict_MsgPairToVar_0_1_0, inpair]
-- [freq_xlating_fir_filter_xxx_0, '0', analog_agc_xx_1, '0']
 - [freq_xlating_fir_filter_xxx_0, '0', low_pass_filter_0_0, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
+- [low_pass_filter_0_0, '0', analog_agc_xx_1, '0']
 - [low_pass_filter_0_0, '0', blocks_file_sink_0, '0']
-- [low_pass_filter_0_0, '0', blocks_selector_0, '0']
 - [low_pass_filter_0_0, '0', zeromq_pub_sink_0, '0']
 - [mmse_resampler_xx_0, '0', blocks_selector_0_0, '0']
 - [osmosdr_source_0, '0', freq_xlating_fir_filter_xxx_0, '0']
@@ -2210,4 +2209,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.10.0
+  grc_version: 3.10.11.0
