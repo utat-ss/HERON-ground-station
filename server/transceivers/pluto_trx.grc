@@ -332,7 +332,7 @@ blocks:
     max_gain: '10'
     maxoutbuf: '0'
     minoutbuf: '0'
-    rate: 1e-3
+    rate: 1e-2
     reference: '1.0'
     type: complex
   states:
@@ -1448,4 +1448,4 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: 3.10.11.0
+  grc_version: 3.10.9.2

@@ -1,12 +1,22 @@
 import time
 from threading import Thread
 import zmq
+from xmlrpc.client import ServerProxy
+import rpyc
 from esttc_interface import ESTTCWrapper
 
-ping_delay = 1
+ping_delay = 5
 pong_delay = 0
 ping_msg = "ES+R2200\r"
 pong_msg = "ACK"
+freq = 435_100_000
+az = 38
+el = 5
+gsflow = ServerProxy("http://10.0.7.91:8080")
+plflow = ServerProxy("http://10.0.1.165:8080")
+rxer = ESTTCWrapper("tcp://10.0.7.91:50491", "tcp://10.0.7.91:50492")
+txer = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
+rot = rpyc.connect("10.0.7.91", 18866).root.K3NG
 
 pings = 0
 pongs = 0
@@ -60,6 +70,21 @@ def pong():
         recv_flush -= 1-run
 
 if __name__ == '__main__':
+
+    rot.set_azimuth(az)
+    rot.set_elevation(el)
+
+    gsflow.set_freq(freq)
+    gsflow.set_cfo(freq+40_000)
+    gsflow.set_lna(True)
+    gsflow.set_rx_amp(True)
+    gsflow.set_rx_vga_gain(62)
+    gsflow.set_rx_if_gain(40)
+    plflow.set_freq(freq)
+    plflow.set_cfo(freq+40_000)
+    plflow.set_tx_gain(89.75)
+    plflow.set_rx_gain(4)
+
     t_pong = Thread(target=pong)
     t_ping_rx = Thread(target=ping_rx)
     t_ping_tx = Thread(target=ping_tx)
