@@ -235,7 +235,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2**9
+    value: 2**5
   states:
     bus_sink: false
     bus_source: false
@@ -247,7 +247,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2**17
+    value: 2**13
   states:
     bus_sink: false
     bus_source: false
