@@ -1,6 +1,4 @@
-import socket
 import sys
-sys.path.append("@CMAKE_INSTALL_DATADIR@/@PROJECT_NAME@")
 import transceivers
 import signal
 import sys
@@ -39,3 +37,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
