@@ -4,7 +4,6 @@ project(HERON_gs_server)
 include(GNUInstallDirs)
 
 file(GLOB trx_files "${CMAKE_SOURCE_DIR}/transceivers/*.grc")
-configure_file(HERON_gs.py.in HERON_gs.py @ONLY)
 configure_file(doppler.service.in doppler.service @ONLY)
 configure_file(HERON_gs.service.in HERON_gs.service @ONLY)
 
@@ -14,7 +13,7 @@ install(DIRECTORY
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}")
 install(FILES
     doppler.py
-    ${CMAKE_BINARY_DIR}/HERON_gs.py
+    HERON_gs.py
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/${PROJECT_NAME}/")
 install(FILES
     ${CMAKE_BINARY_DIR}/doppler.service
