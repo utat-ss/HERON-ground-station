@@ -14,5 +14,5 @@ sudo dpkg -i *.deb
 sudo systemctl daemon-reload
 sudo systemctl enable doppler
 sudo systemctl start doppler
-sudo systemctl enable HERON_gs
-sudo systemctl start HERON_gs
+# sudo systemctl enable HERON_gs
+# sudo systemctl start HERON_gs
