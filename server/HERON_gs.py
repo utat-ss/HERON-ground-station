@@ -37,10 +37,7 @@ class GSServer(rpyc.Service):
 
 def main():
 
-
-
-    d = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(d+"/transceivers")
+    os.chdir(os.path.dirname(os.path.abspath(__file__))+"/transceivers")
     systemd.daemon.notify("READY=1")
     serv = rpyc.ThreadedServer(GSServer(), port=50600)
 
