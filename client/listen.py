@@ -2,7 +2,8 @@ from threading import Thread
 import zmq
 from esttc_interface import ESTTCWrapper
 
-esttc = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
+ip = "10.0.1.165"
+esttc = ESTTCWrapper(f"tcp://{ip}:50491", f"tcp://{ip}:50492")
 run = True
 
 def listen():
