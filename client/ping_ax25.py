@@ -28,7 +28,7 @@ def pinger(txer):
 
 if __name__ == '__main__':
 
-    (trx, flow, digi, rot) = stations.setup_herongs(rot_config="lab", tx_config=int(80))
+    (client, channel, flow, digi, rot) = stations.setup_herongs(rot_config="lab", tx_config=int(80))
 
     flow.set_cfo(freq + 100_000)
     flow.set_freq(freq)

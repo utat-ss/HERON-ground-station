@@ -6,7 +6,7 @@ def main():
     norad = 25544
     freq = 437_800_000
 
-    (trx, flow, gs_digi, rot) = stations.setup_herongs(rot_config=norad)
+    (client, channel, flow, gs_digi, rot) = stations.setup_herongs(rot_config=norad)
 
     print(rot.get_tracking_status())
 

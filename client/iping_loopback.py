@@ -39,8 +39,8 @@ def pinger(ping_esttc):
 
 if __name__ == '__main__':
 
-    (trx, flow, digi, rot) = stations.setup_herongs(rot_config="lab")
-    # (trx, flow, digi, rot) = stations.setup_pluto(rx_config="partial")
+    (client, channel, flow, digi, rot) = stations.setup_herongs(rot_config="lab")
+    # (client, channel, flow, digi, rot) = stations.setup_pluto(rx_config="partial")
 
     t_pinger = Thread(target=pinger, args=[digi,])
     t_pinger.start()

@@ -60,8 +60,8 @@ def pong(pong_esttc):
 
 if __name__ == '__main__':
 
-    (gs_trx, gs_flow, gs_digi, gs_rot) = stations.setup_herongs(rot_config="lab")
-    (pl_trx, pl_flow, pl_digi, pl_rot) = stations.setup_pluto(rx_config="partial")
+    (gs_client, gs_channel, gs_flow, gs_digi, gs_rot) = stations.setup_herongs(rot_config="lab")
+    (pl_client, pl_channel, pl_flow, pl_digi, pl_rot) = stations.setup_pluto(rx_config="partial")
 
     gs_flow.set_freq(freq)
     gs_flow.set_cfo(freq+40_000)
