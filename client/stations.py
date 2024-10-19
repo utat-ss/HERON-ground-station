@@ -1,6 +1,5 @@
 import rpyc
 from xmlrpc.client import ServerProxy
-import subprocess
 import paramiko
 from esttc_interface import ESTTCWrapper
 
@@ -21,20 +20,6 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
         grcc hackrf_trx.grc;
         python3 hackrf_trx.py"""
     )
-
-
-    # trx = subprocess.Popen(
-    #     [
-    #         "ssh", f"heron@{ip}", "-t", """
-    #         cd HERON-ground-station/server/transceivers;
-    #         ./utils/enable_hackrf_clocks.sh;
-    #         grcc hackrf_trx.grc;
-    #         python3 hackrf_trx.py"""
-    #     ],
-    #     stdout=subprocess.PIPE,
-    #     stdin=subprocess.PIPE,
-    #     stderr=subprocess.PIPE,
-    # )
 
     print("[stations] setting up HERON GS rotator")
 
@@ -60,7 +45,6 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
 
     recv_msg = ""
     for _ in range(10):
-        # recv_msg = trx.stdout.read1().decode()
         recv_msg += channel.recv(65535).decode()
         if "Press Enter to quit:" in recv_msg:
             break
@@ -98,23 +82,10 @@ def setup_pluto(rx_config=None):
         python3 pluto_trx.py"""
     )
 
-    # trx = subprocess.Popen(
-    #     [
-    #         "ssh", f"heron@{ip}", "-t", """
-    #         cd HERON-ground-station/server/transceivers;
-    #         grcc pluto_trx.grc;
-    #         python3 pluto_trx.py"""
-    #     ],
-    #     stdout=subprocess.PIPE,
-    #     stdin=subprocess.PIPE,
-    #     stderr=subprocess.PIPE,
-    # )
-
     print("[stations] setting up PLUTO transceiver")
     
     recv_msg = ""
     for _ in range(10):
-        # recv_msg = trx.stdout.read1().decode()
         recv_msg += channel.recv(65535).decode()
         if "Press Enter to quit:" in recv_msg:
             break
