@@ -57,8 +57,8 @@ if __name__ == '__main__':
     pl_flow.set_freq(freq)
     pl_flow.set_cfo(freq+40_000)
 
-    txer = pl_digi
-    rxer = gs_digi
+    txer = gs_digi
+    rxer = pl_digi
 
     t_txer_rx_sink = Thread(target=txer_rx_sink, args=[txer,])
     t_ping = Thread(target=ping, args=[txer, rxer])

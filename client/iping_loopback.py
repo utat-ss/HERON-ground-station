@@ -1,7 +1,6 @@
-import time
 from threading import Thread
 import zmq
-from esttc_interface import ESTTCWrapper
+import stations
 
 ping_delay = 1
 ping_msg = "ES+R2200\r"
@@ -9,9 +8,8 @@ ping_msg = "ES+R2200\r"
 pings_sent = 0
 pings_rcvd = 0
 run = True
-ping_esttc = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
 
-def rx_sink():
+def rx_sink(ping_esttc):
     global pings_rcvd
     recv_flush = 100000
     while run or recv_flush>0:
@@ -24,7 +22,7 @@ def rx_sink():
             pass
         recv_flush -= 1-run
 
-def pinger():
+def pinger(ping_esttc):
     global pings_sent
     global pings_rcvd
     ping_esttc.set_timeout(ping_delay*1000)
@@ -41,14 +39,17 @@ def pinger():
 
 if __name__ == '__main__':
 
-    t_pinger = Thread(target=pinger)
+    (trx, flow, digi, rot) = stations.setup_herongs(rot_config="lab")
+    # (trx, flow, digi, rot) = stations.setup_pluto(rx_config="partial")
+
+    t_pinger = Thread(target=pinger, args=[digi,])
     t_pinger.start()
 
     input("Press Enter to quit...\n")
     run = False
 
     t_pinger.join()
-    rx_sink()
+    rx_sink(digi)
 
     total_loss = "{0:.2f} %".format((pings_sent-pings_rcvd)/pings_sent*100) if pings_sent != 0 else 'N/A'
 

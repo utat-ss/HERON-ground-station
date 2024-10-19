@@ -1,38 +1,27 @@
 import time
 from threading import Thread
 import zmq
-from xmlrpc.client import ServerProxy
-import rpyc
-from esttc_interface import ESTTCWrapper
+import stations
 
-ping_delay = 5
+ping_delay = 2
 pong_delay = 0
 ping_msg = "ES+R2200\r"
 pong_msg = "ACK"
 freq = 435_100_000
-az = 38
-el = 5
-gsflow = ServerProxy("http://10.0.7.91:8080")
-plflow = ServerProxy("http://10.0.1.165:8080")
-rxer = ESTTCWrapper("tcp://10.0.7.91:50491", "tcp://10.0.7.91:50492")
-txer = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
-rot = rpyc.connect("10.0.7.91", 18866).root.K3NG
 
 pings = 0
 pongs = 0
 ping_pongs = 0
 run = True
-ping_esttc = ESTTCWrapper("tcp://10.0.7.91:50491", "tcp://10.0.7.91:50492")
-pong_esttc = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
 
-def ping_tx():
+def ping_tx(ping_esttc):
     global pings
     while run:
         ping_esttc.tx(ping_msg)
         pings += 1
         time.sleep(ping_delay)
 
-def ping_rx():
+def ping_rx(ping_esttc):
     global ping_pongs
     recv_flush = 100000
     while run or recv_flush>0:
@@ -49,7 +38,7 @@ def ping_rx():
             pass
         recv_flush -= 1-run
 
-def pong():
+def pong(pong_esttc):
     global pongs
     recv_flush = 100000
     while run or recv_flush>0:
@@ -71,23 +60,20 @@ def pong():
 
 if __name__ == '__main__':
 
-    rot.set_azimuth(az)
-    rot.set_elevation(el)
+    (gs_trx, gs_flow, gs_digi, gs_rot) = stations.setup_herongs(rot_config="lab")
+    (pl_trx, pl_flow, pl_digi, pl_rot) = stations.setup_pluto(rx_config="partial")
 
-    gsflow.set_freq(freq)
-    gsflow.set_cfo(freq+40_000)
-    gsflow.set_lna(True)
-    gsflow.set_rx_amp(True)
-    gsflow.set_rx_vga_gain(62)
-    gsflow.set_rx_if_gain(40)
-    plflow.set_freq(freq)
-    plflow.set_cfo(freq+40_000)
-    plflow.set_tx_gain(89.75)
-    plflow.set_rx_gain(4)
+    gs_flow.set_freq(freq)
+    gs_flow.set_cfo(freq+40_000)
+    pl_flow.set_freq(freq)
+    pl_flow.set_cfo(freq+40_000)
 
-    t_pong = Thread(target=pong)
-    t_ping_rx = Thread(target=ping_rx)
-    t_ping_tx = Thread(target=ping_tx)
+    pinger_esttc = gs_digi
+    ponger_esttc = pl_digi
+
+    t_pong = Thread(target=pong, args=[ponger_esttc,])
+    t_ping_rx = Thread(target=ping_rx, args=[pinger_esttc,])
+    t_ping_tx = Thread(target=ping_tx, args=[pinger_esttc,])
 
     t_pong.start()
     t_ping_rx.start()
