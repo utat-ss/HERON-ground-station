@@ -36,8 +36,12 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
                 break
             except: pass
     elif isinstance(rot_config, int) and rot_config > 0:
-        rot.load_and_track(rot_config)
-        rot.enable_tracking()
+        for i in range(5):
+            try:
+                rot.load_and_track(rot_config)
+                rot.enable_tracking()
+                break;
+            except: pass
     else:
         pass
 
