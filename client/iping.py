@@ -1,26 +1,16 @@
-import time
 from threading import Thread
 import zmq
-from xmlrpc.client import ServerProxy
-import rpyc
-from esttc_interface import ESTTCWrapper
+import stations
 
 ping_delay = 5
 ping_msg = "ES+R2200\r"
 freq = 435_100_000
-az = 38
-el = 5
-gsflow = ServerProxy("http://10.0.7.91:8080")
-plflow = ServerProxy("http://10.0.1.165:8080")
-rxer = ESTTCWrapper("tcp://10.0.7.91:50491", "tcp://10.0.7.91:50492")
-txer = ESTTCWrapper("tcp://10.0.1.165:50491", "tcp://10.0.1.165:50492")
-rot = rpyc.connect("10.0.7.91", 18866).root.K3NG
 
 pings_sent = 0
 pings_rcvd = 0
 run = True
 
-def txer_rx_sink():
+def txer_rx_sink(txer):
     recv_flush = 100000
     while run or recv_flush>0:
         try:
@@ -29,7 +19,7 @@ def txer_rx_sink():
             pass
         recv_flush -= 1-run
 
-def rxer_rx_sink():
+def rxer_rx_sink(rxer):
     global pings_rcvd
     recv_flush = 100000
     while run or recv_flush>0:
@@ -42,7 +32,7 @@ def rxer_rx_sink():
             pass
         recv_flush -= 1-run
 
-def pinger():
+def ping(txer, rxer):
     global pings_sent
     global pings_rcvd
     rxer.set_timeout(ping_delay*1000)
@@ -58,33 +48,30 @@ def pinger():
             print('timeout')
 
 if __name__ == '__main__':
-    
-    rot.set_azimuth(az)
-    rot.set_elevation(el)
 
-    gsflow.set_freq(freq)
-    gsflow.set_cfo(freq+40_000)
-    gsflow.set_lna(True)
-    gsflow.set_rx_amp(True)
-    gsflow.set_rx_vga_gain(62)
-    gsflow.set_rx_if_gain(40)
-    plflow.set_freq(freq)
-    plflow.set_cfo(freq+40_000)
-    plflow.set_tx_gain(89.75)
-    plflow.set_rx_gain(4)
+    (gs_trx, gs_flow, gs_digi, gs_rot) = stations.setup_herongs(rot_config="lab")
+    (pl_trx, pl_flow, pl_digi, pl_rot) = stations.setup_pluto(rx_config="partial")
 
+    gs_flow.set_freq(freq)
+    gs_flow.set_cfo(freq+40_000)
+    pl_flow.set_freq(freq)
+    pl_flow.set_cfo(freq+40_000)
 
-    t_txer_rx_sink = Thread(target=txer_rx_sink)
-    t_pinger = Thread(target=pinger)
+    txer = pl_digi
+    rxer = gs_digi
+
+    t_txer_rx_sink = Thread(target=txer_rx_sink, args=[txer,])
+    t_ping = Thread(target=ping, args=[txer, rxer])
 
     t_txer_rx_sink.start()
-    t_pinger.start()
+    t_ping.start()
 
     input("Press Enter to quit...\n")
+    print("Exitting...")
     run = False
 
-    t_pinger.join()
-    rxer_rx_sink()
+    t_ping.join()
+    rxer_rx_sink(rxer)
     t_txer_rx_sink.join()
 
     total_loss = "{0:.2f} %".format((pings_sent-pings_rcvd)/pings_sent*100) if pings_sent != 0 else 'N/A'
