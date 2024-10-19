@@ -23,8 +23,6 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
         stderr=subprocess.PIPE,
     )
 
-    time.sleep(5)
-
     print("[stations] setting up HERON GS rotator")
 
     rot = rpyc.connect(ip, 18866).root.K3NG
@@ -45,8 +43,12 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
     else:
         pass
 
-
     print("[stations] setting up HERON GS transceiver")
+
+    for _ in range(10):
+        s = trx.stdout.read1().decode()
+        if "Press Enter to quit:" in s:
+            break
 
     flow = ServerProxy(f"http://{ip}:8080")
     if isinstance(tx_config, int):
@@ -82,9 +84,12 @@ def setup_pluto(rx_config=None):
         stderr=subprocess.PIPE,
     )
 
-    time.sleep(5)
-
     print("[stations] setting up PLUTO transceiver")
+
+    for _ in range(10):
+        s = trx.stdout.read1().decode()
+        if "Press Enter to quit:" in s:
+            break
 
     flow = ServerProxy(f"http://{ip}:8080")
     flow.set_tx_gain(89.75)
