@@ -23,7 +23,7 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
 
     print("[stations] setting up HERON GS rotator")
 
-    rot = rpyc.connect(ip, 18866).root.K3NG
+    rot = rpyc.connect(ip, 18866).root.k3ng
     if isinstance(rot_config, str) and rot_config == "lab":
         for i in range(5):
             try:
