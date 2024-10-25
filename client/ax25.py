@@ -43,7 +43,7 @@ def pkt2str(packet):
         r1_ssid_o = packet[6]
         r1_ssid = (r1_ssid_o >> 1) & 0b1111
         packet = packet[7:]
-        if r1_ssid_o & (1 << 8):
+        if r1_ssid_o & (1 << 7):
             msg += f' via \033[4m{r1}-{r1_ssid}\033[0m'
         else:
             msg += f' via {r1}-{r1_ssid}'
@@ -52,7 +52,7 @@ def pkt2str(packet):
             r2_ssid_o = packet[6]
             r2_ssid = (r2_ssid_o >> 1) & 0b1111
             packet = packet[7:]
-            if r2_ssid_o & (1 << 8):
+            if r2_ssid_o & (1 << 7):
                 msg += f', \033[4m{r2}-{r2_ssid}\033[0m'
             else:
                 msg += f', {r2}-{r2_ssid}'
