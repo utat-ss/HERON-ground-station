@@ -11,7 +11,7 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
 
     client = paramiko.SSHClient()
     client.load_system_host_keys()
-    client.connect(ip, username="heron")
+    client.connect(ip, username="heron", timeout=10)
 
     channel = client.get_transport().open_session()
     channel.exec_command("""
@@ -73,7 +73,7 @@ def setup_pluto(rx_config=None):
 
     client = paramiko.SSHClient()
     client.load_system_host_keys()
-    client.connect(ip, username="heron")
+    client.connect(ip, username="heron", timeout=10)
 
     channel = client.get_transport().open_session()
     channel.exec_command("""
