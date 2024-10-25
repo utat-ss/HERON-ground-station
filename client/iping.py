@@ -2,7 +2,7 @@ from threading import Thread
 import zmq
 import stations
 
-ping_delay = 5
+ping_delay = 2
 ping_msg = "ES+R2200\r"
 freq = 435_100_000
 
@@ -57,8 +57,14 @@ if __name__ == '__main__':
     pl_flow.set_freq(freq)
     pl_flow.set_cfo(freq+40_000)
 
-    txer = gs_digi
-    rxer = pl_digi
+    gs_flow.set_mode(1)
+    pl_flow.set_mode(1)
+
+    gs_flow.set_output("/tmp/gs.fc32")
+    pl_flow.set_output("/tmp/pl.fc32")
+
+    rxer = gs_digi
+    txer = pl_digi
 
     t_txer_rx_sink = Thread(target=txer_rx_sink, args=[txer,])
     t_ping = Thread(target=ping, args=[txer, rxer])
@@ -80,4 +86,10 @@ if __name__ == '__main__':
     print('  pings sent:      ', pings_sent)
     print('  pongs received:  ', pings_rcvd)
     print('  total loss:      ', total_loss)
+
+    # del gs_client, gs_channel, gs_flow, gs_digi, gs_rot
+    # del pl_client, pl_channel, pl_flow, pl_digi, pl_rot
+    # import gc
+    # gc.collect()
+    # input("Press Enter to quit...\n");
     
