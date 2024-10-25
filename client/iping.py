@@ -75,6 +75,8 @@ if __name__ == '__main__':
     input("Press Enter to quit...\n")
     print("Exitting...")
     run = False
+    gs_channel.close()
+    pl_channel.close()
 
     t_ping.join()
     rxer_rx_sink(rxer)
@@ -86,10 +88,4 @@ if __name__ == '__main__':
     print('  pings sent:      ', pings_sent)
     print('  pongs received:  ', pings_rcvd)
     print('  total loss:      ', total_loss)
-
-    # del gs_client, gs_channel, gs_flow, gs_digi, gs_rot
-    # del pl_client, pl_channel, pl_flow, pl_digi, pl_rot
-    # import gc
-    # gc.collect()
-    # input("Press Enter to quit...\n");
     
