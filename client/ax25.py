@@ -1,29 +1,44 @@
-def str2pkt(info, dest, src, r1=None, r2=None, ):
-    if len(dest) > 6 or len(src) > 6:
+def str2pkt(info, dest, src, r1=None, r2=None):
+    tmp = dest.split("-")
+    dest = tmp[0]
+    try: dest_ssid = int(tmp[1])
+    except: dest_ssid = 0
+    tmp = src.split("-")
+    src = tmp[0]
+    try: src_ssid = int(tmp[1])
+    except: src_ssid = 0
+    if len(dest) > 6 or len(src) > 6 or dest_ssid > 15 or dest_ssid < 0 or src_ssid > 15 or src_ssid < 0:
         return None;
     info = [ord(c) for c in info]
-    dest = [ord(c) << 1 for c in dest] + (6-len(dest))*[0x40,] + [0b01100000,]
-    src  = [ord(c) << 1 for c in src]  + (6-len(src))*[0x40,]  + [0b01100000,]
+    dest = [ord(c) << 1 for c in dest] + (6-len(dest))*[0x40,] + [0b01100000 | dest_ssid << 1,]
+    src  = [ord(c) << 1 for c in src]  + (6-len(src))*[0x40,]  + [0b01100000 | src_ssid << 1,]
     if r1 == None:
         callsigns = dest+src
-    elif len(r1) > 6:
-        return None
     else:
-        r1 = [ord(c) << 1 for c in r1] + (6-len(r1))*[0x40,] + [0b01100000,]
-        if r2 == None:
-            callsigns = dest+src+r1
-        elif len(r2) > 6:
+        tmp = r1.split("-")
+        r1 = tmp[0]
+        try: r1_ssid = int(tmp[1])
+        except: r1_ssid = 0
+        if len(r1) > 6 or r1_ssid > 15 or r1_ssid < 0:
             return None
         else:
-            r2 = [ord(c) << 1 for c in r2] + (6-len(r2))*[0x40,] + [0b01100000,]
-            callsigns = dest+src+r1+r2
+            r1 = [ord(c) << 1 for c in r1] + (6-len(r1))*[0x40,] + [0b01100000 | r1_ssid << 1,]
+            if r2 == None:
+                callsigns = dest+src+r1
+            else:
+                tmp = r2.split("-")
+                r2 = tmp[0]
+                try: r2_ssid = int(tmp[1])
+                except: r2_ssid = 0
+                if len(r2) > 6 or r2_ssid > 15 or r2_ssid < 0:
+                    return None
+                else:
+                    r2 = [ord(c) << 1 for c in r2] + (6-len(r2))*[0x40,] + [0b11100000 | r2_ssid << 1,]
+                    callsigns = dest+src+r1+r2
     callsigns[-1] |= 1
     ctrl = [0b00000011,]
     pid = [0xF0,]
     return callsigns+ctrl+pid+info
-
-
-
 
 def pkt2str(packet):
     dest = ''.join(chr(c>>1) for c in packet[0:6]).strip()
