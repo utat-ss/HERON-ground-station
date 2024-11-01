@@ -1,12 +1,13 @@
 import time
 from threading import Thread
+import signal
 import zmq
+import argparse
 from xmlrpc.client import ServerProxy
-import datetime
-from . import ax25
-from . import stations
-from . import satellite
-from .predict import PredictWrapper
+import ax25
+import stations
+import satellite
+from predict import PredictWrapper
 
 ping_delay = 3
 ping_msg = ax25.str2pkt('=4339.60N/07923.85W-Hello from the University of Toronto Aerospace Team', 'CQ', 'VE3SGH', 'OK0BDT-1')
@@ -16,11 +17,6 @@ dpler = ServerProxy(f"http://10.0.7.91:50600")
 hang_time = 2
 
 run_program = True
-
-def exit_on_keypress():
-    global run_program
-    input("Press Enter to quit...\n")
-    run_program = False
 
 class ExecutePass():
 
@@ -35,7 +31,7 @@ class ExecutePass():
     def rx_sink(self, txer, digi_outfile):
         global resps_rcvd
         recv_flush = 100000
-        with open(digi_outfile, "w+") as outfile:
+        with open(digi_outfile, "w") as outfile:
             while self._run or recv_flush>0:
                 try:
                     resp = txer.rx_bytes(zmq.NOBLOCK)
@@ -54,7 +50,7 @@ class ExecutePass():
 
         print(self.rot.get_tracking_status())
 
-        outfile = f"~/recordings/other_satellites/BDSAT-2-48k-{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}"
+        outfile = f"/home/heron/recordings/other_satellites/BDSAT-2-48k-{time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())}"
 
         self.flow.set_cfo(freq + 100_000)
         self.flow.set_freq(freq)
@@ -86,9 +82,14 @@ if __name__ == '__main__':
     p = PredictWrapper("VE3SGH", 43.66, -79.4)
     bdsat = satellite.Satellite(norad, freq, 3)
 
-    t = Thread(target=exit_on_keypress)
-    times, _ = bdsat.get_doppler_shifts()
-    print("Next pass: ", +datetime.strftime("%Y-%m-%d-%H-%M-%S", datetime.localtime(times[0])))
+    def signal_handler(signum, frame):
+        global run_program
+        print("\nExitting...")
+        run_program = False
+    signal.signal(signal.SIGINT, signal_handler)
+
+    times, _ = p.get_doppler_shifts(bdsat)
+    print("Next pass: ", time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(times[0])))
 
     e = None
 
@@ -99,8 +100,8 @@ if __name__ == '__main__':
                 e.stop()
                 e = None
             bdsat.update_tle()
-            times, _ = bdsat.get_doppler_shifts()
-            print("Next pass: ", +datetime.strftime("%Y-%m-%d-%H-%M-%S", datetime.localtime(times[0])))
+            times, _ = p.get_doppler_shifts(bdsat)
+            print("Next pass: ", time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(times[0])))
         elif time.time() >= times[0]-hang_time and not e:
             print("Pass starting!")
             e = ExecutePass()
@@ -112,13 +113,6 @@ if __name__ == '__main__':
         print("Pass stopping")
         e.stop()
         e = None
-        
-    t.join()
-
-    # e = ExecutePass()
-    # e.start()
-
-    # input("Press Enter to quit...\n")
-
-    # e.stop()
+    
+    print("done")
     

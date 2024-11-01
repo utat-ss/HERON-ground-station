@@ -2,6 +2,7 @@ import tempfile
 import re
 import os
 import subprocess
+from satellite import Satellite
 
 class PredictWrapper():
 
@@ -41,9 +42,9 @@ class PredictWrapper():
             f.write(str(-self._longitude)) # predict uses west positive!
             f.write("\n")
     
-    def get_doppler_shifts(self, tle_file: str, sat_name: str):
+    def get_doppler_shifts(self, sat: Satellite):
         output = subprocess\
-            .check_output(["predict", "-q", self.qth_file.name, "-t", tle_file, "-dp", sat_name])\
+            .check_output(["predict", "-q", self.qth_file.name, "-t", sat.tle_file.name, "-dp", sat.name])\
             .decode()\
             .splitlines()
         line_pattern = re.compile(r"(\d*),.*,(-?\d*\.?\d*)")
@@ -55,9 +56,9 @@ class PredictWrapper():
             shifts.append(float(m.group(2)))
         return (times, shifts)
 
-    def get_next_pass(self, tle_file: str, sat_name: str):
+    def get_next_pass(self, sat: Satellite):
         output = subprocess\
-            .check_output(["predict", "-q", self.qth_file.name, "-t", tle_file, "-p", sat_name])\
+            .check_output(["predict", "-q", self.qth_file.name, "-t", sat.tle_file.name, "-p", sat.name])\
             .decode()\
             .splitlines()
         line_pattern = re.compile(r"^(\d+)\s\S+\s\S+\s\S+\s+(\d*\.?\d*)")
