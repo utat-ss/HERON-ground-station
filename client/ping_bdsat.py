@@ -35,7 +35,11 @@ class ExecutePass():
             while self._run or recv_flush>0:
                 try:
                     resp = txer.rx_bytes(zmq.NOBLOCK)
-                    outfile.write(ax25.pkt2str(resp) + "\n")
+                    try:
+                        ax25msg = ax25.pkt2str(resp)
+                        outfile.write(ax25msg + "\n")
+                    except:
+                        outfile.write("".join(chr(c) for c in resp))
                 except zmq.ZMQError:
                     pass
                 recv_flush -= 1-self._run
