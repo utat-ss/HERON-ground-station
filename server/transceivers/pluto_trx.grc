@@ -804,7 +804,7 @@ blocks:
     filter: ''
     filter_source: '''Auto'''
     fpass: '0'
-    frequency: int(cfo + 4e3)
+    frequency: int(cfo + 5e3)
     fstop: '0'
     len_tag_key: ''
     samplerate: int(tx_samp_rate)
@@ -829,7 +829,7 @@ blocks:
     filter: ''
     filter_source: '''Auto'''
     fpass: '0'
-    frequency: int(cfo + 4e3)
+    frequency: int(cfo + 5e3)
     fstop: '0'
     gain1: '''manual'''
     len_tag_key: ''
