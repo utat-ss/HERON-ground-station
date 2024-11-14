@@ -16,8 +16,8 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
     channel = client.get_transport().open_session()
     channel.exec_command("""
         cd HERON-ground-station/server/transceivers;
-        ./utils/enable_hackrf_clocks.sh;
         grcc hackrf_trx.grc;
+        ./utils/enable_hackrf_clocks.sh;
         python3 hackrf_trx.py"""
     )
 
