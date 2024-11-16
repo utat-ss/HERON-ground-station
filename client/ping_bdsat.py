@@ -13,6 +13,8 @@ ping_delay = 3
 ping_msg = ax25.str2pkt('=4339.60N/07923.85W-Hello from the University of Toronto Aerospace Team', 'CQ', 'VE3SGH', 'OK0BDT-1')
 norad = 55098
 freq = 436_025_000
+outfile_prefix = f"/home/heron/recordings/possibly_heron/BDSAT-2"
+mode = 3 # AX.25 G3RUH
 dpler = ServerProxy(f"http://10.0.7.91:50600")
 hang_time = 2
 
@@ -54,11 +56,11 @@ class ExecutePass():
 
         print(self.rot.get_tracking_status())
 
-        outfile = f"/home/heron/recordings/other_satellites/BDSAT-2-48k-{time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())}"
+        outfile = f"{outfile_prefix}-38k4-{time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())}"
 
         self.flow.set_cfo(freq + 100_000)
         self.flow.set_freq(freq)
-        self.flow.set_mode(3)
+        self.flow.set_mode(mode)
         self.flow.set_output(outfile + ".fc32")
 
         dpler.load_norad(norad)
@@ -74,7 +76,8 @@ class ExecutePass():
     
     def stop(self):
         self._run = False
-        self.rot.disable_tracking()
+        try: self.rot.disable_tracking()
+        except: pass
         dpler.disable_correction()
         self.t_pinger.join()
         self.t_rx_sink.join()
