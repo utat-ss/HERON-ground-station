@@ -13,7 +13,7 @@ ping_delay = 3
 ping_msg = ax25.str2pkt('=4339.60N/07923.85W-Hello from the University of Toronto Aerospace Team', 'CQ', 'VE3SGH', 'OK0BDT-1')
 norad = 55098
 freq = 436_025_000
-outfile_prefix = f"/home/heron/recordings/possibly_heron/BDSAT-2"
+outfile_prefix = f"/home/heron/recordings/other_satellites/BDSAT-2"
 mode = 3 # AX.25 G3RUH
 dpler = ServerProxy(f"http://10.0.7.91:50600")
 hang_time = 2
