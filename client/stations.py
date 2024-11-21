@@ -3,6 +3,8 @@ from xmlrpc.client import ServerProxy
 import paramiko
 from esttc_interface import ESTTCWrapper
 
+max_rotator_attemps = 5
+
 def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
 
     ip = "10.0.7.91"
@@ -25,19 +27,21 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
 
     rot = rpyc.connect(ip, 18866).root.k3ng
     if isinstance(rot_config, str) and rot_config == "lab":
-        for i in range(5):
+        for i in range(max_rotator_attemps):
             try:
                 rot.set_azimuth(38)
                 rot.set_elevation(5)
                 break
-            except: pass
+            except:
+                if i+1 == max_rotator_attemps: raise
     elif isinstance(rot_config, int) and rot_config > 0:
-        for i in range(5):
+        for i in range(max_rotator_attemps):
             try:
                 rot.load_and_track(rot_config)
                 rot.enable_tracking()
                 break;
-            except: pass
+            except:
+                if i+1 == max_rotator_attemps: raise
     else:
         pass
 

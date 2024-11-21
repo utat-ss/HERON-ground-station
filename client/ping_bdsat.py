@@ -18,6 +18,7 @@ mode = 3 # AX.25 G3RUH
 dpler = ServerProxy(f"http://10.0.7.91:50600")
 hang_time = 2
 
+max_rotator_attemps = 5
 run_program = True
 
 class ExecutePass():
@@ -54,7 +55,10 @@ class ExecutePass():
     def start(self):
         (self.client, self.channel, self.flow, self.digi, self.rot) = stations.setup_herongs(rot_config=int(norad), tx_config=int(80))
 
-        print(self.rot.get_tracking_status())
+        for i in range(max_rotator_attemps):
+            try: print(self.rot.get_tracking_status())
+            except:
+                if i+1 == max_rotator_attemps: raise
 
         outfile = f"{outfile_prefix}-38k4-{time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())}"
 
@@ -76,8 +80,10 @@ class ExecutePass():
     
     def stop(self):
         self._run = False
-        try: self.rot.disable_tracking()
-        except: pass
+        for i in range(max_rotator_attemps):
+            try: self.rot.disable_tracking()
+            except:
+                if i+1 == max_rotator_attemps: raise
         dpler.disable_correction()
         self.t_pinger.join()
         self.t_rx_sink.join()
