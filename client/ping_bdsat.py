@@ -56,7 +56,9 @@ class ExecutePass():
         (self.client, self.channel, self.flow, self.digi, self.rot) = stations.setup_herongs(rot_config=int(norad), tx_config=int(80))
 
         for i in range(max_rotator_attemps):
-            try: print(self.rot.get_tracking_status())
+            try:
+                print(self.rot.get_tracking_status())
+                break
             except:
                 if i+1 == max_rotator_attemps: raise
 
