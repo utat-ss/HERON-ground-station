@@ -351,24 +351,6 @@ blocks:
     coordinate: [176, 8.0]
     rotation: 0
     state: true
-- name: tx_filt_taps
-  id: variable_low_pass_filter_taps
-  parameters:
-    beta: '6.76'
-    comment: ''
-    cutoff_freq: baud_rate*3
-    gain: '1.0'
-    samp_rate: tx_samp_rate1
-    value: ''
-    width: baud_rate*3*0.1
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [3768, 412.0]
-    rotation: 0
-    state: enabled
 - name: tx_freq
   id: variable
   parameters:
@@ -467,17 +449,17 @@ blocks:
     alias: ''
     comment: ''
     gain: '1.0'
-    max_gain: '65536'
+    max_gain: '2'
     maxoutbuf: '0'
     minoutbuf: '0'
-    rate: 10e-3
+    rate: 1e-3
     reference: '1.0'
     type: complex
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1296, 696.0]
+    coordinate: [1064, 744.0]
     rotation: 0
     state: enabled
 - name: analog_nbfm_rx_0
@@ -554,7 +536,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1064, 992.0]
+    coordinate: [1488, 984.0]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -576,7 +558,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 896.0]
+    coordinate: [1160, 896.0]
     rotation: 0
     state: disabled
 - name: blocks_freqshift_cc_0
@@ -801,18 +783,18 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    filter_size: 8*rx_samp_per_baud
+    filter_size: 11*rx_samp_per_baud
     maxoutbuf: '0'
     minoutbuf: '0'
     rolloff: '0.35'
     samps_per_sym: rx_samp_per_baud
     type: cc
-    w: 2*math.pi/(rx_samp_per_baud)/20
+    w: 2*math.pi/(100)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1064, 728.0]
+    coordinate: [1224, 728.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_demod_0
@@ -822,12 +804,12 @@ blocks:
     alias: ''
     comment: ''
     freq_error: '0.0'
-    gain_mu: '0.00875'
+    gain_mu: 0.00875 - 0.00875
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
     mu: '0.5'
-    omega_relative_limit: '0.000375'
+    omega_relative_limit: 0.000375 - 0.000375
     samples_per_symbol: rx_samp_per_baud
     sensitivity: 2*pi*gfsk_freq_dev/rx_samp_rate1
     verbose: 'False'
@@ -1963,7 +1945,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     postamble_bytes: '7'
-    preamble_bytes: '50'
+    preamble_bytes: '10'
   states:
     bus_sink: false
     bus_source: false
@@ -2076,7 +2058,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1064, 880.0]
+    coordinate: [1488, 872.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_1
@@ -2248,11 +2230,11 @@ connections:
 - [UTAT_HERON_esttc_deframer_0, crc_fail, pdu_add_system_time_1_0, pdu]
 - [UTAT_HERON_esttc_deframer_0, crc_ok, pdu_add_system_time_1, pdu]
 - [UTAT_HERON_esttc_framer_0, pdu_out, pdu_pdu_lambda_2, pdu]
-- [analog_agc_xx_0, '0', blocks_selector_0, '0']
+- [analog_agc_xx_0, '0', digital_fll_band_edge_cc_0, '0']
 - [analog_nbfm_rx_0, '0', zeromq_pub_sink_1, '0']
 - [analog_nbfm_tx_0, '0', mmse_resampler_xx_0, '0']
 - [analog_pwr_squelch_xx_0, '0', analog_nbfm_rx_0, '0']
-- [blocks_file_source_0, '0', digital_fll_band_edge_cc_0, '0']
+- [blocks_file_source_0, '0', blocks_selector_0, '0']
 - [blocks_freqshift_cc_0, '0', osmosdr_sink_0, '0']
 - [blocks_selector_0, '0', analog_pwr_squelch_xx_0, '0']
 - [blocks_selector_0, '1', digital_gfsk_demod_0, '0']
@@ -2264,7 +2246,9 @@ connections:
 - [blocks_selector_3, '0', pdu_tagged_stream_to_pdu_0, '0']
 - [blocks_selector_3, '1', pdu_tagged_stream_to_pdu_0_0, '0']
 - [digital_descrambler_bb_0, '0', blocks_selector_1, '1']
-- [digital_fll_band_edge_cc_0, '0', analog_agc_xx_0, '0']
+- [digital_fll_band_edge_cc_0, '0', blocks_file_sink_0, '0']
+- [digital_fll_band_edge_cc_0, '0', blocks_selector_0, '0']
+- [digital_fll_band_edge_cc_0, '0', zeromq_pub_sink_0, '0']
 - [digital_gfsk_demod_0, '0', blocks_selector_2, '0']
 - [digital_gfsk_mod_0, '0', blocks_selector_0_0, '1']
 - [digital_scrambler_bb_0, '0', blocks_selector_1_0, '1']
@@ -2274,9 +2258,7 @@ connections:
 - [freq_xlating_fir_filter_xxx_0, '0', mmse_resampler_xx_1, '0']
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
-- [low_pass_filter_0_0, '0', blocks_file_sink_0, '0']
-- [low_pass_filter_0_0, '0', digital_fll_band_edge_cc_0, '0']
-- [low_pass_filter_0_0, '0', zeromq_pub_sink_0, '0']
+- [low_pass_filter_0_0, '0', analog_agc_xx_0, '0']
 - [mmse_resampler_xx_0, '0', blocks_selector_0_0, '0']
 - [mmse_resampler_xx_1, '0', low_pass_filter_0_0, '0']
 - [osmosdr_source_0, '0', freq_xlating_fir_filter_xxx_0, '0']

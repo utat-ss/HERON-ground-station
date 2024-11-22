@@ -1150,7 +1150,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     postamble_bytes: '7'
-    preamble_bytes: '50'
+    preamble_bytes: '10'
   states:
     bus_sink: false
     bus_source: false
