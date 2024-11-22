@@ -1680,7 +1680,7 @@ blocks:
     minoutbuf: '0'
     nchan: '1'
     num_mboards: '1'
-    sample_rate: rx_samp_rate3
+    sample_rate: rx_samp_rate4
     sync: sync
     time_source0: ''
     time_source1: ''
