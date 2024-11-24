@@ -2,9 +2,9 @@ from threading import Thread
 import zmq
 import stations
 
-ping_delay = 2
+ping_delay = 1
 ping_msg = "ES+R2200\r"
-freq = 435_100_000
+freq = 436_200_000
 
 pings_sent = 0
 pings_rcvd = 0
@@ -57,8 +57,8 @@ if __name__ == '__main__':
     pl_flow.set_freq(freq)
     pl_flow.set_cfo(freq+40_000)
 
-    gs_flow.set_mode(1)
-    pl_flow.set_mode(1)
+    gs_flow.set_mode(2)
+    pl_flow.set_mode(2)
 
     gs_flow.set_output("/tmp/gs.fc32")
     pl_flow.set_output("/tmp/pl.fc32")
