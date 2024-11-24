@@ -18,7 +18,7 @@ mode = 3 # AX.25 G3RUH
 dpler = ServerProxy(f"http://10.0.7.91:50600")
 hang_time = 2
 
-max_rotator_attemps = 5
+max_rotator_attemps = 10
 run_program = True
 
 class ExecutePass():
@@ -83,7 +83,9 @@ class ExecutePass():
     def stop(self):
         self._run = False
         for i in range(max_rotator_attemps):
-            try: self.rot.disable_tracking()
+            try:
+                self.rot.disable_tracking()
+                break
             except:
                 if i+1 == max_rotator_attemps: raise
         dpler.disable_correction()

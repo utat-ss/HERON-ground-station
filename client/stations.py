@@ -3,7 +3,7 @@ from xmlrpc.client import ServerProxy
 import paramiko
 from esttc_interface import ESTTCWrapper
 
-max_rotator_attemps = 5
+max_rotator_attemps = 10
 
 def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
 
