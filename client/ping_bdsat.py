@@ -8,6 +8,7 @@ import ax25
 import stations
 import satellite
 from predict import PredictWrapper
+import logging
 
 ping_delay = 3
 ping_msg = ax25.str2pkt('=4339.60N/07923.85W-Hello from the University of Toronto Aerospace Team', 'CQ', 'VE3SGH', 'OK0BDT-1')
@@ -104,6 +105,9 @@ if __name__ == '__main__':
         print("\nExitting...")
         run_program = False
     signal.signal(signal.SIGINT, signal_handler)
+    
+    logging.basicConfig(level=logging.INFO)
+    logging.getLogger("rpyc").setLevel(logging.WARNING)
 
     times, _ = p.get_doppler_shifts(bdsat)
     print("Next pass: ", time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(times[0])))
