@@ -1,6 +1,8 @@
 from threading import Thread
 import zmq
 import stations
+import sys
+import signal
 
 ping_delay = 1
 ping_msg = "ES+R2200\r"
@@ -69,23 +71,38 @@ if __name__ == '__main__':
     t_txer_rx_sink = Thread(target=txer_rx_sink, args=[txer,])
     t_ping = Thread(target=ping, args=[txer, rxer])
 
+    def end_handler(sig=None, frame=None):
+        global run
+        print("Exitting...")
+        run = False
+        gs_channel.close()
+        pl_channel.close()
+
+        t_ping.join()
+        rxer_rx_sink(rxer)
+        t_txer_rx_sink.join()
+
+        total_loss = "{0:.2f} %".format((pings_sent-pings_rcvd)/pings_sent*100) if pings_sent != 0 else 'N/A'
+
+        print('Statistics:')
+        print('  pings sent:      ', pings_sent)
+        print('  pongs received:  ', pings_rcvd)
+        print('  total loss:      ', total_loss)
+
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, end_handler)
+    signal.signal(signal.SIGTERM, end_handler)
+
     t_txer_rx_sink.start()
     t_ping.start()
 
-    input("Press Enter to quit...\n")
-    print("Exitting...")
-    run = False
-    gs_channel.close()
-    pl_channel.close()
+    try:
+        input('Press Enter to quit: \n')
+    except EOFError:
+        pass
 
-    t_ping.join()
-    rxer_rx_sink(rxer)
-    t_txer_rx_sink.join()
+    end_handler()
 
-    total_loss = "{0:.2f} %".format((pings_sent-pings_rcvd)/pings_sent*100) if pings_sent != 0 else 'N/A'
-
-    print('Statistics:')
-    print('  pings sent:      ', pings_sent)
-    print('  pongs received:  ', pings_rcvd)
-    print('  total loss:      ', total_loss)
+   
     

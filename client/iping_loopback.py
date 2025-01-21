@@ -1,6 +1,8 @@
 from threading import Thread
 import zmq
 import stations
+import sys
+import signal
 
 ping_delay = 1
 ping_msg = "ES+R2200\r"
@@ -43,18 +45,31 @@ if __name__ == '__main__':
     # (client, channel, flow, digi, rot) = stations.setup_pluto(rx_config="partial")
 
     t_pinger = Thread(target=pinger, args=[digi,])
+
+    def end_handler(sig=None, frame=None):
+        global run
+        run = False
+        t_pinger.join()
+        rx_sink(digi)
+        total_loss = "{0:.2f} %".format((pings_sent-pings_rcvd)/pings_sent*100) if pings_sent != 0 else 'N/A'
+        print('Statistics:')
+        print('  pings sent:      ', pings_sent)
+        print('  pongs received:  ', pings_rcvd)
+        print('  total loss:      ', total_loss)
+
+        sys.exit(0)
+
+
+    signal.signal(signal.SIGINT, end_handler)
+    signal.signal(signal.SIGTERM, end_handler)
+
     t_pinger.start()
 
-    input("Press Enter to quit...\n")
-    run = False
+    try:
+        input('Press Enter to quit: \n')
+    except EOFError:
+        pass
 
-    t_pinger.join()
-    rx_sink(digi)
-
-    total_loss = "{0:.2f} %".format((pings_sent-pings_rcvd)/pings_sent*100) if pings_sent != 0 else 'N/A'
-
-    print('Statistics:')
-    print('  pings sent:      ', pings_sent)
-    print('  pongs received:  ', pings_rcvd)
-    print('  total loss:      ', total_loss)
+    end_handler()
+    
     

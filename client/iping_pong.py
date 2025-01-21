@@ -2,8 +2,10 @@ import time
 from threading import Thread
 import zmq
 import stations
+import sys
+import signal
 
-ping_delay = 2
+ping_delay = 1
 pong_delay = 0
 ping_msg = "ES+R2200\r"
 pong_msg = "ACK"
@@ -75,26 +77,40 @@ if __name__ == '__main__':
     t_ping_rx = Thread(target=ping_rx, args=[pinger_esttc,])
     t_ping_tx = Thread(target=ping_tx, args=[pinger_esttc,])
 
+    def end_handler(sig=None, frame=None):
+        global run
+        print("Exitting...")
+        run = False
+
+        t_pong.join()
+        t_ping_rx.join()
+        t_ping_tx.join()
+
+        ping_loss = "{0:.2f} %".format((pings-pongs)/pings*100) if pings != 0 else 'N/A'
+        pong_loss = "{0:.2f} %".format((pongs-ping_pongs)/pongs*100) if pongs != 0 else 'N/A'
+        total_loss = "{0:.2f} %".format((pings-ping_pongs)/pings*100) if pings != 0 else 'N/A'
+
+        print('Statistics:')
+        print('  pings:      ', pings)
+        print('  pongs:      ', pongs)
+        print('  ping pongs: ', ping_pongs)
+        print('  ping loss:  ', ping_loss)
+        print('  pong loss:  ', pong_loss)
+        print('  total loss: ', total_loss)
+
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, end_handler)
+    signal.signal(signal.SIGTERM, end_handler)
+
     t_pong.start()
     t_ping_rx.start()
     t_ping_tx.start()
 
-    input("Press Enter to quit...\n")
-    run = False
+    try:
+        input('Press Enter to quit: \n')
+    except EOFError:
+        pass
 
-    t_pong.join()
-    t_ping_rx.join()
-    t_ping_tx.join()
-
-    ping_loss = "{0:.2f} %".format((pings-pongs)/pings*100) if pings != 0 else 'N/A'
-    pong_loss = "{0:.2f} %".format((pongs-ping_pongs)/pongs*100) if pongs != 0 else 'N/A'
-    total_loss = "{0:.2f} %".format((pings-ping_pongs)/pings*100) if pings != 0 else 'N/A'
-
-    print('Statistics:')
-    print('  pings:      ', pings)
-    print('  pongs:      ', pongs)
-    print('  ping pongs: ', ping_pongs)
-    print('  ping loss:  ', ping_loss)
-    print('  pong loss:  ', pong_loss)
-    print('  total loss: ', total_loss)
+    end_handler()
     
