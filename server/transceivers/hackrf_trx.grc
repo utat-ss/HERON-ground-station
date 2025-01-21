@@ -85,7 +85,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2400/2
+    value: '2400'
   states:
     bus_sink: false
     bus_source: false
@@ -169,7 +169,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '5'
+    value: '1'
   states:
     bus_sink: false
     bus_source: false
@@ -181,7 +181,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '5'
+    value: '25'
   states:
     bus_sink: false
     bus_source: false
@@ -194,17 +194,17 @@ blocks:
   parameters:
     beta: '6.76'
     comment: ''
-    cutoff_freq: 0.75*(rx_samp_rate4/2)
+    cutoff_freq: 0.75*(min(rx_samp_rate3,rx_samp_rate2)/2)
     gain: '1.0'
     samp_rate: rx_samp_rate5
     value: ''
-    width: 0.25*(rx_samp_rate4/2)
+    width: 0.75*(min(rx_samp_rate3,rx_samp_rate2)/2)
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 636.0]
+    coordinate: [376, 636.0]
     rotation: 0
     state: enabled
 - name: rx_freq
@@ -448,7 +448,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2528, 840.0]
+    coordinate: [2624, 840.0]
     rotation: 0
     state: enabled
 - name: UTAT_HERON_esttc_framer_0
@@ -476,14 +476,14 @@ blocks:
     max_gain: '2'
     maxoutbuf: '0'
     minoutbuf: '0'
-    rate: 1e-3
+    rate: 1e-2
     reference: '1.0'
     type: complex
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1448, 824.0]
+    coordinate: [1544, 824.0]
     rotation: 0
     state: enabled
 - name: analog_nbfm_rx_0
@@ -502,7 +502,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2240, 704.0]
+    coordinate: [2336, 704.0]
     rotation: 0
     state: enabled
 - name: analog_nbfm_tx_0
@@ -542,7 +542,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2072, 704.0]
+    coordinate: [2168, 704.0]
     rotation: 0
     state: enabled
 - name: blocks_file_sink_0
@@ -560,7 +560,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1848, 1064.0]
+    coordinate: [1512, 1192.0]
     rotation: 0
     state: enabled
 - name: blocks_file_source_0
@@ -582,7 +582,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1520, 976.0]
+    coordinate: [1712, 968.0]
     rotation: 0
     state: disabled
 - name: blocks_freqshift_cc_0
@@ -628,7 +628,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [448, 1344.0]
+    coordinate: [760, 1024.0]
     rotation: 0
     state: true
 - name: blocks_msgpair_to_var_1
@@ -642,7 +642,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [448, 1392.0]
+    coordinate: [760, 1072.0]
     rotation: 0
     state: true
 - name: blocks_selector_0
@@ -665,7 +665,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1840, 768.0]
+    coordinate: [1936, 768.0]
     rotation: 0
     state: enabled
 - name: blocks_selector_0_0
@@ -711,7 +711,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2840, 952.0]
+    coordinate: [2936, 952.0]
     rotation: 0
     state: enabled
 - name: blocks_selector_1_0
@@ -757,7 +757,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2288, 832.0]
+    coordinate: [2384, 832.0]
     rotation: 0
     state: enabled
 - name: blocks_selector_3
@@ -798,7 +798,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2688, 984.0]
+    coordinate: [2784, 984.0]
     rotation: 0
     state: enabled
 - name: digital_fll_band_edge_cc_0
@@ -818,7 +818,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1584, 808.0]
+    coordinate: [1680, 808.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_demod_0
@@ -835,13 +835,13 @@ blocks:
     mu: '0.5'
     omega_relative_limit: 0.000375 - 0.000375
     samples_per_symbol: rx_samp_per_baud
-    sensitivity: 2*pi*gfsk_freq_dev/rx_samp_rate1
+    sensitivity: 2*pi*(gfsk_freq_dev)/rx_samp_rate1
     verbose: 'False'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2072, 824.0]
+    coordinate: [2168, 824.0]
     rotation: 0
     state: enabled
 - name: digital_gfsk_mod_0
@@ -856,7 +856,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     samples_per_symbol: int(tx_samp_per_baud)
-    sensitivity: 2*pi*gfsk_freq_dev/tx_samp_rate1
+    sensitivity: 2*pi*(5e3)/tx_samp_rate1
     verbose: 'False'
   states:
     bus_sink: false
@@ -951,7 +951,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 792.0]
+    coordinate: [376, 792.0]
     rotation: 0
     state: enabled
 - name: gpredict_MsgPairToVar_0_0_0_0
@@ -1011,7 +1011,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [160, 1360.0]
+    coordinate: [472, 1040.0]
     rotation: 0
     state: true
 - name: gpredict_port
@@ -1065,7 +1065,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [680, 764.0]
+    coordinate: [600, 764.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0_0
@@ -1075,7 +1075,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: 0.5*rx_samp_rate1/2
+    cutoff_freq: (gfsk_freq_dev/2+baud_rate/2)*1.1
     decim: rx_decim1
     gain: '1'
     interp: '1'
@@ -1083,23 +1083,23 @@ blocks:
     minoutbuf: '0'
     samp_rate: rx_samp_rate2
     type: fir_filter_ccf
-    width: 0.5*rx_samp_rate1/2
+    width: (gfsk_freq_dev/2+baud_rate/2)*0.2
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1096, 996.0]
+    coordinate: [1096, 796.0]
     rotation: 0
     state: enabled
-- name: low_pass_filter_0_0_0
+- name: low_pass_filter_0_0_0_1
   id: low_pass_filter
   parameters:
     affinity: ''
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: (gfsk_freq_dev+baud_rate/2)
+    cutoff_freq: (gfsk_freq_dev/2+baud_rate/2)*1.1
     decim: '1'
     gain: '1'
     interp: '1'
@@ -1107,39 +1107,15 @@ blocks:
     minoutbuf: '0'
     samp_rate: rx_samp_rate1
     type: fir_filter_ccf
-    width: (gfsk_freq_dev+baud_rate/2)*0.1
+    width: (gfsk_freq_dev/2+baud_rate/2)*0.2
     win: window.WIN_HAMMING
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1280, 996.0]
+    coordinate: [1312, 796.0]
     rotation: 0
     state: enabled
-- name: low_pass_filter_0_0_0_0
-  id: low_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    cutoff_freq: (gfsk_freq_dev+baud_rate/2)
-    decim: rx_decim1
-    gain: '1'
-    interp: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: rx_samp_rate2
-    type: fir_filter_ccf
-    width: (gfsk_freq_dev+baud_rate/2)*0.1
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1192, 796.0]
-    rotation: 0
-    state: disabled
 - name: mmse_resampler_xx_0
   id: mmse_resampler_xx
   parameters:
@@ -1173,7 +1149,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [912, 824.0]
+    coordinate: [840, 824.0]
     rotation: 0
     state: enabled
 - name: osmosdr_sink_0
@@ -1840,7 +1816,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3328, 832.0]
+    coordinate: [3424, 832.0]
     rotation: 0
     state: enabled
 - name: pdu_add_system_time_1_0
@@ -1856,7 +1832,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3328, 880.0]
+    coordinate: [3424, 880.0]
     rotation: 0
     state: enabled
 - name: pdu_pdu_lambda_0
@@ -2029,7 +2005,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3032, 976.0]
+    coordinate: [3128, 976.0]
     rotation: 0
     state: enabled
 - name: satellites_hdlc_framer_0
@@ -2041,7 +2017,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     postamble_bytes: '7'
-    preamble_bytes: '10'
+    preamble_bytes: '40'
   states:
     bus_sink: false
     bus_source: false
@@ -2061,7 +2037,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2528, 976.0]
+    coordinate: [2624, 976.0]
     rotation: 0
     state: enabled
 - name: satellites_nrzi_encode_0
@@ -2154,7 +2130,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1848, 952.0]
+    coordinate: [1512, 1080.0]
     rotation: 0
     state: enabled
 - name: zeromq_pub_sink_1
@@ -2176,7 +2152,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2432, 696.0]
+    coordinate: [2528, 696.0]
     rotation: 0
     state: enabled
 - name: zeromq_pull_msg_source_0
@@ -2210,7 +2186,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [3552, 848.0]
+    coordinate: [3648, 848.0]
     rotation: 0
     state: enabled
 - name: zeromq_sub_source_0
@@ -2342,9 +2318,7 @@ connections:
 - [blocks_selector_3, '0', pdu_tagged_stream_to_pdu_0, '0']
 - [blocks_selector_3, '1', pdu_tagged_stream_to_pdu_0_0, '0']
 - [digital_descrambler_bb_0, '0', blocks_selector_1, '1']
-- [digital_fll_band_edge_cc_0, '0', blocks_file_sink_0, '0']
 - [digital_fll_band_edge_cc_0, '0', blocks_selector_0, '0']
-- [digital_fll_band_edge_cc_0, '0', zeromq_pub_sink_0, '0']
 - [digital_gfsk_demod_0, '0', blocks_selector_2, '0']
 - [digital_gfsk_mod_0, '0', blocks_selector_0_0, '1']
 - [digital_scrambler_bb_0, '0', blocks_selector_1_0, '1']
@@ -2355,12 +2329,12 @@ connections:
 - [gpredict_doppler_0, freq, blocks_msgpair_to_var_0, inpair]
 - [gpredict_doppler_0, tx_freq, blocks_msgpair_to_var_1, inpair]
 - [low_pass_filter_0, '0', mmse_resampler_xx_1, '0']
-- [low_pass_filter_0_0, '0', low_pass_filter_0_0_0, '0']
-- [low_pass_filter_0_0_0, '0', analog_agc_xx_0, '0']
-- [low_pass_filter_0_0_0_0, '0', analog_agc_xx_0, '0']
+- [low_pass_filter_0_0, '0', low_pass_filter_0_0_0_1, '0']
+- [low_pass_filter_0_0_0_1, '0', analog_agc_xx_0, '0']
+- [low_pass_filter_0_0_0_1, '0', blocks_file_sink_0, '0']
+- [low_pass_filter_0_0_0_1, '0', zeromq_pub_sink_0, '0']
 - [mmse_resampler_xx_0, '0', blocks_selector_0_0, '0']
 - [mmse_resampler_xx_1, '0', low_pass_filter_0_0, '0']
-- [mmse_resampler_xx_1, '0', low_pass_filter_0_0_0_0, '0']
 - [osmosdr_source_0, '0', freq_xlating_fir_filter_xxx_0, '0']
 - [pdu_add_system_time_0, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1, pdu, blocks_message_debug_0, log]
