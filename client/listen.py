@@ -3,7 +3,6 @@ import zmq
 from esttc_interface import ESTTCWrapper
 import argparse
 
-ip = "10.0.1.165"
 run = True
 
 def listen(digi):
