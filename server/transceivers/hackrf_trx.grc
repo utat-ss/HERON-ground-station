@@ -1850,27 +1850,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [2272, 264.0]
+    coordinate: [2264, 240.0]
     rotation: 0
     state: enabled
-- name: pdu_pdu_lambda_0_0
-  id: pdu_pdu_lambda
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: padding
-    fn: 'lambda x: np.append(x, [np.uint8(1) if i%2 else np.uint8(0) for i in range(tx_baud_per_buf+1)])'
-    key: pmt.intern("key")
-    maxoutbuf: '0'
-    metadict: Uniform Vector
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [2272, 216.0]
-    rotation: 0
-    state: disabled
 - name: pdu_pdu_lambda_1
   id: pdu_pdu_lambda
   parameters:
@@ -2360,10 +2342,8 @@ connections:
 - [pdu_add_system_time_1_0, pdu, blocks_message_debug_0, log]
 - [pdu_add_system_time_1_0, pdu, zeromq_push_msg_sink_0, in]
 - [pdu_pdu_lambda_0, pdu, pdu_pdu_to_tagged_stream_0, pdus]
-- [pdu_pdu_lambda_0_0, pdu, pdu_pdu_to_tagged_stream_0, pdus]
 - [pdu_pdu_lambda_1, pdu, epy_block_1, ptt]
 - [pdu_pdu_lambda_1, pdu, pdu_pdu_lambda_0, pdu]
-- [pdu_pdu_lambda_1, pdu, pdu_pdu_lambda_0_0, pdu]
 - [pdu_pdu_lambda_2, pdu, pdu_pdu_lambda_1, pdu]
 - [pdu_pdu_to_tagged_stream_0, '0', digital_gfsk_mod_0, '0']
 - [pdu_pdu_to_tagged_stream_1, '0', blocks_selector_3, '0']
@@ -2373,7 +2353,6 @@ connections:
 - [pdu_tagged_stream_to_pdu_0_0, pdus, satellites_hdlc_framer_0, in]
 - [pdu_tagged_stream_to_pdu_1, pdus, epy_block_1, ptt]
 - [pdu_tagged_stream_to_pdu_1, pdus, pdu_pdu_lambda_0, pdu]
-- [pdu_tagged_stream_to_pdu_1, pdus, pdu_pdu_lambda_0_0, pdu]
 - [satellites_hdlc_deframer_0, out, pdu_add_system_time_1, pdu]
 - [satellites_hdlc_framer_0, out, pdu_pdu_to_tagged_stream_1_0, pdus]
 - [satellites_nrzi_decode_0, '0', blocks_selector_1, '0']
