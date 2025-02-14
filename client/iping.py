@@ -46,6 +46,8 @@ def ping(txer, rxer):
             if msg == ping_msg:
                 pings_rcvd += 1
                 print("ping received [{}]".format(pings_rcvd))
+            else:
+                print("wrong message");
         except zmq.ZMQError:
             print('timeout')
 
