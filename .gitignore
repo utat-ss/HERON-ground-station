@@ -8,3 +8,6 @@ server/transceivers/*.py
 
 # CMake
 **/build/
+
+# VSCode
+**/.vscode/
