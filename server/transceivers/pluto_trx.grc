@@ -73,7 +73,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: 2400/2
+    value: '2400'
   states:
     bus_sink: false
     bus_source: false

@@ -2062,7 +2062,7 @@ blocks:
     alias: ''
     amp: rx_amp
     bandwidth: '0'
-    center_freq: cfo+800
+    center_freq: cfo+700
     comment: ''
     dev_args: '"driver=hackrf,serial=915f"'
     gain: rx_if_gain
