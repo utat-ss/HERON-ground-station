@@ -70,12 +70,15 @@ if __name__ == '__main__':
     pl_flow.set_freq(freq)
     pl_flow.set_cfo(freq+40_000)
 
-    pinger_esttc = gs_digi
-    ponger_esttc = pl_digi
+    gs_flow.set_mode(2)
+    pl_flow.set_mode(2)
 
-    t_pong = Thread(target=pong, args=[ponger_esttc,])
-    t_ping_rx = Thread(target=ping_rx, args=[pinger_esttc,])
-    t_ping_tx = Thread(target=ping_tx, args=[pinger_esttc,])
+    pinger = gs_digi
+    ponger = pl_digi
+
+    t_pong = Thread(target=pong, args=[ponger,])
+    t_ping_rx = Thread(target=ping_rx, args=[pinger,])
+    t_ping_tx = Thread(target=ping_tx, args=[pinger,])
 
     def end_handler(sig=None, frame=None):
         global run
