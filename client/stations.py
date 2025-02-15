@@ -20,7 +20,7 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
         cd HERON-ground-station/server/transceivers;
         grcc hackrf_trx.grc;
         ./utils/enable_hackrf_clocks.sh;
-        python3 hackrf_trx.py"""
+        python3 hackrf_trx.py 2>/dev/null"""
     )
 
     print("[stations] setting up HERON GS rotator")
