@@ -53,9 +53,15 @@ class DopplerServer(Thread):
             params={"CATNR":str(self.norad)},
             timeout=5
         ).text
-        print(resp)
         if "No GP data found" in resp:
-            raise LookupError("norad does not exist")
+            resp = requests.get(
+                "https://db.satnogs.org/api/tle/",
+                params={"format": "3le", "norad_cat_id": str(self.norad)},
+                timeout=5
+            ).text
+            if len(resp) == 0:
+                raise LookupError("norad does not exist")
+        print(resp)
         self.name = resp.splitlines()[0].strip()
         with open(self.tle_file.name, mode='w+') as f:
             f.write(resp)
