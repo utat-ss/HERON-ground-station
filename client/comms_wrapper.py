@@ -33,7 +33,7 @@ parser.add_argument(
 parser.add_argument(
     '-r', '--rx_port',
     type=int,
-    default=50493,
+    default=50492,
     help='TCP port specified in ZMQ PUSH Message Sink')
 parser.add_argument(
     '-m', '--mode',
@@ -81,6 +81,7 @@ def end_handler(sig=None, frame=None):
 
 signal.signal(signal.SIGINT, end_handler)
 signal.signal(signal.SIGTERM, end_handler)
+signal.signal(signal.SIGPIPE, end_handler)
 
 t_receiver.start()
 
@@ -93,7 +94,9 @@ while running:
             tx_str = input()
             tx_arr = [ord(c) for c in tx_str]
         else: continue
-        if(len(tx_arr) == 0): continue
+        if(len(tx_arr) == 0):
+            time.sleep(0.01)
+            continue
         tx_pmt = pmt.init_u8vector(len(tx_arr), tx_arr);
         tx_pdu = pmt.cons(pmt.PMT_NIL, tx_pmt);
         tx_msg = pmt.serialize_str(tx_pdu)
