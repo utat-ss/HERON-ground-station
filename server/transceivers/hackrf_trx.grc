@@ -828,12 +828,12 @@ blocks:
     alias: ''
     comment: ''
     freq_error: '0.0'
-    gain_mu: 0.00875 - 0.00875
+    gain_mu: '0.01'
     log: 'False'
     maxoutbuf: '0'
     minoutbuf: '0'
     mu: '0.5'
-    omega_relative_limit: 0.000375 - 0.000375
+    omega_relative_limit: '0.001'
     samples_per_symbol: rx_samp_per_baud
     sensitivity: 2*pi*(gfsk_freq_dev)/rx_samp_rate1
     verbose: 'False'
@@ -1075,7 +1075,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: (gfsk_freq_dev/2+baud_rate/2)*1.1
+    cutoff_freq: (gfsk_freq_dev/2+baud_rate/2)
     decim: rx_decim1
     gain: '1'
     interp: '1'
@@ -1083,7 +1083,7 @@ blocks:
     minoutbuf: '0'
     samp_rate: rx_samp_rate2
     type: fir_filter_ccf
-    width: (gfsk_freq_dev/2+baud_rate/2)*0.2
+    width: (gfsk_freq_dev/2+baud_rate/2)*0.1
     win: window.WIN_HAMMING
   states:
     bus_sink: false
@@ -1099,7 +1099,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: (gfsk_freq_dev/2+baud_rate/2)*1.1
+    cutoff_freq: (gfsk_freq_dev/2+baud_rate/2)
     decim: '1'
     gain: '1'
     interp: '1'
@@ -1107,7 +1107,7 @@ blocks:
     minoutbuf: '0'
     samp_rate: rx_samp_rate1
     type: fir_filter_ccf
-    width: (gfsk_freq_dev/2+baud_rate/2)*0.2
+    width: (gfsk_freq_dev/2+baud_rate/2)*0.1
     win: window.WIN_HAMMING
   states:
     bus_sink: false
