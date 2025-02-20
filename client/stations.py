@@ -2,6 +2,7 @@ import rpyc
 from xmlrpc.client import ServerProxy
 import paramiko
 from esttc_interface import ESTTCWrapper
+from k3ng import RotctlK3NG
 
 max_rotator_attemps = 10
 
@@ -25,12 +26,12 @@ def setup_herongs(rot_config=None, tx_config=None, rx_config=None):
 
     print("[stations] setting up HERON GS rotator")
 
-    rot = rpyc.connect(ip, 18866).root.k3ng
+    rot = RotctlK3NG(ip)
     if isinstance(rot_config, str) and rot_config == "lab":
         for i in range(max_rotator_attemps):
             try:
-                rot.set_azimuth(38)
-                rot.set_elevation(5)
+                rot.azimuth = 38
+                rot.elevation = 5
                 break
             except:
                 if i+1 == max_rotator_attemps: raise
