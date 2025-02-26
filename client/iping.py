@@ -3,10 +3,13 @@ import zmq
 import stations
 import sys
 import signal
+import ax25
 
 ping_delay = 1
-ping_msg = "ES+R2200\r"
-freq = 436_200_000
+# ping_msg = "ES+R2200\r"
+ping_msg = ax25.str2pkt('=4339.60N/07923.85W-Hello from the University of Toronto Aerospace Team', 'CQ', 'VE3SGH')
+freq = 435_000_000
+mode = 3
 
 pings_sent = 0
 pings_rcvd = 0
@@ -16,7 +19,8 @@ def txer_rx_sink(txer):
     recv_flush = 100000
     while run or recv_flush>0:
         try:
-            txer.rx(zmq.NOBLOCK)
+            # txer.rx(zmq.NOBLOCK)
+            txer.rx_bytes(zmq.NOBLOCK)
         except zmq.ZMQError:
             pass
         recv_flush -= 1-run
@@ -26,10 +30,12 @@ def rxer_rx_sink(rxer):
     recv_flush = 100000
     while run or recv_flush>0:
         try:
-            msg = rxer.rx(zmq.NOBLOCK)
+            # msg = rxer.rx(zmq.NOBLOCK)
+            msg = rxer.rx_bytes(zmq.NOBLOCK)
             if msg == ping_msg:
                 pings_rcvd += 1
-                print("ping received [{}]".format(pings_rcvd))
+                # print("ping received [{}]".format(pings_rcvd))
+                print(ax25.pkt2str(msg))
         except zmq.ZMQError:
             pass
         recv_flush -= 1-run
@@ -39,13 +45,16 @@ def ping(txer, rxer):
     global pings_rcvd
     rxer.set_timeout(ping_delay*1000)
     while run:
-        txer.tx(ping_msg)
+        # txer.tx(ping_msg)
+        txer.tx_bytes(ping_msg)
         pings_sent += 1
         try:
-            msg = rxer.rx()
+            # msg = rxer.rx()
+            msg = rxer.rx_bytes()
             if msg == ping_msg:
                 pings_rcvd += 1
-                print("ping received [{}]".format(pings_rcvd))
+                # print("ping received [{}]".format(pings_rcvd))
+                print(ax25.pkt2str(msg))
             else:
                 print("wrong message");
         except zmq.ZMQError:
@@ -61,8 +70,8 @@ if __name__ == '__main__':
     pl_flow.set_freq(freq)
     pl_flow.set_cfo(freq+40_000)
 
-    gs_flow.set_mode(2)
-    pl_flow.set_mode(2)
+    gs_flow.set_mode(mode)
+    pl_flow.set_mode(mode)
 
     gs_flow.set_output("/tmp/gs.fc32")
     pl_flow.set_output("/tmp/pl.fc32")

@@ -4,12 +4,15 @@ import zmq
 import stations
 import sys
 import signal
+import ax25
 
 ping_delay = 1
 pong_delay = 0
-ping_msg = "ES+R2200\r"
-pong_msg = "ACK"
+# ping_msg = "ES+R2200\r"
+ping_msg = ax25.str2pkt('=4339.60N/07923.85W-Hello from the University of Toronto Aerospace Team', 'CQ', 'VE3SGH')
+pong_msg = ax25.str2pkt('ACK', 'CQ', 'VE3SGH')
 freq = 435_100_000
+mode = 3
 
 pings = 0
 pongs = 0
@@ -19,7 +22,8 @@ run = True
 def ping_tx(ping_esttc):
     global pings
     while run:
-        ping_esttc.tx(ping_msg)
+        # ping_esttc.tx(ping_msg)
+        ping_esttc.tx_bytes(ping_msg)
         pings += 1
         time.sleep(ping_delay)
 
@@ -28,7 +32,8 @@ def ping_rx(ping_esttc):
     recv_flush = 100000
     while run or recv_flush>0:
         try:
-            rx = ping_esttc.rx(zmq.NOBLOCK)
+            # rx = ping_esttc.rx(zmq.NOBLOCK)
+            rx = ping_esttc.rx_bytes(zmq.NOBLOCK)
             if rx == pong_msg:
                 ping_pongs += 1
                 print("------ pong received [{}]".format(ping_pongs))
@@ -45,13 +50,15 @@ def pong(pong_esttc):
     recv_flush = 100000
     while run or recv_flush>0:
         try:
-            rx = pong_esttc.rx(zmq.NOBLOCK)
+            # rx = pong_esttc.rx(zmq.NOBLOCK)
+            rx = pong_esttc.rx_bytes(zmq.NOBLOCK)
             if rx == ping_msg:
                 pongs += 1
                 print("--- ping received [{}]".format(pongs))
                 if run:
                     time.sleep(pong_delay)
-                    pong_esttc.tx(pong_msg)
+                    # pong_esttc.tx(pong_msg)
+                    pong_esttc.tx_bytes(pong_msg)
             elif rx == pong_msg:
                 print("--- pong back")
             else:
@@ -70,8 +77,8 @@ if __name__ == '__main__':
     pl_flow.set_freq(freq)
     pl_flow.set_cfo(freq+40_000)
 
-    gs_flow.set_mode(2)
-    pl_flow.set_mode(2)
+    gs_flow.set_mode(mode)
+    pl_flow.set_mode(mode)
 
     pinger = gs_digi
     ponger = pl_digi

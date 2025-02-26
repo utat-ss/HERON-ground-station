@@ -3,9 +3,13 @@ import zmq
 import stations
 import sys
 import signal
+import ax25
 
 ping_delay = 1
-ping_msg = "ES+R2200\r"
+# ping_msg = "ES+R2200\r"
+ping_msg = ax25.str2pkt('=4339.60N/07923.85W-Hello from the University of Toronto Aerospace Team', 'CQ', 'VE3SGH')
+freq = 435_000_000
+mode = 3
 
 pings_sent = 0
 pings_rcvd = 0
@@ -29,13 +33,16 @@ def pinger(ping_esttc):
     global pings_rcvd
     ping_esttc.set_timeout(ping_delay*1000)
     while run:
-        ping_esttc.tx(ping_msg)
+        # ping_esttc.tx(ping_msg)
+        ping_esttc.tx_bytes(ping_msg)
         pings_sent += 1
         try:
-            msg = ping_esttc.rx()
+            # msg = ping_esttc.rx()
+            msg = ping_esttc.rx_bytes()
             if msg == ping_msg:
                 pings_rcvd += 1
-                print("ping received [{}]".format(pings_rcvd))
+                # print("ping received [{}]".format(pings_rcvd))
+                print(ax25.pkt2str(msg))
             else:
                 print("wrong message");
         except zmq.ZMQError:
@@ -45,6 +52,9 @@ if __name__ == '__main__':
 
     (client, channel, flow, digi, rot) = stations.setup_herongs(rot_config="lab")
     # (client, channel, flow, digi, rot) = stations.setup_pluto(rx_config="partial")
+
+    flow.set_freq(freq)
+    flow.set_mode(mode)
 
     t_pinger = Thread(target=pinger, args=[digi,])
 
